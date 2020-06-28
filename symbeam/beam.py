@@ -41,6 +41,8 @@ class beam:
         self.inertia_segment_list = [property_segment(self.x0, self.x0 + self.length, I)]
         self.inertia_default = True
 
+        self.number_hinges = 0
+
         # Initialise the processed beam information.
         self.segments = []
         self.points = []
@@ -51,6 +53,9 @@ class beam:
         self.check_inside_beam(x_coord)
         if type.lower() == 'pin':
             new_point = pin(x_coord)
+
+        elif type.lower() == 'hinge':
+            self.number_hinges = self.number_hinges + 1
 
         for point in self.support_list:
             if point.x_coord == new_point.x_coord:
@@ -352,9 +357,67 @@ class beam:
             q_load = distributed_load(x_start, x_end, q_load_expression)
 
             self.segments.append(segment(x_start, x_end, q_load, young, inertia))
-
+    # ---------------------------------------------------------------------- solve_reactions
     def solve_reactions(self):
-        pass
+        """Solves the static equilibirum equations of the beam and determines all the
+        support reactions.
+        """
+        # Create the symbolic variables denoting the reactions at each support.
+        unknown_reactions = []
+        reaction_force_points = []
+        reaction_moment_points = []
+        # Reactions forces first.
+        for i in range(len(self.points)):
+            if self.points[i].has_reaction_force():
+                name = "R{0}".format(i)
+                self.points[i].reaction_force = sym.symbols(name)
+                unknown_reactions.append(self.points[i].reaction_force)
+                reaction_force_points.append(i)
+
+        # Then reaction moments.
+        for i in range(len(self.points)):
+            if self.points[i].has_reaction_moment():
+                name = "M{0}".format(i)
+                self.points[i].reaction_moment = sym.symbols(name)
+                unknown_reactions.append(self.points[i].reaction_moment)
+                reaction_moment_points.append(i)
+
+        # Equilibirum of forces in the y-direction.
+        sum_forces_y = sym.sympify(0)
+
+        for ipoint in self.points:
+            sum_forces_y = sum_forces_y + ipoint.external_force + ipoint.reaction_force
+
+        for isegment in self.segments:
+            sum_forces_y = sum_forces_y + isegment.distributed_load.equivalent_magnitude
+
+        # Equilibirum of moments in the z-direction on the initial point.
+        sum_moments_z = sym.sympify(0)
+
+        for ipoint in self.points:
+            sum_moments_z = sum_moments_z + ipoint.reaction_moment
+            sum_moments_z = sum_moments_z + ipoint.reaction_force * (ipoint.x_coord - self.x0)
+            sum_moments_z = sum_moments_z + ipoint.external_moment
+            sum_moments_z = sum_moments_z + ipoint.external_force * (ipoint.x_coord - self.x0)
+
+        for isegment in self.segments:
+            sum_moments_z = sum_moments_z + isegment.distributed_load.equivalent_magnitude * (isegment.distributed_load.equivalent_coord - self.x0)
+
+        # System of equations.
+        equilibirum_equations = [sum_forces_y, sum_moments_z]
+        solution = sym.solve(equilibirum_equations, unknown_reactions, dict=True)
+
+        # Unpack solution.
+        variable_index = 0
+        for id in reaction_force_points:
+            self.points[id].reaction_force = solution[0][self.points[id].reaction_force]
+            variable_index = variable_index + 1
+
+        for id in reaction_moment_points:
+            self.points[id].reaction_moment = solution[0][self.points[id].reaction_moment]
+            variable_index = variable_index + 1
+
+
 
     def solve_internal_loads(self):
         pass
@@ -365,7 +428,10 @@ class beam:
     def plot(self):
         pass
 
+    # ------------------------------------------------------------------------- print_points
     def print_points(self):
+        """Prints the information of points identified along the beam.
+        """
         print("\n{0:^83}".format("Beam points"))
         print(83*"=")
         print("{0:^20} {1:^20} {2:^20} {3:^20}".format("Coordinate", "Type", "Load", "Moment"))
@@ -374,8 +440,10 @@ class beam:
             print("{0:^20} {1:^20} {2:^20} {3:^20}".format(str(ipoint.x_coord), ipoint.get_name(), str(ipoint.external_force), str(ipoint.external_moment)))
 
         print(83*"=" + "\n")
-
+    # ----------------------------------------------------------------------- print_segments
     def print_segments(self):
+        """Prints the information of the identified segments.
+        """
         print("\n{0:^83}".format("Beam segments"))
         print(83*"=")
         print("{0:^20} {1:^20} {2:^20} {3:^20}".format("Span", "Young modulus", "Inertia", "Distributed load"))
@@ -385,18 +453,38 @@ class beam:
             print("{0:^20} {1:^20} {2:^20} {3:^20}".format(span_string, str(isegment.young), str(isegment.inertia), str(isegment.distributed_load.expression)))
 
         print(83*"=" + "\n")
+    # ---------------------------------------------------------------------- print_reactions
+    def print_reactions(self):
+        """Prints the reactions forces.
+        """
+        print("\n{0:^83}".format("Exterior Reactions"))
+        print(83*"=")
+        print("{0:^27} {1:^27} {2:^27}".format("Point", "Type", "Value"))
+        print(83*"-")
+        for ipoint in self.points:
+            if ipoint.has_reaction_force():
+                print("{0:^27} {1:^27} {2:^27}".format(str(ipoint.x_coord), "Force", str(ipoint.reaction_force)))
 
+            if ipoint.has_reaction_moment():
+                print("{0:^27} {1:^27} {2:^27}".format(str(ipoint.x_coord), "Moment", str(ipoint.reaction_moment)))
 
+        print(83*"=" + "\n")
+# ========================================================================= property_segment
 class property_segment:
+    """Class for segments properties in a symbolic-compatible fashion.
+    """
     def __init__(self, x_start, x_end, value):
         self.x_start = sym.sympify(x_start)
         self.x_end = sym.sympify(x_end)
         self.value = sym.sympify(value)
-
+# ================================================================================== segment
 class segment:
+    """Beam segments with locally continuous properties and loadings.
+    """
     def __init__(self, x_start, x_end, distributed_load, young, inertia):
         self.x_start = sym.sympify(x_start)
         self.x_end = sym.sympify(x_end)
         self.distributed_load = distributed_load
         self.young = sym.sympify(young)
         self.inertia = sym.sympify(inertia)
+# ==========================================================================================
