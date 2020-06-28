@@ -1,5 +1,9 @@
 # Import modules
 # --------------
+# Ploting toolbox, Matplotlib
+import matplotlib.pyplot as plt
+# Array toolbox, NumPy
+import numpy as np
 # Symbolic Python Package, SymPy
 import sympy as sym
 # Global symbolic variables used within symbeam
@@ -478,7 +482,73 @@ class beam:
             self.segments[i].deflection = self.segments[i].deflection.subs({unknowns_deflection[2 * i + 1] : sol[0][unknowns_deflection[2 * i + 1]]})
     # --------------------------------------------------------------------------------- plot
     def plot(self):
-        pass
+        """Plots the shear force and bending moment diagrams and the deflection.
+        """
+        # Define some plotting settings.
+        color_bending_moment = 'red'
+        color_shear_force = 'green'
+        color_deflection = 'blue'
+        line_width_diagrams = 2
+        line_width_deflection = 3
+        alpha = 0.5
+
+        fig, ax = plt.subplots(3, 1, num="Internal loads and deflection", figsize=(7, 7), constrained_layout=True, sharex='all')
+        for isegment in self.segments:
+            # First, create new expressions by substituting all symbolic variables with '1',
+            # except for the x variable
+            variables_shear_force = (isegment.shear_force.free_symbols)
+            variables_shear_force.discard(x)
+            variables_bending_moment = isegment.bending_moment.free_symbols
+            variables_bending_moment.discard(x)
+            variables_deflection = isegment.deflection.free_symbols
+            variables_deflection.discard(x)
+            variables_x_start = isegment.x_start.free_symbols
+            variables_x_start.discard(x)
+            variables_x_end = isegment.x_end.free_symbols
+            variables_x_end.discard(x)
+
+            # Copies of the relevant expressions
+            shear_force_plot = isegment.shear_force
+            bending_moment_plot = isegment.bending_moment
+            deflection_plot = isegment.deflection
+            x_start_plot = isegment.x_start
+            x_end_plot = isegment.x_end
+
+            for ivariable in variables_shear_force:
+                    shear_force_plot = shear_force_plot.subs({ivariable : 1})
+
+            for ivariable in variables_bending_moment:
+                    bending_moment_plot = bending_moment_plot.subs({ivariable : 1})
+
+            for ivariable in variables_deflection:
+                    deflection_plot = deflection_plot.subs({ivariable : 1})
+
+            for ivariable in variables_x_start:
+                    x_start_plot = x_start_plot.subs({ivariable : 1})
+
+            for ivariable in variables_x_end:
+                    x_end_plot = x_end_plot.subs({ivariable : 1})
+
+            x_plot = np.linspace(float(x_start_plot), float(x_end_plot), num=100, endpoint=True)
+
+            # Shear force plot.
+            ax[0].plot(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, linewidth=line_width_diagrams)
+            ax[0].fill_between(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, alpha=alpha)
+
+            # Bending diagram plot.
+            ax[1].plot(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, linewidth=line_width_diagrams)
+            ax[1].fill_between(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, alpha=alpha)
+
+            # Deflection plot.
+            ax[2].plot(x_plot, sym.lambdify(x, deflection_plot)(x_plot), color=color_deflection, linewidth=line_width_deflection)
+
+        # Axis labels.
+        ax[0].set_ylabel(r'Shear force, $V(x)$')
+        ax[1].set_ylabel(r'Bending moment, $M(x)$')
+        ax[2].set_ylabel(r'Deflection, $v(x)$')
+        ax[2].set_xlabel(r'Coordinate, $x$')
+
+        return fig, ax
     # ------------------------------------------------------------------------- print_points
     def print_points(self):
         """Prints the information of points identified along the beam.
