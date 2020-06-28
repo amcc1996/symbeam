@@ -416,12 +416,38 @@ class beam:
         for id in reaction_moment_points:
             self.points[id].reaction_moment = solution[0][self.points[id].reaction_moment]
             variable_index = variable_index + 1
-
-
-
+    # ----------------------------------------------------------------- solve_internal_loads
     def solve_internal_loads(self):
-        pass
+        """Finds the shear force and bending moment diagrams for each segment of the beam by
+        integrating the differential eqeuilibrium relations.
+        """
+        # Initialise the internal loads at the starting boundary.
+        shear_force_left = - (self.points[0].external_force + self.points[0].reaction_force)
+        bending_moment_left = - (self.points[0].external_moment + self.points[0].reaction_moment)
 
+        # Loop over the segments are find the shear force and bending moment distribution.
+        for i in range(len(self.segments)):
+            # Shear force.
+            # ------------
+            C = sym.symbols('C')
+            self.segments[i].shear_force = sym.integrate(-self.segments[i].distributed_load.expression, x)
+            sol = sym.solve(self.segments[i].shear_force.subs({x : self.segments[i].x_start}) + C - shear_force_left, (C))
+            C = sol[0]
+            self.segments[i].shear_force = self.segments[i].shear_force + C
+
+            # Bending moment
+            # --------------
+            C = sym.symbols('C')
+            self.segments[i].bending_moment = sym.integrate(-self.segments[i].shear_force, x)
+            sol = sym.solve(self.segments[i].bending_moment.subs({x : self.segments[i].x_start}) + C - bending_moment_left, (C))
+            C = sol[0]
+            self.segments[i].bending_moment = self.segments[i].bending_moment + C
+
+
+            # Update the boundary condition for the next segment.
+            shear_force_left = self.segments[i].shear_force.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_force - self.points[i + 1].reaction_force
+            bending_moment_left = self.segments[i].bending_moment.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_moment - self.points[i + 1].reaction_moment
+    # --------------------------------------------------------------------------------------
     def solve_deflection(self):
         pass
 
@@ -469,6 +495,20 @@ class beam:
                 print("{0:^27} {1:^27} {2:^27}".format(str(ipoint.x_coord), "Moment", str(ipoint.reaction_moment)))
 
         print(83*"=" + "\n")
+    # ----------------------------------------------------------------- print_internal_loads
+    def print_internal_loads(self):
+        """Prints the shear force and bending moment expression for each segment.
+        """
+        print("\n{0:^83}".format("Internal Loads"))
+        print(83*"=")
+        print("{0:^20} {1:^10} {2:^50}".format("Span", "Diagram", "Expression"))
+        for isegment in self.segments:
+            print(83*"-")
+            span_string = "[ {0:^5} - {1:^5} ]".format(str(isegment.x_start), str(isegment.x_end))
+            print("{0:^20} {1:^10} {2:^50}".format(span_string, "V(x)", str(isegment.shear_force)))
+            print("{0:^20} {1:^10} {2:^50}".format(span_string, "M(x)", str(isegment.bending_moment)))
+
+        print(83*"=" + "\n")
 # ========================================================================= property_segment
 class property_segment:
     """Class for segments properties in a symbolic-compatible fashion.
@@ -487,4 +527,8 @@ class segment:
         self.distributed_load = distributed_load
         self.young = sym.sympify(young)
         self.inertia = sym.sympify(inertia)
+
+        # Iniitialise the expressions of the bending moment and shear force diagrams.
+        self.shear_force = sym.sympify(0)
+        self.bending_moment = sym.sympify(0)
 # ==========================================================================================
