@@ -1,6 +1,6 @@
 # Import modules
 # --------------
-# Symbolic Python Package SymPy
+# Symbolic Python Package, SymPy
 import sympy as sym
 # Global symbolic variables used within symbeam
 from symbeam import x, E, I, tol
@@ -249,7 +249,6 @@ class beam:
         all_x_coord_numeric.extend(distibuted_x_start_numeric)
         all_x_coord_numeric.extend(distibuted_x_end_numeric)
 
-
         all_x_coord_symbol = []
         all_x_coord_symbol.extend(young_x_start_symbol)
         all_x_coord_symbol.extend(young_x_end_symbol)
@@ -443,17 +442,43 @@ class beam:
             C = sol[0]
             self.segments[i].bending_moment = self.segments[i].bending_moment + C
 
-
             # Update the boundary condition for the next segment.
             shear_force_left = self.segments[i].shear_force.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_force - self.points[i + 1].reaction_force
             bending_moment_left = self.segments[i].bending_moment.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_moment - self.points[i + 1].reaction_moment
-    # --------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------- solve_deflection
     def solve_deflection(self):
-        pass
+        """Determines the deflection expressions for each segment of the beam by integrating
+        the elastic curve equation.
+        """
+        unknowns_deflection = []
+        # Compute the deflection expression at each segment of the beam in terms of the
+        # integration coefficients.
+        for i in range(len(self.segments)):
+            rotation_integration_constant = sym.symbols("S{0}".format(i))
+            deflection_integration_constant = sym.symbols("D{0}".format(i))
+            unknowns_deflection.append(rotation_integration_constant)
+            unknowns_deflection.append(deflection_integration_constant)
+            self.segments[i].rotation = sym.integrate(self.segments[i].bending_moment / (self.segments[i].young * self.segments[i].inertia), x) + rotation_integration_constant
+            self.segments[i].deflection = sym.integrate(self.segments[i].rotation, x) + deflection_integration_constant
 
+        # Set up the system of equations with the geometri boundary conditions of the
+        # beam and determine the integration coefficients.
+        geometry_equations = []
+        self.points[0].set_geometric_boundary_conditions([self.segments[0].rotation], [self.segments[0].deflection], geometry_equations)
+
+        for i, point in enumerate(self.points[1:-1]):
+            self.points[i + 1].set_geometric_boundary_conditions([self.segments[i].rotation, self.segments[i + 1].rotation], [self.segments[i].deflection, self.segments[i + 1].deflection], geometry_equations)
+
+        self.points[-1].set_geometric_boundary_conditions([self.segments[-1].rotation], [self.segments[-1].deflection], geometry_equations)
+
+        sol = sym.solve(geometry_equations, unknowns_deflection, dict=True)
+        for i in range(len(self.segments)):
+            self.segments[i].rotation = self.segments[i].rotation.subs({unknowns_deflection[2 * i] : sol[0][unknowns_deflection[2 * i]]})
+            self.segments[i].deflection = self.segments[i].deflection.subs({unknowns_deflection[2 * i] : sol[0][unknowns_deflection[2 * i]]})
+            self.segments[i].deflection = self.segments[i].deflection.subs({unknowns_deflection[2 * i + 1] : sol[0][unknowns_deflection[2 * i + 1]]})
+    # --------------------------------------------------------------------------------- plot
     def plot(self):
         pass
-
     # ------------------------------------------------------------------------- print_points
     def print_points(self):
         """Prints the information of points identified along the beam.
@@ -509,6 +534,20 @@ class beam:
             print("{0:^20} {1:^10} {2:^50}".format(span_string, "M(x)", str(isegment.bending_moment)))
 
         print(83*"=" + "\n")
+    # -------------------------------------------------------------------- print_deflections
+    def print_deflections(self):
+        """Prints the shear force and bending moment expression for each segment.
+        """
+        print("\n{0:^83}".format("Rotation and deflection"))
+        print(83*"=")
+        print("{0:^20} {1:^10} {2:^50}".format("Span", "Variable", "Expression"))
+        for isegment in self.segments:
+            print(83*"-")
+            span_string = "[ {0:^5} - {1:^5} ]".format(str(isegment.x_start), str(isegment.x_end))
+            print("{0:^20} {1:^10} {2:^50}".format(span_string, "v(x)", str(isegment.rotation)))
+            print("{0:^20} {1:^10} {2:^50}".format(span_string, "dv/dx(x)", str(isegment.deflection)))
+
+        print(83*"=" + "\n")
 # ========================================================================= property_segment
 class property_segment:
     """Class for segments properties in a symbolic-compatible fashion.
@@ -531,4 +570,6 @@ class segment:
         # Iniitialise the expressions of the bending moment and shear force diagrams.
         self.shear_force = sym.sympify(0)
         self.bending_moment = sym.sympify(0)
+        self.rotation = sym.sympify(0)
+        self.deflection = sym.sympify(0)
 # ==========================================================================================

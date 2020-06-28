@@ -1,4 +1,5 @@
 from symbeam.beam import beam
+import matplotlib.pyplot as plt
 
 print("\n ============================================================================= ")
 print(" Debuggin script for Symbeam")
@@ -17,3 +18,8 @@ test_beam.solve_reactions()
 test_beam.print_reactions()
 test_beam.solve_internal_loads()
 test_beam.print_internal_loads()
+test_beam.solve_deflection()
+test_beam.print_deflections()
+fig, ax = test_beam.plot()
+
+plt.show()
