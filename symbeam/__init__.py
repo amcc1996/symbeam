@@ -1,4 +1,5 @@
-import sympy
-x = sympy.symbols('x')
-E = sympy.symbols('E')
-I = sympy.symbols('I')
+import sympy as sym
+x = sym.symbols('x')
+E = sym.symbols('E')
+I = sym.symbols('I')
+tol = 1e-6
