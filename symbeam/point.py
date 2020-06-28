@@ -7,6 +7,13 @@ class point(ABC):
         self.x_coord = sym.sympify(x_coord)
         self.reaction_force = sym.sympify(0)
         self.reaction_moment = sym.sympify(0)
+        self.external_force = sym.sympify(0)
+        self.external_moment = sym.sympify(0)
+
+    @staticmethod
+    @abstractmethod
+    def get_name():
+        pass
 
     @abstractmethod
     def has_reaction_force(self):
@@ -38,7 +45,7 @@ class point(ABC):
         elif self.has_deflection_condition():
             condition_equation = self.get_deflection_boundary_condition(self, list_deflection)
             equations.extend(condition_equation)
-            
+
 
     @staticmethod
     def is_method_empty(func):
@@ -57,6 +64,10 @@ class point(ABC):
 
 class pin(point):
 
+    @staticmethod
+    def get_name():
+        return "Pinned Support"
+
     def has_reaction_force(self):
         return True
 
@@ -70,6 +81,32 @@ class pin(point):
             equations = (fixed_equation, deflection_continuous)
         else:
             equations = (fixed_equation)
+
+    def get_rotation_boundary_condition(self, list_rotation):
+        if len(list_rotation) == 2:
+            rotation_continuous = list_rotation[0].subs({x : self.x0}) - list_rotation[1].subs({x : self.x0})
+            equations = (rotation_continuous)
+        else:
+            equations = ()
+
+class continuity(point):
+
+    @staticmethod
+    def get_name():
+        return "Continuity point"
+
+    def has_reaction_force(self):
+        return False
+
+    def has_reaction_moment(self):
+        return False
+
+    def get_deflection_boundary_condition(self, list_deflection):
+        if len(list_deflection) == 2:
+            deflection_continuous = list_deflection[0].subs({x : self.x0}) - list_deflection[1].subs({x : self.x0})
+            equations = (deflection_continuous)
+        else:
+            equations = ()
 
     def get_rotation_boundary_condition(self, list_rotation):
         if len(list_rotation) == 2:
