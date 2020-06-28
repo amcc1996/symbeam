@@ -146,4 +146,62 @@ class continuity(point):
             equations = []
 
         return equations
+# ==================================================================================== fixed
+class fixed(point):
+    """Concrete implementation of a fixed/clamped support.
+    """
+    @staticmethod
+    def get_name():
+        return "Fixed"
+
+    def has_reaction_force(self):
+        return True
+
+    def has_reaction_moment(self):
+        return True
+
+    def get_deflection_boundary_condition(self, list_deflection):
+        fixed_equation = list_deflection[0].subs({x : self.x_coord})
+        if len(list_deflection) == 2:
+            deflection_continuous = list_deflection[0].subs({x : self.x_coord}) - list_deflection[1].subs({x : self.x_coord})
+            equations = [fixed_equation, deflection_continuous]
+        else:
+            equations = [fixed_equation]
+
+        return equations
+
+    def get_rotation_boundary_condition(self, list_rotation):
+        fixed_equation = list_rotation[0].subs({x : self.x_coord})
+        if len(list_rotation) == 2:
+            rotation_continuous = list_rotation[0].subs({x : self.x_coord}) - list_rotation[1].subs({x : self.x_coord})
+            equations = [fixed_equation, rotation_continuous]
+        else:
+            equations = [fixed_equation]
+
+        return equations
+# ==================================================================================== hinge
+class hinge(point):
+    """Concrete implementation of a hinge.
+    """
+    @staticmethod
+    def get_name():
+        return "Hinge"
+
+    def has_reaction_force(self):
+        return False
+
+    def has_reaction_moment(self):
+        return False
+
+    def get_deflection_boundary_condition(self, list_deflection):
+        if len(list_deflection) == 2:
+            deflection_continuous = list_deflection[0].subs({x : self.x_coord}) - list_deflection[1].subs({x : self.x_coord})
+            equations = [deflection_continuous]
+        else:
+            equations = []
+
+        return equations
+
+    def get_rotation_boundary_condition(self, list_rotation):
+        pass
 # ==========================================================================================

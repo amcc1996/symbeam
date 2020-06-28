@@ -14,7 +14,10 @@ class distributed_load:
         self.expression = sym.sympify(expression)
 
         self.equivalent_magnitude = sym.integrate(self.expression, (x, self.x_start, self.x_end))
-        self.equivalent_coord = sym.integrate(self.expression * x, (x, self.x_start, self.x_end)) / self.equivalent_magnitude
+        if self.equivalent_magnitude == sym.sympify(0):
+            self.equivalent_coord = sym.sympify(0)
+        else:
+            self.equivalent_coord = sym.integrate(self.expression * x, (x, self.x_start, self.x_end)) / self.equivalent_magnitude
 # =============================================================================== point_load
 class point_load:
     """Concentrated transverse point load.

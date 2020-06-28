@@ -9,7 +9,7 @@ import sympy as sym
 # Global symbolic variables used within symbeam
 from symbeam import x, E, I, tol
 # Beam supports classes
-from symbeam.point import pin, continuity
+from symbeam.point import pin, continuity, fixed, hinge
 # Loads classes
 from symbeam.load import distributed_load, point_load
 # ===================================================================================== beam
@@ -45,8 +45,6 @@ class beam:
         self.inertia_segment_list = [property_segment(self.x0, self.x0 + self.length, I)]
         self.inertia_default = True
 
-        self.number_hinges = 0
-
         # Initialise the processed beam information.
         self.segments = []
         self.points = []
@@ -59,7 +57,13 @@ class beam:
             new_point = pin(x_coord)
 
         elif type.lower() == 'hinge':
-            self.number_hinges = self.number_hinges + 1
+            new_point = hinge(x_coord)
+
+        elif type.lower() == 'fixed':
+            new_point = fixed(x_coord)
+
+        else:
+            raise RuntimeError("Unknown support type: {0}.".format(type))
 
         for point in self.support_list:
             if point.x_coord == new_point.x_coord:
@@ -302,11 +306,11 @@ class beam:
 
             # Second, go add all external point loads and moments.
             for j, load in enumerate(self.point_load_list):
-                if abs(point_load_x_numeric[j] - this_point.x_coord.subs({self.length : 1.0}) < tol):
+                if abs(point_load_x_numeric[j] - this_point.x_coord.subs({self.length : 1.0})) < tol:
                     this_point.external_force = this_point.external_force + load.value
 
             for j, moment in enumerate(self.point_moment_list):
-                if abs(point_moment_x_numeric[j] - this_point.x_coord.subs({self.length : 1.0}) < tol):
+                if abs(point_moment_x_numeric[j] - this_point.x_coord.subs({self.length : 1.0})) < tol:
                     this_point.external_moment = this_point.external_moment + moment.value
 
             self.points.append(this_point)
@@ -406,8 +410,27 @@ class beam:
         for isegment in self.segments:
             sum_moments_z = sum_moments_z + isegment.distributed_load.equivalent_magnitude * (isegment.distributed_load.equivalent_coord - self.x0)
 
-        # System of equations.
+        # System of global equations.
         equilibirum_equations = [sum_forces_y, sum_moments_z]
+
+        # Added more moment equilibirum equation at the hinges.
+        for i, ipoint in enumerate(self.points):
+            sum_moments_z_hinge = sym.sympify(0)
+            if isinstance(ipoint, hinge):
+                for jpoint in self.points[i + 1:]:
+                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.reaction_moment
+                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.reaction_force * (jpoint.x_coord - ipoint.x_coord)
+                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.external_moment
+                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.external_force * (jpoint.x_coord - ipoint.x_coord)
+
+                for jsegment in self.segments[i :]:
+                    sum_moments_z_hinge = sum_moments_z_hinge + jsegment.distributed_load.equivalent_magnitude * (jsegment.distributed_load.equivalent_coord - ipoint.x_coord)
+
+                equilibirum_equations.extend([sum_moments_z_hinge])
+
+        print(equilibirum_equations)
+
+        # Solve the system of equations.
         solution = sym.solve(equilibirum_equations, unknown_reactions, dict=True)
 
         # Unpack solution.
@@ -532,15 +555,15 @@ class beam:
             x_plot = np.linspace(float(x_start_plot), float(x_end_plot), num=100, endpoint=True)
 
             # Shear force plot.
-            ax[0].plot(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, linewidth=line_width_diagrams)
+            ax[0].plot(x_plot, np.vectorize(sym.lambdify(x, shear_force_plot))(x_plot), color=color_shear_force, linewidth=line_width_diagrams)
             ax[0].fill_between(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, alpha=alpha)
 
             # Bending diagram plot.
-            ax[1].plot(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, linewidth=line_width_diagrams)
+            ax[1].plot(x_plot, np.vectorize(sym.lambdify(x, bending_moment_plot))(x_plot), color=color_bending_moment, linewidth=line_width_diagrams)
             ax[1].fill_between(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, alpha=alpha)
 
             # Deflection plot.
-            ax[2].plot(x_plot, sym.lambdify(x, deflection_plot)(x_plot), color=color_deflection, linewidth=line_width_deflection)
+            ax[2].plot(x_plot, np.vectorize(sym.lambdify(x, deflection_plot))(x_plot), color=color_deflection, linewidth=line_width_deflection)
 
         # Axis labels.
         ax[0].set_ylabel(r'Shear force, $V(x)$')
