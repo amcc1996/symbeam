@@ -1,15 +1,22 @@
 from symbeam.beam import beam
 import matplotlib.pyplot as plt
+import sympy as sym
 
 print("\n ============================================================================= ")
 print(" Debuggin script for Symbeam")
 print(" ============================================================================= ")
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support('l', 'pin')
-test_beam.add_distributed_load(0, 'l/2', '-2 * q / l * x')
-test_beam.add_distributed_load('l/2', 'l', '-q')
+E = sym.symbols('E')
+I = sym.symbols('I')
+test_beam = beam(3, x0=0)
+test_beam.add_support(0.5, 'pin')
+test_beam.add_support(2.5, 'roller')
+test_beam.add_point_load(0, '-P')
+test_beam.add_point_load(3, '-P')
+test_beam.set_young(0, 1.5, E)
+test_beam.set_young(1.5, 3,  E)
+test_beam.set_inertia(0, 1.5, I)
+test_beam.set_inertia(1.5, 3,  10000*I)
 test_beam.check_beam_properties()
 test_beam.set_segments()
 test_beam.print_points()
