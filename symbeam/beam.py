@@ -9,7 +9,7 @@ import sympy as sym
 # Global symbolic variables used within symbeam
 from symbeam import x, E, I, tol
 # Beam supports classes
-from symbeam.point import pin, continuity, fixed, hinge
+from symbeam.point import pin, roller, continuity, fixed, hinge
 # Loads classes
 from symbeam.load import distributed_load, point_load
 # ===================================================================================== beam
@@ -58,6 +58,9 @@ class beam:
         self.check_inside_beam(x_coord)
         if type.lower() == 'pin':
             new_point = pin(x_coord)
+            
+        elif type.lower() == 'roller':
+            new_point = roller(x_coord)            
 
         elif type.lower() == 'hinge':
             new_point = hinge(x_coord)
@@ -334,7 +337,7 @@ class beam:
             raise RuntimeError("Error in segment creation: the first x-coordinate does "
             + "not match the initial beam coordinate.")
         elif abs(beam_x_coord_numeric[-1] - x0_numeric - length_numeric) > tol:
-            raise RuntimeError("Error in segment creation: the last x-coordinate is not " 
+            raise RuntimeError("Error in segment creation: the last x-coordinate is not "
             + "consistent with the length of the beam.")
 
         # Create the list of points of the beam
@@ -435,6 +438,23 @@ class beam:
         """Solves the static equilibirum equations of the beam and determines all the
         support reactions.
         """
+        # Check if the beam is solvable.
+        num_equilibirum_equations = 3
+        num_fixed_degrees_of_freedom = 0
+        for i, ipoint in enumerate(self.points):
+            num_fixed_degrees_of_freedom = num_fixed_degrees_of_freedom + ipoint.get_fixed_degree_of_freedom()
+            if isinstance(ipoint, hinge):
+                num_equilibirum_equations = num_equilibirum_equations + 1
+
+        if num_equilibirum_equations > num_fixed_degrees_of_freedom:
+            raise RuntimeError("The number of equilibirum equations is greater than "
+            + "the number of fixed degrees of freedom: the beam is not statically fixed.")
+
+        if num_equilibirum_equations < num_fixed_degrees_of_freedom:
+            raise RuntimeError("The number of equilibirum equations is less than "
+            + "the number of fixed degrees of freedom: the beam is "
+            + "statically indeterminate.")
+
         # Create the symbolic variables denoting the reactions at each support.
         unknown_reactions = []
         reaction_force_points = []
@@ -497,6 +517,10 @@ class beam:
         print(equilibirum_equations)
 
         # Solve the system of equations.
+        if (len(equilibirum_equations) != len(unknown_reactions)):
+            raise RuntimeError("[Internal error: the number of equilibirum equations " 
+            + "and unknwown reactions does nto match. Check the implementation of " 
+            + "the supports.")
         solution = sym.solve(equilibirum_equations, unknown_reactions, dict=True)
 
         # Unpack solution.

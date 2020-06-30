@@ -47,6 +47,12 @@ class point(ABC):
         """Establishes the rotation boundary condition on the current point.
         """
         pass
+    # ---------------------------------------------------------- get_fixed_degree_of_freedom
+    @abstractmethod
+    def get_fixed_degree_of_freedom(self):
+        """Returns the number of fixed degrees of freedom in a support.
+        """
+        pass
     # ------------------------------------------------------------- has_deflection_condition
     def has_deflection_condition(self):
         """Flags if the current point enforces some boundary condition on the deflection.
@@ -96,6 +102,45 @@ class pin(point):
 
     def has_reaction_moment(self):
         return False
+        
+    def get_fixed_degree_of_freedom(self):
+        return 2
+
+    def get_deflection_boundary_condition(self, list_deflection):
+        fixed_equation = list_deflection[0].subs({x : self.x_coord})
+        if len(list_deflection) == 2:
+            deflection_continuous = list_deflection[0].subs({x : self.x_coord}) - list_deflection[1].subs({x : self.x_coord})
+            equations = [fixed_equation, deflection_continuous]
+        else:
+            equations = [fixed_equation]
+
+        return equations
+
+    def get_rotation_boundary_condition(self, list_rotation):
+        if len(list_rotation) == 2:
+            rotation_continuous = list_rotation[0].subs({x : self.x_coord}) - list_rotation[1].subs({x : self.x_coord})
+            equations = [rotation_continuous]
+        else:
+            equations = []
+
+        return equations
+# =================================================================================== roller
+class roller(point):
+    """Concrete implementation of a roller support (same as pin if there are no axial
+    loads on the beam).
+    """
+    @staticmethod
+    def get_name():
+        return "Roller"
+
+    def has_reaction_force(self):
+        return True
+
+    def has_reaction_moment(self):
+        return False
+
+    def get_fixed_degree_of_freedom(self):
+        return 1
 
     def get_deflection_boundary_condition(self, list_deflection):
         fixed_equation = list_deflection[0].subs({x : self.x_coord})
@@ -128,6 +173,9 @@ class continuity(point):
 
     def has_reaction_moment(self):
         return False
+        
+    def get_fixed_degree_of_freedom(self):
+        return 0
 
     def get_deflection_boundary_condition(self, list_deflection):
         if len(list_deflection) == 2:
@@ -159,6 +207,9 @@ class fixed(point):
 
     def has_reaction_moment(self):
         return True
+        
+    def get_fixed_degree_of_freedom(self):
+        return 3
 
     def get_deflection_boundary_condition(self, list_deflection):
         fixed_equation = list_deflection[0].subs({x : self.x_coord})
@@ -192,6 +243,9 @@ class hinge(point):
 
     def has_reaction_moment(self):
         return False
+        
+    def get_fixed_degree_of_freedom(self):
+        return 0
 
     def get_deflection_boundary_condition(self, list_deflection):
         if len(list_deflection) == 2:
