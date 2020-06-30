@@ -43,9 +43,9 @@ class beam:
         self.distributed_load_list = []
         self.point_load_list = []
         self.point_moment_list = []
-        self.young_segment_list = [property_segment(self.x0, self.x0 + self.length, E)]
+        self.young_segment_list = [_property_segment(self.x0, self.x0 + self.length, E)]
         self.young_default = True
-        self.inertia_segment_list = [property_segment(self.x0, self.x0 + self.length, I)]
+        self.inertia_segment_list = [_property_segment(self.x0, self.x0 + self.length, I)]
         self.inertia_default = True
 
         # Initialise the processed beam information.
@@ -55,7 +55,7 @@ class beam:
     def add_support(self, x_coord, type):
         """Appends a new support to the list of input supports.
         """
-        self.check_inside_beam(x_coord)
+        self._check_inside_beam(x_coord)
         if type.lower() == 'pin':
             new_point = pin(x_coord)
             
@@ -80,47 +80,47 @@ class beam:
     def add_distributed_load(self, x_start, x_end, expression):
         """Appends a new distributed load to the list of input distributed loads.
         """
-        self.check_coordinates(x_start, x_end)
+        self._check_coordinates(x_start, x_end)
         new_load = distributed_load(x_start, x_end, expression)
         self.distributed_load_list.append(new_load)
     # ----------------------------------------------------------------------- add_point_load
     def add_point_load(self, x_coord, value):
         """Appends a new point load to the list of input point loads.
         """
-        self.check_inside_beam(x_coord)
+        self._check_inside_beam(x_coord)
         new_load = point_load(x_coord, value)
         self.point_load_list.append(new_load)
     # --------------------------------------------------------------------- add_point_moment
     def add_point_moment(self, x_coord, value):
         """Appends a new point moment to the list of input point moments.
         """
-        self.check_inside_beam(x_coord)
+        self._check_inside_beam(x_coord)
         new_moment = point_moment(x_coord, value)
         self.point_moment_list.append(new_moment)
     # ---------------------------------------------------------------------------- set_young
     def set_young(self, x_start, x_end, value):
         """Sets the young modulus of a portion of the beam.
         """
-        self.check_coordinates(x_start, x_end)
+        self._check_coordinates(x_start, x_end)
         # If the user specifies the property explicitely, reset the default values
         if self.young_default:
             self.young_default = False
             self.young_segment_list = []
-        new_young = property_segment(x_start, x_end, value)
+        new_young = _property_segment(x_start, x_end, value)
         self.young_segment_list.append(new_young)
     # -------------------------------------------------------------------------- set_inertia
     def set_inertia(self, x_start, x_end, value):
         """Sets the second moment of area of a portion of the beam.
         """
-        self.check_coordinates(x_start, x_end)
+        self._check_coordinates(x_start, x_end)
         # If the user specifies the property explicitely, reset the default values
         if self.inertia_default:
             self.inertia_default = False
             self.inertia_segment_list = []
-        new_inertia = property_segment(x_start, x_end, value)
+        new_inertia = _property_segment(x_start, x_end, value)
         self.inertia_segment_list.append(new_inertia)
     # ---------------------------------------------------------------- check_beam_properties
-    def check_beam_properties(self):
+    def _check_beam_properties(self):
         """Verifies is the beam properties have been consistently set along the entire
         length of the beam.
         """
@@ -195,7 +195,7 @@ class beam:
                         + "inertia along the beam. There are either repeated or missing "
                         + "segments of the beam.")
     # -------------------------------------------------------------------- check_coordinates
-    def check_coordinates(self, x_start, x_end):
+    def _check_coordinates(self, x_start, x_end):
         """Checks if the input segment coordinates are valid.
         """
         x_start_symbol = sym.sympify(x_start)
@@ -231,7 +231,7 @@ class beam:
             raise RuntimeError("The starting coordinate is greater than the ending "
             + "coordinte.")
     # -------------------------------------------------------------------- check_inside_beam
-    def check_inside_beam(self, x_coord):
+    def _check_inside_beam(self, x_coord):
         """Chekcs if a given coordinate is valid and lies inside the beam domain.
         """
         x_coord_symbol = sym.sympify(x_coord)
@@ -256,7 +256,7 @@ class beam:
         if not(x0_numeric - tol <= x_coord_numeric <= x0_numeric + length_numeric + tol):
             raise RuntimeError("The specified coordinate lies outside the beam.")
     # ------------------------------------------------------------------------- set_segments
-    def set_segments(self):
+    def _set_segments(self):
         """Create the beam segments, such that the properties and loads are piecewise
         continuous within each segments and, therefore, are properly setup for symbolic
         integration.
@@ -429,9 +429,9 @@ class beam:
 
             q_load = distributed_load(x_start, x_end, q_load_expression)
 
-            self.segments.append(segment(x_start, x_end, q_load, young, inertia))
+            self.segments.append(_segment(x_start, x_end, q_load, young, inertia))
     # ---------------------------------------------------------------------- solve_reactions
-    def solve_reactions(self):
+    def _solve_reactions(self):
         """Solves the static equilibirum equations of the beam and determines all the
         support reactions.
         """
@@ -528,7 +528,7 @@ class beam:
             self.points[id].reaction_moment = solution[0][self.points[id].reaction_moment]
             variable_index = variable_index + 1
     # ----------------------------------------------------------------- solve_internal_loads
-    def solve_internal_loads(self):
+    def _solve_internal_loads(self):
         """Finds the shear force and bending moment diagrams for each segment of the beam by
         integrating the differential eqeuilibrium relations.
         """
@@ -558,7 +558,7 @@ class beam:
             shear_force_left = self.segments[i].shear_force.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_force - self.points[i + 1].reaction_force
             bending_moment_left = self.segments[i].bending_moment.subs({x : self.segments[i].x_end}) - self.points[i + 1].external_moment - self.points[i + 1].reaction_moment
     # --------------------------------------------------------------------- solve_deflection
-    def solve_deflection(self):
+    def _solve_deflection(self):
         """Determines the deflection expressions for each segment of the beam by integrating
         the elastic curve equation.
         """
@@ -588,6 +588,28 @@ class beam:
             self.segments[i].rotation = self.segments[i].rotation.subs({unknowns_deflection[2 * i] : sol[0][unknowns_deflection[2 * i]]})
             self.segments[i].deflection = self.segments[i].deflection.subs({unknowns_deflection[2 * i] : sol[0][unknowns_deflection[2 * i]]})
             self.segments[i].deflection = self.segments[i].deflection.subs({unknowns_deflection[2 * i + 1] : sol[0][unknowns_deflection[2 * i + 1]]})
+    # -------------------------------------------------------------------------------- solve
+    def solve(self):
+        """Solves the beam equilibirum problem, determining the reactions, diagrams of
+        internal loads and deflections.
+        """
+        # Checfk if the properties have been properly set.
+        self._check_beam_properties()
+        # Set the beam segments with piecewise continuous properties.
+        self._set_segments()
+        # Solve for the exterior reactions.
+        self._solve_reactions()
+        # Solver for internal loads.
+        self._solve_internal_loads()
+        # Solve for deflection.
+        self._solve_deflection()
+        
+        # Output the results.
+        self._print_points()
+        self._print_segments()
+        self._print_reactions()
+        self._print_internal_loads()
+        self._print_deflections()        
     # --------------------------------------------------------------------------------- plot
     def plot(self):
         """Plots the shear force and bending moment diagrams and the deflection.
@@ -658,7 +680,7 @@ class beam:
 
         return fig, ax
     # ------------------------------------------------------------------------- print_points
-    def print_points(self):
+    def _print_points(self):
         """Prints the information of points identified along the beam.
         """
         print("\n{0:^83}".format("Beam points"))
@@ -670,7 +692,7 @@ class beam:
 
         print(83*"=" + "\n")
     # ----------------------------------------------------------------------- print_segments
-    def print_segments(self):
+    def _print_segments(self):
         """Prints the information of the identified segments.
         """
         print("\n{0:^83}".format("Beam segments"))
@@ -683,7 +705,7 @@ class beam:
 
         print(83*"=" + "\n")
     # ---------------------------------------------------------------------- print_reactions
-    def print_reactions(self):
+    def _print_reactions(self):
         """Prints the reactions forces.
         """
         print("\n{0:^83}".format("Exterior Reactions"))
@@ -699,7 +721,7 @@ class beam:
 
         print(83*"=" + "\n")
     # ----------------------------------------------------------------- print_internal_loads
-    def print_internal_loads(self):
+    def _print_internal_loads(self):
         """Prints the shear force and bending moment expression for each segment.
         """
         print("\n{0:^83}".format("Internal Loads"))
@@ -713,7 +735,7 @@ class beam:
 
         print(83*"=" + "\n")
     # -------------------------------------------------------------------- print_deflections
-    def print_deflections(self):
+    def _print_deflections(self):
         """Prints the shear force and bending moment expression for each segment.
         """
         print("\n{0:^83}".format("Rotation and deflection"))
@@ -727,7 +749,7 @@ class beam:
 
         print(83*"=" + "\n")
 # ========================================================================= property_segment
-class property_segment:
+class _property_segment:
     """Class for segments properties in a symbolic-compatible fashion.
     """
     def __init__(self, x_start, x_end, value):
@@ -735,7 +757,7 @@ class property_segment:
         self.x_end = sym.sympify(x_end)
         self.value = sym.sympify(value)
 # ================================================================================== segment
-class segment:
+class _segment:
     """Beam segments with locally continuous properties and loadings.
     """
     def __init__(self, x_start, x_end, distributed_load, young, inertia):
