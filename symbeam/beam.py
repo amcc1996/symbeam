@@ -11,7 +11,7 @@ from symbeam import x, E, I, tol
 # Beam supports classes
 from symbeam.point import pin, roller, continuity, fixed, hinge
 # Loads classes
-from symbeam.load import distributed_load, point_load
+from symbeam.load import distributed_load, point_load, point_moment
 # ===================================================================================== beam
 class beam:
     """Beam main class.
@@ -60,7 +60,7 @@ class beam:
             new_point = pin(x_coord)
             
         elif type.lower() == 'roller':
-            new_point = roller(x_coord)            
+            new_point = roller(x_coord)
 
         elif type.lower() == 'hinge':
             new_point = hinge(x_coord)
@@ -95,7 +95,7 @@ class beam:
         """Appends a new point moment to the list of input point moments.
         """
         self.check_inside_beam(x_coord)
-        new_moment = point_load(x_coord, value)
+        new_moment = point_moment(x_coord, value)
         self.point_moment_list.append(new_moment)
     # ---------------------------------------------------------------------------- set_young
     def set_young(self, x_start, x_end, value):
@@ -359,23 +359,18 @@ class beam:
             else:
                 this_point = continuity(beam_x_coord[i])
 
+            if self.length.is_number:
+                this_x_numeric = this_point.x_coord
+            else:
+                this_x_numeric = this_point.x_coord.subs({self.length : 1.0})
+
             # Second, go add all external point loads and moments.
             for j, load in enumerate(self.point_load_list):
-                if self.length.is_number:
-                    this_x_numeric = this_point.x_coord
-                else:
-                    this_x_numeric = this_point.x_coord.subs({self.length : 1.0})
-
                 if abs(point_load_x_numeric[j] - this_x_numeric) < tol:
                     this_point.external_force = this_point.external_force + load.value
 
             for j, moment in enumerate(self.point_moment_list):
-                if self.length.is_number:
-                    this_x_numeric = this_point.x_coord
-                else:
-                    this_x_numeric = this_point.x_coord.subs({self.length : 1.0})
-                                    
-                if abs(point_moment_x_numeric[j] - this_point.x_coord.subs({self.length : 1.0})) < tol:
+                if abs(point_moment_x_numeric[j] - this_x_numeric) < tol:
                     this_point.external_moment = this_point.external_moment + moment.value
 
             self.points.append(this_point)
@@ -401,6 +396,7 @@ class beam:
 
                 if lower_bound and upper_bound:
                     found_segment = True
+                    break
 
             if not(found_segment):
                 raise RuntimeError("Search for valid Young modulus segment failed.")
@@ -415,6 +411,7 @@ class beam:
 
                 if lower_bound and upper_bound:
                     found_segment = True
+                    break
 
             if not(found_segment):
                 raise RuntimeError("Search for valid moment of ienrtia segment failed.")
@@ -513,8 +510,6 @@ class beam:
                     sum_moments_z_hinge = sum_moments_z_hinge + jsegment.distributed_load.equivalent_magnitude * (jsegment.distributed_load.equivalent_coord - ipoint.x_coord)
 
                 equilibirum_equations.extend([sum_moments_z_hinge])
-
-        print(equilibirum_equations)
 
         # Solve the system of equations.
         if (len(equilibirum_equations) != len(unknown_reactions)):
