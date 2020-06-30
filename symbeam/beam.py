@@ -28,12 +28,15 @@ class beam:
         # If the beam starts at zero it's fine.
         starts_at_zero = self.x0 == sym.sympify(0)
         if len(self.length.free_symbols) != len(self.x0.free_symbols) and not(starts_at_zero):
-            raise RuntimeError("The number of symbols set for the length and initial beam coordinate is distinct. Only one symbol is allowed for the definition of the geometry")
+            raise RuntimeError("The number of symbols set for the length and initial "
+            + "beam coordinate is distinct. Only one symbol is allowed for the "
+            + "definition of the geometry")
 
         # Make sure the initial position and length use the same symbol.
         if len(self.length.free_symbols) == 1 and not(starts_at_zero):
             if next(iter(self.length.free_symbols)) != next(iter(self.x0.free_symbols)):
-                raise RuntimeError("The length and initial coordinate of the beam have been defined with distinct symbols.")
+                raise RuntimeError("The length and initial coordinate of the beam have "
+                + "been defined with distinct symbols.")
 
         # Initialise the list storing all the input information for the beam
         self.support_list = []
@@ -132,7 +135,7 @@ class beam:
             young_x_start_numeric = [item.x_start.subs({self.length : 1.0}) for item in self.young_segment_list]
             young_x_end_numeric = [item.x_end.subs({self.length : 1.0}) for item in self.young_segment_list]
             inertia_x_start_numeric = [item.x_start.subs({self.length : 1.0}) for item in self.inertia_segment_list]
-            inertia_x_end_numeric = [item.x_end.subs({self.length : 1.0}) for item in self.inertia_segment_list]            
+            inertia_x_end_numeric = [item.x_end.subs({self.length : 1.0}) for item in self.inertia_segment_list]
 
         length_young = 0.0
         length_inertia = 0.0
@@ -140,14 +143,17 @@ class beam:
         # Quick check Young modulus specification.
         for i in range(len(self.young_segment_list)):
             if young_x_start_numeric[i] < x0_numeric:
-                raise RuntimeError("Yound modulus specified for segment starting outside the beam.")
+                raise RuntimeError("Yound modulus specified for segment starting outside "
+                + "the beam.")
             elif young_x_end_numeric[i] > length_numeric + x0_numeric:
-                raise RuntimeError("Young modulus specified for segment ending outside the beam.")
+                raise RuntimeError("Young modulus specified for segment ending outside "
+                + "the beam.")
             else:
                 length_young = length_young + young_x_end_numeric[i] - young_x_start_numeric[i]
 
         if abs(length_young - length_numeric) > tol:
-            raise RuntimeError("Inconsistent specification of the Young modulus along the beam. There are either repeated or missing segments of the beam.")
+            raise RuntimeError("Inconsistent specification of the Young modulus along "
+            + "the beam. There are either repeated or missing segments of the beam.")
 
         # Now a more thorough verification.
         for i in range(len(self.young_segment_list)):
@@ -156,19 +162,24 @@ class beam:
                     is_on_the_right = (young_x_end_numeric[j] < young_x_start_numeric[i] + tol)
                     is_on_the_left = (young_x_start_numeric[j] > young_x_end_numeric[i] - tol)
                     if not(is_on_the_left or is_on_the_right):
-                        raise RuntimeError("Inconsistent specification of the Young modulus along the beam. There are either repeated or missing segments of the beam.")
+                        raise RuntimeError("Inconsistent specification of the Young "
+                        + "modulus along the beam. There are either repeated or missing "
+                        + "segments of the beam.")
 
         # Quick check secnod moment of area specification.
         for i in range(len(self.inertia_segment_list)):
             if inertia_x_start_numeric[i] < x0_numeric:
-                raise RuntimeError("Moment of inertia specified for segment starting outside the beam.")
+                raise RuntimeError("Moment of inertia specified for segment starting "
+                + "outside the beam.")
             elif inertia_x_end_numeric[i] > length_numeric + x0_numeric:
-                raise RuntimeError("Moment of inertia specified for segment ending outside the beam.")
+                raise RuntimeError("Moment of inertia specified for segment ending "
+                + "outside the beam.")
             else:
                 length_inertia = length_inertia + inertia_x_end_numeric[i] - inertia_x_start_numeric[i]
 
         if abs(length_inertia - length_numeric) > tol:
-            raise RuntimeError("Inconsistent specification of the moment of inertia along the beam. There are either repeated or missing segments of the beam.")
+            raise RuntimeError("Inconsistent specification of the moment of inertia "
+            + "along the beam. There are either repeated or missing segments of the beam.")
 
         # Now a more thorough verification.
         for i in range(len(self.inertia_segment_list)):
@@ -177,7 +188,9 @@ class beam:
                     is_on_the_right = (inertia_x_end_numeric[j] < inertia_x_start_numeric[i] + tol)
                     is_on_the_left = (inertia_x_start_numeric[j] > inertia_x_end_numeric[i] - tol)
                     if not(is_on_the_left or is_on_the_right):
-                        raise RuntimeError("Inconsistent specification of the moment of inertia along the beam. There are either repeated or missing segments of the beam.")
+                        raise RuntimeError("Inconsistent specification of the moment of "
+                        + "inertia along the beam. There are either repeated or missing "
+                        + "segments of the beam.")
     # -------------------------------------------------------------------- check_coordinates
     def check_coordinates(self, x_start, x_end):
         """Checks if the input segment coordinates are valid.
@@ -193,11 +206,13 @@ class beam:
 
         if len(x_start_symbol.free_symbols) == 1:
             if next(iter(x_start_symbol.free_symbols)) != self.length:
-                raise RuntimeError("Distinct symbols have been used for coordinate along the the beam and beam length.")
+                raise RuntimeError("Distinct symbols have been used for coordinate along "
+                + "the the beam and beam length.")
 
         if len(x_end_symbol.free_symbols) == 1:
             if next(iter(x_end_symbol.free_symbols)) != self.length:
-                raise RuntimeError("Distinct symbols have been used for coordinate along the the beam and beam length.")
+                raise RuntimeError("Distinct symbols have been used for coordinate along"
+                + " the the beam and beam length.")
 
         if self.length.is_number:
             x_start_numeric = x_start_symbol
@@ -207,9 +222,11 @@ class beam:
             x_end_numeric = x_end_symbol.subs({self.length : 1})
             
         if abs(x_start_numeric - x_end_numeric) < tol:
-            raise RuntimeError("The specified beam segment is too short. The poits are overlapping.")
+            raise RuntimeError("The specified beam segment is too short. The poits are "
+            + "overlapping.")
         elif x_start_numeric > x_end_numeric:
-            raise RuntimeError("The starting coordinate is greater than the ending coordinte.")
+            raise RuntimeError("The starting coordinate is greater than the ending "
+            + "coordinte.")
     # -------------------------------------------------------------------- check_inside_beam
     def check_inside_beam(self, x_coord):
         """Chekcs if a given coordinate is valid and lies inside the beam domain.
@@ -221,7 +238,8 @@ class beam:
 
         if len(x_coord_symbol.free_symbols) == 1:
             if next(iter(x_coord_symbol.free_symbols)) != self.length:
-                raise RuntimeError("Distinct symbols have been used for coordinate along the the beam and beam length.")
+                raise RuntimeError("Distinct symbols have been used for coordinate along "
+                + "the the beam and beam length.")
 
         if self.length.is_number:
             x_coord_numeric = x_coord_symbol
@@ -313,9 +331,11 @@ class beam:
         beam_x_coord = [all_x_coord_symbol[i] for i in range(len(all_x_coord_numeric)) if keep_x_coord[i]]
         beam_x_coord_numeric = [all_x_coord_numeric[i] for i in range(len(all_x_coord_numeric)) if keep_x_coord[i]]
         if abs(beam_x_coord_numeric[0] - x0_numeric) > tol:
-            raise RuntimeError("Error in segment creation: the first x-coordinate does not match the initial beam coordinate.")
+            raise RuntimeError("Error in segment creation: the first x-coordinate does "
+            + "not match the initial beam coordinate.")
         elif abs(beam_x_coord_numeric[-1] - x0_numeric - length_numeric) > tol:
-            raise RuntimeError("Error in segment creation: the last x-coordinate is not consistent with the length of the beam.")
+            raise RuntimeError("Error in segment creation: the last x-coordinate is not " 
+            + "consistent with the length of the beam.")
 
         # Create the list of points of the beam
         # -------------------------------------
