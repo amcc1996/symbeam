@@ -609,7 +609,7 @@ class beam:
         self._print_segments()
         self._print_reactions()
         self._print_internal_loads()
-        self._print_deflections()        
+        self._print_deflections()
     # --------------------------------------------------------------------------------- plot
     def plot(self):
         """Plots the shear force and bending moment diagrams and the deflection.
@@ -618,15 +618,24 @@ class beam:
         color_bending_moment = 'red'
         color_shear_force = 'green'
         color_deflection = 'blue'
+        color_distributed_load = 'darkorange'
+        color_beam = 'black'
+        line_width_distributed_loads = 3
         line_width_diagrams = 2
         line_width_deflection = 3
+        line_width_beam = 3
         alpha = 0.5
+        max_distributed_load = []
+        xmin = 0
+        xmax = 0
 
-        fig, ax = plt.subplots(3, 1, num="Internal loads and deflection", figsize=(7, 7), constrained_layout=True, sharex='all')
-        for isegment in self.segments:
+        fig, ax = plt.subplots(4, 1, num="Internal loads and deflection", figsize=(7, 8), constrained_layout=True, sharex='all')
+        for i, isegment in enumerate(self.segments):
             # First, create new expressions by substituting all symbolic variables with '1',
             # except for the x variable
-            variables_shear_force = (isegment.shear_force.free_symbols)
+            variables_distributed_load = isegment.distributed_load.expression.free_symbols
+            variables_distributed_load.discard(x)
+            variables_shear_force = isegment.shear_force.free_symbols
             variables_shear_force.discard(x)
             variables_bending_moment = isegment.bending_moment.free_symbols
             variables_bending_moment.discard(x)
@@ -638,11 +647,15 @@ class beam:
             variables_x_end.discard(x)
 
             # Copies of the relevant expressions
+            distributed_load_plot = isegment.distributed_load.expression
             shear_force_plot = isegment.shear_force
             bending_moment_plot = isegment.bending_moment
             deflection_plot = isegment.deflection
             x_start_plot = isegment.x_start
             x_end_plot = isegment.x_end
+            
+            for ivariable in variables_distributed_load:
+                distributed_load_plot = distributed_load_plot.subs({ivariable : 1})
 
             for ivariable in variables_shear_force:
                     shear_force_plot = shear_force_plot.subs({ivariable : 1})
@@ -660,23 +673,55 @@ class beam:
                     x_end_plot = x_end_plot.subs({ivariable : 1})
 
             x_plot = np.linspace(float(x_start_plot), float(x_end_plot), num=100, endpoint=True)
-
+            
+            # Distributed load plot.
+            distributed_load_numeric = np.vectorize(sym.lambdify(x, distributed_load_plot))(x_plot)
+            max_distributed_load.append(np.max(np.abs(distributed_load_numeric)))
+            ax[0].plot(x_plot, -distributed_load_numeric, color=color_distributed_load, linewidth=line_width_distributed_loads)
+            ax[0].fill_between(x_plot, -distributed_load_numeric, color=color_distributed_load, linewidth=line_width_distributed_loads, alpha=alpha)            
+            ax[0].plot([x_plot[0], x_plot[-1]], [0, 0], color=color_beam, linewidth=line_width_beam)
+            
             # Shear force plot.
-            ax[0].plot(x_plot, np.vectorize(sym.lambdify(x, shear_force_plot))(x_plot), color=color_shear_force, linewidth=line_width_diagrams)
-            ax[0].fill_between(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, alpha=alpha)
+            ax[1].plot(x_plot, np.vectorize(sym.lambdify(x, shear_force_plot))(x_plot), color=color_shear_force, linewidth=line_width_diagrams)
+            ax[1].fill_between(x_plot, sym.lambdify(x, shear_force_plot)(x_plot), color=color_shear_force, alpha=alpha)
 
             # Bending diagram plot.
-            ax[1].plot(x_plot, np.vectorize(sym.lambdify(x, bending_moment_plot))(x_plot), color=color_bending_moment, linewidth=line_width_diagrams)
-            ax[1].fill_between(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, alpha=alpha)
+            ax[2].plot(x_plot, np.vectorize(sym.lambdify(x, bending_moment_plot))(x_plot), color=color_bending_moment, linewidth=line_width_diagrams)
+            ax[2].fill_between(x_plot, sym.lambdify(x, bending_moment_plot)(x_plot), color=color_bending_moment, alpha=alpha)
 
             # Deflection plot.
-            ax[2].plot(x_plot, np.vectorize(sym.lambdify(x, deflection_plot))(x_plot), color=color_deflection, linewidth=line_width_deflection)
-
+            ax[3].plot(x_plot, np.vectorize(sym.lambdify(x, deflection_plot))(x_plot), color=color_deflection, linewidth=line_width_deflection)
+            ax[3].plot([x_plot[0], x_plot[-1]], [0, 0], color=color_beam, linewidth=line_width_beam / 2)            
+            
+            # Get maximum and minimum coordinate of the beam
+            if i == 0:
+                xmin = x_plot[0]
+            if i == len(self.segments) - 1:
+                xmax = x_plot[-1]
+            
+        # Set the y-axis upper and lower bounds for the beam representation.
+        ymax = max(max_distributed_load) * 1.1
+        if ymax < tol:
+            ymax = 1.0
+            
+        ymin = -ymax
+        ax[0].set_ylim(ymin, ymax)
+        ax[0].set_xlim(xmin, xmax)
+        ax[0].axis('off')
+                    
+        # Loop over the points and draw the points.
+        for ipoint in self.points:
+            ipoint.draw(ax[0])   
+            ipoint.draw(ax[3])                   
+            
+        ax[0].set_ylim(ymin, ymax)           
+        ax[0].set_xlim(xmin, xmax)
+        
         # Axis labels.
-        ax[0].set_ylabel(r'Shear force, $V(x)$')
-        ax[1].set_ylabel(r'Bending moment, $M(x)$')
-        ax[2].set_ylabel(r'Deflection, $v(x)$')
-        ax[2].set_xlabel(r'Coordinate, $x$')
+        ax[1].set_ylabel(r'Shear force, $V(x)$')
+        ax[2].set_ylabel(r'Bending moment, $M(x)$')
+        ax[3].set_ylabel(r'Deflection, $v(x)$')
+        ax[3].set_xlabel(r'Coordinate, $x$')
 
         return fig, ax
     # ------------------------------------------------------------------------- print_points
