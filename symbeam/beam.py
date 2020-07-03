@@ -862,16 +862,16 @@ class beam:
         """Plots the shear force and bending moment diagrams and the deflection.
         """
         # Define some plotting settings.
-        color_bending_moment = "red"
-        color_shear_force = "green"
-        color_deflection = "blue"
-        color_distributed_load = "darkorange"
+        color_bending_moment = "firebrick"
+        color_shear_force = "forestgreen"
+        color_deflection = "black"
+        color_distributed_load = "royalblue"
         color_beam = "black"
-        line_width_distributed_loads = 3
+        line_width_distributed_loads = 2
         line_width_diagrams = 2
         line_width_deflection = 3
         line_width_beam = 3
-        alpha = 0.5
+        alpha = 0.35
         max_distributed_load = []
         xmin = 0
         xmax = 0

@@ -142,16 +142,20 @@ class point(ABC):
         """Draws a point force in the axis.
         """
         x_coord_plot = self.get_numeric_coordinate()
+        # Set the geometry scale.
         width = 0.002
         head_width = width * 7
         head_length = width * 50
+        color = "seagreen"
+
+        # Draw the vector.
         ax.arrow(
             x_coord_plot,
             -length,
             0,
             length,
             clip_on=False,
-            color="red",
+            color=color,
             width=width,
             head_width=head_width,
             head_length=head_length,
@@ -164,6 +168,7 @@ class point(ABC):
         """Draws a point moment in the axis.
         """
         x_coord_plot = self.get_numeric_coordinate()
+        color = "firebrick"
         # Get the limits of the x- and y-axis
         xlim = ax.get_xlim()
         xmin = xlim[0]
@@ -175,8 +180,7 @@ class point(ABC):
         ymax = ylim[1]
         yspan = ymax - ymin
 
-        angle = 0
-
+        # Set the starting and ending angles of the arc.
         diameter = xspan / 25
         if value > 0:
             start_angle = 105
@@ -185,18 +189,22 @@ class point(ABC):
             start_angle = 90
             end_angle = 280
 
+        # In order to draw an approximately circular arc, get the aspect ratio associated
+        # with the data and the figure/axis itself, and scale the diameter.
         bbox = ax.get_window_extent()
         width, height = bbox.width, bbox.height
 
         data_scale = yspan / xspan
         axis_scale = width / height
 
+        angle = 0
         diameterx = diameter
         diametery = diameter * data_scale * axis_scale
 
         linewidth = 1 + abs(value) * 1
         markersize = 3 + abs(value) * 4
 
+        # Draw the arc.
         arc = patches.Arc(
             [x_coord_plot, 0],
             diameterx,
@@ -206,17 +214,19 @@ class point(ABC):
             theta2=end_angle,
             zorder=1000,
             linewidth=linewidth,
-            color="blue",
+            color=color,
         )
         ax.add_patch(arc)
+
+        # Plot the arrow head (marker) and the center of the arc.
         ax.plot(
             x_coord_plot,
             0,
             marker="+",
             clip_on=False,
             markersize=8,
-            markerfacecolor="blue",
-            markeredgecolor="blue",
+            markerfacecolor=color,
+            markeredgecolor=color,
         )
         if value > 0:
             ax.plot(
@@ -225,9 +235,9 @@ class point(ABC):
                 marker="<",
                 clip_on=False,
                 markersize=markersize,
-                markerfacecolor="blue",
+                markerfacecolor=color,
                 markeredgewidth=0,
-                markeredgecolor="blue",
+                markeredgecolor=color,
             )
         else:
             ax.plot(
@@ -236,9 +246,9 @@ class point(ABC):
                 marker=">",
                 clip_on=False,
                 markersize=markersize,
-                markerfacecolor="blue",
+                markerfacecolor=color,
                 markeredgewidth=0,
-                markeredgecolor="blue",
+                markeredgecolor=color,
             )
 
 
