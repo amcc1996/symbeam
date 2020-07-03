@@ -27,7 +27,7 @@ class beam:
 
     def __init__(self, length, x0=0):
         """Beam class constructor.
-        
+
         Parameters
         ----------
         length : sympifiable type (int, float, string, SympP symbol, etc)
@@ -77,7 +77,7 @@ class beam:
     # -------------------------------------------------------------------------- add_support
     def add_support(self, x_coord, type):
         """Appends a new support to the list of input supports.
-        
+
         Parameters
         ----------
         x_coord : sympifiable type (int, float, string, SympP symbol, etc)
@@ -87,7 +87,7 @@ class beam:
         """
         # First check if the coordinate inside the beam.
         self._check_inside_beam(x_coord)
-        
+
         # Now allocate the correct point type (polymorphism).
         if type.lower() == "pin":
             new_point = pin(x_coord)
@@ -116,7 +116,15 @@ class beam:
     # ----------------------------------------------------------------- add_distributed_load
     def add_distributed_load(self, x_start, x_end, expression):
         """Appends a new distributed load to the list of input distributed loads.
-        
+
+        Parameters
+        ----------
+        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
+        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
+        expression  : sympifiable type (int, float, string, SympP symbol, etc)
+          Distributed loading expression
         """
         self._check_coordinates(x_start, x_end)
         new_load = distributed_load(x_start, x_end, expression)
@@ -125,6 +133,13 @@ class beam:
     # ----------------------------------------------------------------------- add_point_load
     def add_point_load(self, x_coord, value):
         """Appends a new point load to the list of input point loads.
+
+        Parameters
+        ----------
+        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+          Coordinate of the applied load
+        value : sympifiable type (int, float, string, SympP symbol, etc)
+          Load value
         """
         self._check_inside_beam(x_coord)
         new_load = point_load(x_coord, value)
@@ -133,6 +148,13 @@ class beam:
     # --------------------------------------------------------------------- add_point_moment
     def add_point_moment(self, x_coord, value):
         """Appends a new point moment to the list of input point moments.
+
+        Parameters
+        ----------
+        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+          Coordinate of the applied moment
+        value : sympifiable type (int, float, string, SympP symbol, etc)
+          Moment value
         """
         self._check_inside_beam(x_coord)
         new_moment = point_moment(x_coord, value)
@@ -141,8 +163,19 @@ class beam:
     # ---------------------------------------------------------------------------- set_young
     def set_young(self, x_start, x_end, value):
         """Sets the young modulus of a portion of the beam.
+
+        Parameters
+        ----------
+        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
+        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
+        expression  : sympifiable type (int, float, string, SympP symbol, etc)
+          Young modulus value
         """
+        # First check if the coordinate inside the beam.
         self._check_coordinates(x_start, x_end)
+
         # If the user specifies the property explicitely, reset the default values
         if self.young_default:
             self.young_default = False
@@ -154,7 +187,9 @@ class beam:
     def set_inertia(self, x_start, x_end, value):
         """Sets the second moment of area of a portion of the beam.
         """
+        # First check if the coordinate inside the beam.
         self._check_coordinates(x_start, x_end)
+
         # If the user specifies the property explicitely, reset the default values
         if self.inertia_default:
             self.inertia_default = False
@@ -194,7 +229,8 @@ class beam:
         length_young = 0.0
         length_inertia = 0.0
 
-        # Quick check Young modulus specification.
+        # Quick check Young modulus specification (check if the proprty segments sum up
+        # to the length of the beam).
         for i in range(len(self.young_segment_list)):
             if young_x_start_numeric[i] < x0_numeric:
                 raise RuntimeError(
@@ -215,7 +251,7 @@ class beam:
                 + "the beam. There are either repeated or missing segments of the beam."
             )
 
-        # Now a more thorough verification.
+        # Now a more thorough verification (truly check if the segments are overlapping).
         for i in range(len(self.young_segment_list)):
             for j in range(len(self.young_segment_list)):
                 if j != i:
@@ -230,7 +266,8 @@ class beam:
                             + "segments of the beam."
                         )
 
-        # Quick check secnod moment of area specification.
+        # Quick check second moment of area specification (check if the proprty segments sum
+        # up to the length of the beam).
         for i in range(len(self.inertia_segment_list)):
             if inertia_x_start_numeric[i] < x0_numeric:
                 raise RuntimeError(
@@ -252,7 +289,7 @@ class beam:
                 + "along the beam. There are either repeated or missing segments of the beam."
             )
 
-        # Now a more thorough verification.
+        # Now a more thorough verification (truly check if the segments are overlapping).
         for i in range(len(self.inertia_segment_list)):
             for j in range(len(self.inertia_segment_list)):
                 if j != i:
@@ -272,6 +309,13 @@ class beam:
     # -------------------------------------------------------------------- check_coordinates
     def _check_coordinates(self, x_start, x_end):
         """Checks if the input segment coordinates are valid.
+
+        Parameters
+        ----------
+        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
+        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+          Starting coordinate of the distributed load
         """
         x_start_symbol = sym.sympify(x_start)
         x_end_symbol = sym.sympify(x_end)
@@ -315,6 +359,11 @@ class beam:
     # -------------------------------------------------------------------- check_inside_beam
     def _check_inside_beam(self, x_coord):
         """Chekcs if a given coordinate is valid and lies inside the beam domain.
+
+        Parameters
+        ----------
+        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+          Coordinate of the point
         """
         x_coord_symbol = sym.sympify(x_coord)
 
@@ -837,6 +886,9 @@ class beam:
             constrained_layout=True,
             sharex="all",
         )
+
+        # Plots segments
+        # --------------
         for i, isegment in enumerate(self.segments):
             # First, create new expressions by substituting all symbolic variables with '1',
             # except for the x variable
@@ -949,7 +1001,7 @@ class beam:
                 linestyle="--",
             )
 
-            # Get maximum and minimum coordinate of the beam
+            # Get maximum and minimum coordinate of the beam (axis limits).
             if i == 0:
                 xmin = x_plot[0]
             if i == len(self.segments) - 1:
@@ -967,6 +1019,8 @@ class beam:
         ax[0].set_xlim(xmin, xmax)
         ax[0].axis("off")
 
+        # Plot points
+        # -----------
         external_force_plot_vector = np.zeros((len(self.points)))
         external_moment_plot_vector = np.zeros((len(self.points)))
         # Loop over the points, draw the points and extract the magnitudes of the external
