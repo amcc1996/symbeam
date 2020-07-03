@@ -2,6 +2,8 @@
 # --------------
 # Ploting toolbox, Matplotlib
 import matplotlib.pyplot as plt
+# Subplots grid controling
+from matplotlib import gridspec
 # Array toolbox, NumPy
 import numpy as np
 # Symbolic Python Package, SymPy
@@ -691,7 +693,7 @@ class beam:
 
             # Deflection plot.
             ax[3].plot(x_plot, np.vectorize(sym.lambdify(x, deflection_plot))(x_plot), color=color_deflection, linewidth=line_width_deflection)
-            ax[3].plot([x_plot[0], x_plot[-1]], [0, 0], color=color_beam, linewidth=line_width_beam / 2)            
+            ax[3].plot([x_plot[0], x_plot[-1]], [0, 0], color=color_beam, linewidth=line_width_beam / 2, linestyle='--')            
             
             # Get maximum and minimum coordinate of the beam
             if i == 0:
@@ -711,8 +713,7 @@ class beam:
                     
         # Loop over the points and draw the points.
         for ipoint in self.points:
-            ipoint.draw(ax[0])   
-            ipoint.draw(ax[3])                   
+            ipoint.draw(ax[0])               
             
         ax[0].set_ylim(ymin, ymax)           
         ax[0].set_xlim(xmin, xmax)

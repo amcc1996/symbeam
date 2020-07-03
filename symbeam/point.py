@@ -10,7 +10,7 @@ import numpy as np
 # Symbolic Python Package, SymPy
 import sympy as sym
 # Global symbolic variables
-from symbeam import x
+from symbeam import x, tol
 # ==================================================================================== point
 class point(ABC):
     """Abstract definition of a beam point.
@@ -121,7 +121,7 @@ class pin(point):
     # --------------------------------------------------------------------------------------
     def has_reaction_moment(self):
         return False
-    # --------------------------------------------------------------------------------------        
+    # --------------------------------------------------------------------------------------
     def get_fixed_degree_of_freedom(self):
         return 2
     # --------------------------------------------------------------------------------------
@@ -143,31 +143,28 @@ class pin(point):
             equations = []
 
         return equations
-    # --------------------------------------------------------------------------------------            
+    # --------------------------------------------------------------------------------------
     def draw_point(self, x_coord_plot, ax):
         # Get the limits of the x- and y-axis
         xlim = ax.get_xlim()
         xmin = xlim[0]
-        xmax = xlim[1]
-                
+        xmax = xlim[1]        
+        xspan = xmax - xmin
+        
         ylim = ax.get_ylim()
         ymin = ylim[0]
         ymax = ylim[1]
+        yspan = ymax - ymin
+        ymid = (ymax + ymin) / 2
         
-        # Define the triangle points.
-        side = (ymax - ymin) / 15
-        scalex = (xmax - xmin) / (ymax - ymin)
-        scaley = 1 / scalex
-        angle = 60 * np.pi / 180
-        p1 = np.array([x_coord_plot, 0])
-        p2 = p1 + side * np.array([np.cos(angle) * scalex, -np.sin(angle) * scaley])
-        p3 = p1 + side * np.array([-np.cos(angle) * scalex, -np.sin(angle) * scaley])
-        p = np.array([p1, p2, p3])
-        
-        # Plot the triangle.
-        poly = plt.Polygon(p, color='silver')
-        ax.plot([p1[0], p2[0], p3[0], p1[0]], [p1[1], p2[1], p3[1], p1[1]], color='black')
-        ax.add_patch(poly)
+        # Draw the triangle.
+        length_bottom_line = xspan / 20
+        ax.plot(x_coord_plot, ymid - yspan / 11, marker='^', clip_on=False, markersize=20, markerfacecolor='silver', markeredgewidth=1, markeredgecolor='black')
+         
+        # Draw the final line.
+        ax.plot([x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2], [ymid - yspan / 5, ymid - yspan / 5], color='silver', linewidth=5, clip_on=False, solid_capstyle="butt")
+        ax.plot([x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2], [ymid - yspan / 5.5, ymid - yspan / 5.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")
+# =============================================================================== continuity
 # =================================================================================== roller
 class roller(point):
     """Concrete implementation of a roller support (same as pin if there are no axial
@@ -209,34 +206,26 @@ class roller(point):
         # Get the limits of the x- and y-axis
         xlim = ax.get_xlim()
         xmin = xlim[0]
-        xmax = xlim[1]
-                
+        xmax = xlim[1]        
+        xspan = xmax - xmin
+        
         ylim = ax.get_ylim()
         ymin = ylim[0]
         ymax = ylim[1]
+        yspan = ymax - ymin
+        ymid = (ymax + ymin) / 2
         
-        # Define the triangle points.
-        side = (xmax - xmin) / 5
-        height = 3 / (2 * np.sqrt(3)) * side
-        scaley = (xmax - xmin) / (ymax - ymin)
-        scalex = 1 / scaley        
-        angle = 60 * np.pi / 180
-        p1 = np.array([x_coord_plot, 0])
-        p2 = p1 + side * np.array([np.cos(angle) / scalex, -np.sin(angle) / scaley])
-        p3 = p1 + side * np.array([-np.cos(angle) / scalex, -np.sin(angle) / scaley])
-        p = np.array([p1, p2, p3])
+        # Draw the triangle.
+        length_bottom_line = xspan / 20
+        ax.plot(x_coord_plot, - yspan / 15.5, marker='^', clip_on=False, markersize=15, markerfacecolor='silver', markeredgewidth=1, markeredgecolor='black')
         
-        # Plot the triangle.
-        poly = plt.Polygon(p, color='silver')
-        ax.plot([p1[0], p2[0], p3[0], p1[0]], [p1[1], p2[1], p3[1], p1[1]], color='black')
-        
-        # # Plot the circles.
-        # radius = side / 20
-        # radiusx = side * scalex
-        # radiusy = side * scaley
-        # center = p2 + np.array([radiusx, -radiusy])
-        # circle1 = patches.Ellipse(center, radiusx, radiusy)
-        # ax.add_patch(circle1)
+        # Draw the circles.
+        ax.plot(x_coord_plot + xspan / 100, - yspan / 6.8, marker='o', clip_on=False, markersize=6, markerfacecolor='black', markeredgewidth=0, markeredgecolor='black')
+        ax.plot(x_coord_plot - xspan / 100, - yspan / 6.8, marker='o', clip_on=False, markersize=6, markerfacecolor='black', markeredgewidth=0, markeredgecolor='black')
+         
+        # Draw the final line.
+        ax.plot([x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2], [- yspan / 5, - yspan / 5], color='silver', linewidth=5, clip_on=False, solid_capstyle="butt")
+        ax.plot([x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2], [- yspan / 5.5, - yspan / 5.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")
 # =============================================================================== continuity
 class continuity(point):
     """Concrete implementation of a continuity point in a beam.
@@ -312,10 +301,30 @@ class fixed(point):
         return equations
         
     def draw_point(self, x_coord_plot, ax):
-        handle = plt.Circle((x_coord_plot, 0), 0.2, color='r')
-        ax.add_artist(handle)        
+        # Get the limits of the x- and y-axis
+        xlim = ax.get_xlim()
+        xmin = xlim[0]
+        xmax = xlim[1]        
+        xspan = xmax - xmin
         
-        return handle        
+        ylim = ax.get_ylim()
+        ymin = ylim[0]
+        ymax = ylim[1]
+        yspan = ymax - ymin
+        ymid = (ymax + ymin) / 2
+        
+        # Draw the triangle.
+        length_fixed_line = yspan / 20
+        if abs(x_coord_plot - xmin) < tol:
+            ax.plot([x_coord_plot - xspan / 150, x_coord_plot - xspan / 150], [- yspan / 15.5, yspan / 15.5], color='silver', linewidth=5, clip_on=False, solid_capstyle="butt")            
+            ax.plot([x_coord_plot, x_coord_plot], [- yspan / 15.5, yspan / 15.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")
+        elif abs(x_coord_plot - xmin) > tol:
+            ax.plot([x_coord_plot + xspan / 150, x_coord_plot + xspan / 150], [- yspan / 15.5, yspan / 15.5], color='silver', linewidth=5, clip_on=False, solid_capstyle="butt")            
+            ax.plot([x_coord_plot, x_coord_plot], [- yspan / 15.5, yspan / 15.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")            
+        else:
+            ax.plot([x_coord_plot, x_coord_plot], [- yspan / 15.5, yspan / 15.5], color='silver', linewidth=5, clip_on=False, solid_capstyle="butt")            
+            ax.plot([x_coord_plot - xspan / 150, x_coord_plot - xspan / 150], [- yspan / 15.5, yspan / 15.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")
+            ax.plot([x_coord_plot + xspan / 150, x_coord_plot + xspan / 150], [- yspan / 15.5, yspan / 15.5], color='black', linewidth=1.5, clip_on=False, solid_capstyle="butt")                                                
 # ==================================================================================== hinge
 class hinge(point):
     """Concrete implementation of a hinge.
@@ -346,8 +355,5 @@ class hinge(point):
         pass
         
     def draw_point(self, x_coord_plot, ax):
-        handle = plt.Circle((x_coord_plot, 0), 0.2, color='r')
-        ax.add_artist(handle)        
-        
-        return handle        
+        ax.plot(x_coord_plot, 0, marker='o', clip_on=False, markersize=8, markerfacecolor='white', markeredgewidth=1.5, markeredgecolor='black')  
 # ==========================================================================================
