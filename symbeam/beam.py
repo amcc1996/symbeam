@@ -631,6 +631,8 @@ class beam:
         xmin = 0
         xmax = 0
 
+        # Create the figure and plot the shear force, bending moment and deflection for 
+        # each segment.
         fig, ax = plt.subplots(4, 1, num="Internal loads and deflection", figsize=(7, 8), constrained_layout=True, sharex='all')
         for i, isegment in enumerate(self.segments):
             # First, create new expressions by substituting all symbolic variables with '1',
@@ -674,6 +676,7 @@ class beam:
             for ivariable in variables_x_end:
                     x_end_plot = x_end_plot.subs({ivariable : 1})
 
+            # Numeric plotting x variable.
             x_plot = np.linspace(float(x_start_plot), float(x_end_plot), num=100, endpoint=True)
             
             # Distributed load plot.
@@ -706,17 +709,51 @@ class beam:
         if ymax < tol:
             ymax = 1.0
             
+        # FIx the limits of the first axis. This is mandatory for plotting the beam
+        # configuration.
         ymin = -ymax
         ax[0].set_ylim(ymin, ymax)
         ax[0].set_xlim(xmin, xmax)
         ax[0].axis('off')
-                    
-        # Loop over the points and draw the points.
-        for ipoint in self.points:
-            ipoint.draw(ax[0])               
+                
+        external_force_plot_vector = np.zeros((len(self.points)))
+        external_moment_plot_vector = np.zeros((len(self.points)))
+        # Loop over the points, draw the points and extract the magnitudes of the external
+        # forces and moments.
+        for i, ipoint in enumerate(self.points):
+            ipoint.draw_support(ax[0])
+            external_force_plot = ipoint.external_force
+            external_moment_plot = ipoint.external_moment
             
-        ax[0].set_ylim(ymin, ymax)           
+            for ivariable in external_force_plot.free_symbols:
+                external_force_plot = external_force_plot.subs({ivariable : 1})
+                
+            for ivariable in external_moment_plot.free_symbols:
+                external_moment_plot = external_moment_plot.subs({ivariable : 1})
+                
+            external_force_plot_vector[i] = float(external_force_plot)
+            external_moment_plot_vector[i] = float(external_moment_plot)
+                    
+        # Reset the aaxis limits of the configuration plot.
+        ax[0].set_ylim(ymin, ymax)
         ax[0].set_xlim(xmin, xmax)
+        
+        # Scale the forces so that the maximum point load has the length of the upper bound
+        # of the configuration plot and draw the forces.
+        max_force = np.max(np.abs(external_force_plot_vector))
+        max_moment = np.max(np.abs(external_moment_plot_vector))        
+        fraction_max = 0.9
+        if max_force > tol:
+            external_force_plot_vector = external_force_plot_vector / max_force * ymax * fraction_max
+            
+        if max_moment > tol:
+            external_moment_plot_vector = external_moment_plot_vector / max_moment
+            
+        for i, ipoint in enumerate(self.points):
+            if abs(external_force_plot_vector[i]) > tol:
+                ipoint.draw_force(ax[0], external_force_plot_vector[i])
+            if abs(external_moment_plot_vector[i]) > tol:
+                ipoint.draw_moment(ax[0], external_moment_plot_vector[i])      
         
         # Axis labels.
         ax[1].set_ylabel(r'Shear force, $V(x)$')

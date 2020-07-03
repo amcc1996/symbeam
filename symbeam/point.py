@@ -99,15 +99,76 @@ class point(ABC):
 
         return func.__code__.co_code == empty_func.__code__.co_code or \
             func.__code__.co_code == empty_func_with_doc.__code__.co_code
-    # --------------------------------------------------------------------------------- draw
-    def draw(self, ax):
-        """Draws the point in the axis.
+    # --------------------------------------------------------------- get_numeric_coordinate
+    def get_numeric_coordinate(self):
+        """Returns the coordinate of the point, by substituting all present symbols byb 1.
         """
         x_coord_plot = self.x_coord
         for ivariable in x_coord_plot.free_symbols:
             x_coord_plot = x_coord_plot.subs({ivariable : 1})
-        
+            
+        return x_coord_plot
+    # ------------------------------------------------------------------------- draw_support
+    def draw_support(self, ax):
+        """Draws the point in the axis.
+        """
+        x_coord_plot = self.get_numeric_coordinate()
         self.draw_point(x_coord_plot, ax)
+        
+    # --------------------------------------------------------------------------- draw_force
+    def draw_force(self, ax, length):
+        """Draws a point force in the axis.
+        """
+        x_coord_plot = self.get_numeric_coordinate()
+        width = 0.002
+        head_width = width * 7
+        head_length = width * 50
+        ax.arrow(x_coord_plot, -length, 0, length, clip_on=False, color='red', width=width, head_width=head_width, head_length=head_length, overhang=0, length_includes_head=True)
+    # -------------------------------------------------------------------------- draw_moment
+    def draw_moment(self, ax, value):
+        """Draws a point moment in the axis.
+        """
+        x_coord_plot = self.get_numeric_coordinate()        
+        # Get the limits of the x- and y-axis
+        xlim = ax.get_xlim()
+        xmin = xlim[0]
+        xmax = xlim[1]
+        xspan = xmax - xmin
+        
+        ylim = ax.get_ylim()
+        ymin = ylim[0]
+        ymax = ylim[1]
+        yspan = ymax - ymin
+        
+        angle = 0
+        
+        diameter = xspan / 25
+        if value > 0:
+            start_angle = 105
+            end_angle = 90
+        else:
+            start_angle = 90
+            end_angle = 280
+        
+        bbox = ax.get_window_extent()
+        width, height = bbox.width, bbox.height
+        
+        data_scale = yspan / xspan
+        axis_scale = width / height
+        
+        diameterx = diameter
+        diametery = diameter * data_scale * axis_scale
+        
+        linewidth = 1 + abs(value) * 1
+        markersize = 3 + abs(value) * 4
+                
+        arc = patches.Arc([x_coord_plot, 0], diameterx, diametery, angle=angle, theta1=start_angle, theta2=end_angle, zorder=1000, linewidth=linewidth, color='blue')
+        ax.add_patch(arc)
+        ax.plot(x_coord_plot, 0, marker='+', clip_on=False, markersize=8, markerfacecolor='blue', markeredgecolor='blue')
+        if value > 0:
+            ax.plot(x_coord_plot, diametery/2, marker='<', clip_on=False, markersize=markersize, markerfacecolor='blue', markeredgewidth=0, markeredgecolor='blue')        
+        else:
+            ax.plot(x_coord_plot, diametery/2, marker='>', clip_on=False, markersize=markersize, markerfacecolor='blue', markeredgewidth=0, markeredgecolor='blue')                    
 # ====================================================================================== pin
 class pin(point):
     """Concrete implementation of a pinned support.
