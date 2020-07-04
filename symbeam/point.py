@@ -1,3 +1,20 @@
+"""Point module.
+
+Provides the point class, reponsible for handling point forces and moments,
+reactions and support. A point is defined through and abstract with all attributes and
+methods associated with point features. Concrete implementations, for instance, for
+distinct supports, are realised by concrete class implementations.
+
+These classes are used internally by SymBeam thus, they shall not be used directly by the
+user, in a general scenario. In fact, SymBeam instanciates the points on the beam by
+the data coming from the user, accounting for the existance of supports, point forces and
+moments and changes of beam properties.
+
+..module:: point
+  :synopsis: Point class
+
+..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
+"""
 # Import modules
 # --------------
 # Abstract classes and methods
@@ -19,6 +36,19 @@ tol = 1e-6
 # ==================================================================================== point
 class point(ABC):
     """Abstract definition of a beam point.
+
+    Attributes
+    ----------
+    x_coord : SymPy object
+      Coordinate of the point
+    reaction_force : SymPy object
+      Reaction force at the point; 0 if does not support
+    reaction_moment : SymPy object
+      Reaction moment at the point; 0 if does not support
+    external_force : SymPy object
+      Sum of total external point forces applied to the point
+    external_moment : SymPy object
+      Sum of total external point moments applied to the point
     """
 
     def __init__(self, x_coord):
@@ -28,11 +58,22 @@ class point(ABC):
         self.external_force = sym.sympify(0)
         self.external_moment = sym.sympify(0)
 
+        if x in self.x_coord:
+            raise RuntimeError(
+                "The independent x-variable must not be contained in the "
+                + "definition of a point coordinate."
+            )
+
     # ----------------------------------------------------------------------------- get_name
     @staticmethod
     @abstractmethod
     def get_name():
-        """Returns the name of the type of point in question.
+        """Returns the point type descriptor.
+
+        Returns
+        -------
+        name : str
+          Name of the support
         """
         pass
 
@@ -40,6 +81,11 @@ class point(ABC):
     @abstractmethod
     def has_reaction_force(self):
         """Flags if the current point support reactions forces.
+
+        Returns
+        -------
+        flag : bool
+          Flags if the point supports exterior reaction forces
         """
         pass
 
@@ -47,6 +93,12 @@ class point(ABC):
     @abstractmethod
     def has_reaction_moment(self):
         """Flags if the current point support reactions moments.
+
+
+        Returns
+        -------
+        flag : bool
+          Flags if the point supports exterior reaction moments
         """
         pass
 
@@ -54,6 +106,18 @@ class point(ABC):
     @abstractmethod
     def get_deflection_boundary_condition(self, list_deflection):
         """Establishes the deflection boundary condition on the current point.
+
+        Parameters
+        ----------
+        list_deflection : list of SymPy expressions
+          List of the deflection expressions associated with a point as function of x and
+          the integration constants
+
+        Returns
+        -------
+        equations : list of SymPy expressions
+          List of equations setting the deflection boundary condition at the point that
+          allow the determination of the integration constants
         """
         pass
 
@@ -61,6 +125,18 @@ class point(ABC):
     @abstractmethod
     def get_rotation_boundary_condition(self, list_rotation):
         """Establishes the rotation boundary condition on the current point.
+
+        Parameters
+        ----------
+        list_rotation : list of SymPy expressions
+          List of the rotation expressions associated with a point as function of x and
+          the integration constants
+
+        Returns
+        -------
+        equations : list of SymPy expressions
+          List of equations setting the rotation boundary condition at the point that
+          allow the determination of the integration constants
         """
         pass
 
@@ -68,6 +144,11 @@ class point(ABC):
     @abstractmethod
     def get_fixed_degree_of_freedom(self):
         """Returns the number of fixed degrees of freedom in a support.
+
+        Retunrs
+        -------
+        number_fixed : int
+          Number of fixed degrees of freedom at the point
         """
         pass
 
@@ -75,23 +156,49 @@ class point(ABC):
     @abstractmethod
     def draw_point(self, ax):
         """Draws the point in the given axis.
+
+        Parameters
+        ----------
+        ax : Matplotlib axis object
+          Axis where to draw the point
         """
 
     # ------------------------------------------------------------- has_deflection_condition
     def has_deflection_condition(self):
         """Flags if the current point enforces some boundary condition on the deflection.
+
+        Returns
+        -------
+        flag : bool
+          Flags if the current support sets a deflection boundary condition
         """
         return not (self.is_method_empty(self.get_deflection_boundary_condition))
 
     # --------------------------------------------------------------- has_rotation_condition
     def has_rotation_condition(self):
         """Flags if the current point enforces some boundary condition on the rotation.
+
+        Returns
+        -------
+        flag : bool
+          Flags if the current support sets a rotation boundary condition
         """
         return not (self.is_method_empty(self.get_rotation_boundary_condition))
 
     # ---------------------------------------------------- set_geometric_boundary_conditions
     def set_geometric_boundary_conditions(self, list_rotation, list_deflection, equations):
         """Sets the geometric boundary conditions on the global system of equations.
+
+        Parameters
+        ----------
+        list_rotation : list of SymPy expressions
+          List of the rotation expressions associated with a point as function of x and
+          the integration constants
+        list_deflection : list of SymPy expressions
+          List of the deflection expressions associated with a point as function of x and
+          the integration constants
+        equations : list of SymPy expressions
+          List of global geometric boundary condition equations
         """
         if self.has_rotation_condition():
             condition_equation = self.get_rotation_boundary_condition(list_rotation)
@@ -106,6 +213,11 @@ class point(ABC):
     def is_method_empty(func):
         """Detects if a method is empty by comparing the bytecode instructions with an
         empty function with and without docstring documentation.
+
+        Parameters
+        ----------
+        func : Python function
+          Function to check
         """
 
         def empty_func():
@@ -123,6 +235,11 @@ class point(ABC):
     # --------------------------------------------------------------- get_numeric_coordinate
     def get_numeric_coordinate(self):
         """Returns the coordinate of the point, by substituting all present symbols byb 1.
+
+        Returns
+        -------
+        x_coord_plot : SymPy float
+          Numerical value of point coordinate
         """
         x_coord_plot = self.x_coord
         for ivariable in x_coord_plot.free_symbols:
@@ -133,6 +250,11 @@ class point(ABC):
     # ------------------------------------------------------------------------- draw_support
     def draw_support(self, ax):
         """Draws the point in the axis.
+
+        Parameters
+        ----------
+        ax : Matplotlib axis object
+          Axis where to draw the point
         """
         x_coord_plot = self.get_numeric_coordinate()
         self.draw_point(x_coord_plot, ax)
@@ -140,6 +262,13 @@ class point(ABC):
     # --------------------------------------------------------------------------- draw_force
     def draw_force(self, ax, length):
         """Draws a point force in the axis.
+
+        Parameters
+        ----------
+        ax : Matplotlib axis object
+          Axis where to draw the point force
+        length : float
+          Length of the force in the figure
         """
         x_coord_plot = self.get_numeric_coordinate()
         # Set the geometry scale.
@@ -166,6 +295,13 @@ class point(ABC):
     # -------------------------------------------------------------------------- draw_moment
     def draw_moment(self, ax, value):
         """Draws a point moment in the axis.
+
+        Parameters
+        ----------
+        ax : Matplotlib axis object
+          Axis where to draw the point moment
+        value : float
+          Relative absolute value the moment, relative to all present moments in the beam
         """
         x_coord_plot = self.get_numeric_coordinate()
         color = "firebrick"
@@ -344,7 +480,6 @@ class pin(point):
         )
 
 
-# =============================================================================== continuity
 # =================================================================================== roller
 class roller(point):
     """Concrete implementation of a roller support (same as pin if there are no axial
