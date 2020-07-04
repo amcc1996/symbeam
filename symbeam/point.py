@@ -58,7 +58,7 @@ class point(ABC):
         self.external_force = sym.sympify(0)
         self.external_moment = sym.sympify(0)
 
-        if x in self.x_coord:
+        if x in self.x_coord.free_symbols:
             raise RuntimeError(
                 "The independent x-variable must not be contained in the "
                 + "definition of a point coordinate."
