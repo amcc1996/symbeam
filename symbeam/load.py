@@ -1,5 +1,24 @@
+"""Load module.
+
+Defines the point force and moment classes, which can fundamentally be interpreted as
+strucutred variables with additional simple verifications.
+
+Also, it provides the distributed_load class. In contrast to the point counterpart,
+distributed_loads have a slightly more intricate structure, as they require the
+computation of the net force and associated position along the beam, for the establishment
+of the equilibirum equations.
+
+..module:: load
+  :synopsis: Main load class
+
+..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
+"""
+
 # Import modules
 # --------------
+# SymBeam, use the variable checking function
+from symbeam import check_x_variable
+
 # Symbolic Python Package, SymPy
 import sympy as sym
 from sympy.abc import x
@@ -12,6 +31,8 @@ class distributed_load:
     def __init__(self, x_start, x_end, expression):
         self.x_start = sym.sympify(x_start)
         self.x_end = sym.sympify(x_end)
+        check_x_variable(self.x_end)
+        check_x_variable(self.x_start)
         self.expression = sym.sympify(expression)
 
         self.equivalent_magnitude = sym.integrate(
@@ -34,6 +55,7 @@ class point_load:
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)
         self.value = sym.sympify(value)
+        check_x_variable(self.x_coord)
 
 
 # ============================================================================= point_moment
@@ -44,6 +66,7 @@ class point_moment:
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)
         self.value = sym.sympify(value)
+        check_x_variable(self.x_coord)
 
 
 # ==========================================================================================

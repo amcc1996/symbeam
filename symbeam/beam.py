@@ -1,3 +1,17 @@
+"""Beam module.
+
+This is symbeam main module. It contains the beam class definition, which is the main object
+of any analysis, allowing for the symbolic solution of equilibirum equations, internal
+shear force and bending moment diagram computation and deflection analysis.
+
+Furthermore, the beam class is endowed with all plotting and output capabilities that
+SymBeam furnishes.
+
+..module:: beam
+  :synopsis: Main beam class
+
+..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
+"""
 # Import modules
 # --------------
 # Ploting toolbox, Matplotlib

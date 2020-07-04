@@ -31,6 +31,9 @@ import numpy as np
 import sympy as sym
 from sympy.abc import x
 
+# SymBeam, use the variable checking function
+from symbeam import check_x_variable
+
 # Set numerical tolerance
 tol = 1e-6
 # ==================================================================================== point
@@ -53,16 +56,11 @@ class point(ABC):
 
     def __init__(self, x_coord):
         self.x_coord = sym.sympify(x_coord)
+        check_x_variable(self.x_coord)
         self.reaction_force = sym.sympify(0)
         self.reaction_moment = sym.sympify(0)
         self.external_force = sym.sympify(0)
         self.external_moment = sym.sympify(0)
-
-        if x in self.x_coord.free_symbols:
-            raise RuntimeError(
-                "The independent x-variable must not be contained in the "
-                + "definition of a point coordinate."
-            )
 
     # ----------------------------------------------------------------------------- get_name
     @staticmethod
