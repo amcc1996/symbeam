@@ -1,9 +1,9 @@
 """Point module.
 
 Provides the point class, reponsible for handling point forces and moments,
-reactions and support. A point is defined through and abstract with all attributes and
+reactions and supports. A point is defined by an abstract class with all attributes and
 methods associated with point features. Concrete implementations, for instance, for
-distinct supports, are realised by concrete class implementations.
+distinct supports types, are realised by concrete class implementations.
 
 These classes are used internally by SymBeam thus, they shall not be used directly by the
 user, in a general scenario. In fact, SymBeam instanciates the points on the beam by
@@ -21,37 +21,20 @@ moments and changes of beam properties.
 from abc import ABC, abstractmethod
 
 # Ploting toolbox, Matplotlib
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
-# Array computation toolboc, NumpY
-import numpy as np
 
 # Symbolic Python Package, SymPy
 import sympy as sym
 from sympy.abc import x
 
 # SymBeam, use the variable checking function
-from symbeam import check_x_variable
+from symbeam.utils import check_x_variable
 
 # Set numerical tolerance
 tol = 1e-6
 # ==================================================================================== point
 class point(ABC):
-    """Abstract definition of a beam point.
-
-    Attributes
-    ----------
-    x_coord : SymPy object
-      Coordinate of the point
-    reaction_force : SymPy object
-      Reaction force at the point; 0 if does not support
-    reaction_moment : SymPy object
-      Reaction moment at the point; 0 if does not support
-    external_force : SymPy object
-      Sum of total external point forces applied to the point
-    external_moment : SymPy object
-      Sum of total external point moments applied to the point
+    """Abstract definition of a beam point.    
     """
 
     def __init__(self, x_coord):

@@ -1,11 +1,11 @@
 """Beam module.
 
-This is symbeam main module. It contains the beam class definition, which is the main object
+SymBeam main module. It contains the beam class definition, which is the main object
 of any analysis, allowing for the symbolic solution of equilibirum equations, internal
 shear force and bending moment diagram computation and deflection analysis.
 
 Furthermore, the beam class is endowed with all plotting and output capabilities that
-SymBeam furnishes.
+SymBeam furnishes to the outside world.
 
 ..module:: beam
   :synopsis: Main beam class
@@ -48,6 +48,14 @@ class beam:
           Length of the beam
         x0 : sympifiable type (int, float, string, SympP symbol, etc)
           Initial point of the beam
+
+        Notes
+        -----
+        The beam can be instantiated either with numeric our symbolic input. For instance,
+        the length o the beam can be 1 or 'L'. Whenver a symbols is used for the length,
+        SymBeam only accepts coordinates expressed as a definite fraction of 'L', such as
+        'L/4'. If more symbols are introduce in the geometry definition, e.g., 'a*L', the
+        program cannot complete, as several solutions could arise to the problem.
         """
         # Initialise the length and startig point of the beam.
         self.length = sym.sympify(length)

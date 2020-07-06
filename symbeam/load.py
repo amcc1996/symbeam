@@ -1,11 +1,11 @@
 """Load module.
 
 Defines the point force and moment classes, which can fundamentally be interpreted as
-strucutred variables with additional simple verifications.
+strucutred variables with additional data verifications.
 
 Also, it provides the distributed_load class. In contrast to the point counterpart,
-distributed_loads have a slightly more intricate structure, as they require the
-computation of the net force and associated position along the beam, for the establishment
+distributed loads have a slightly more intricate structure, as they require the
+computation of the net force and associated position along the beam, for the construction
 of the equilibirum equations.
 
 ..module:: load
@@ -17,7 +17,7 @@ of the equilibirum equations.
 # Import modules
 # --------------
 # SymBeam, use the variable checking function
-from symbeam import check_x_variable
+from symbeam.utils import check_x_variable
 
 # Symbolic Python Package, SymPy
 import sympy as sym
