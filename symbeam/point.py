@@ -332,6 +332,7 @@ class point(ABC):
             zorder=1000,
             linewidth=linewidth,
             color=color,
+            clip_on=False
         )
         ax.add_patch(arc)
 
