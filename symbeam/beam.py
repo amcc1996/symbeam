@@ -1205,12 +1205,12 @@ class beam:
             )
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
-                    span_string, "v(x)", str(isegment.rotation)
+                    span_string, "v(x)", str(isegment.deflection)
                 )
             )
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
-                    span_string, "dv/dx(x)", str(isegment.deflection)
+                    span_string, "dv/dx(x)", str(isegment.rotation)
                 )
             )
 
