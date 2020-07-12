@@ -941,7 +941,7 @@ class beam:
             shear_force_plot = shear_force_plot.subs(subs)
             bending_moment_plot = bending_moment_plot.subs(subs)
             deflection_plot = deflection_plot.subs(subs)
-            x_start_plot = x_start_plot.subs(subs)            
+            x_start_plot = x_start_plot.subs(subs)
             x_end_plot = x_end_plot.subs(subs)
 
             # Create new expressions by substituting all remaining symbolic variables with
@@ -1163,8 +1163,11 @@ class beam:
         )
         print(83 * "-")
         for isegment in self.segments:
+            # Trim decimal places when numeric
+            x_start = isegment.x_start
+            x_end = isegment.x_end
             span_string = "[ {0:^5} - {1:^5} ]".format(
-                str(isegment.x_start), str(isegment.x_end)
+                str(x_start), str(x_end)
             )
             print(
                 "{0:^20} {1:^20} {2:^20} {3:^20}".format(
