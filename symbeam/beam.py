@@ -881,8 +881,20 @@ class beam:
         self._print_deflections()
 
     # --------------------------------------------------------------------------------- plot
-    def plot(self):
+    def plot(self, subs={}):
         """Plots the shear force and bending moment diagrams and the deflection.
+
+        Parameters
+        ----------
+        subs : dictionary
+          User-specified symbols substitution for the symbolic expressions
+
+        Returns
+        -------
+        fig : matplotlib figure
+          Plotting figure
+        ax : list of matplotlib axis
+          List of subplot axis
         """
         # Define some plotting settings.
         color_bending_moment = "firebrick"
@@ -899,6 +911,9 @@ class beam:
         xmin = 0
         xmax = 0
 
+        # Remove the 'x' variable from the user substitutions
+        subs.pop('x', None)
+
         # Create the figure and plot the shear force, bending moment and deflection for
         # each segment.
         fig, ax = plt.subplots(
@@ -913,21 +928,6 @@ class beam:
         # Plots segments
         # --------------
         for i, isegment in enumerate(self.segments):
-            # First, create new expressions by substituting all symbolic variables with '1',
-            # except for the x variable
-            variables_distributed_load = isegment.distributed_load.expression.free_symbols
-            variables_distributed_load.discard(x)
-            variables_shear_force = isegment.shear_force.free_symbols
-            variables_shear_force.discard(x)
-            variables_bending_moment = isegment.bending_moment.free_symbols
-            variables_bending_moment.discard(x)
-            variables_deflection = isegment.deflection.free_symbols
-            variables_deflection.discard(x)
-            variables_x_start = isegment.x_start.free_symbols
-            variables_x_start.discard(x)
-            variables_x_end = isegment.x_end.free_symbols
-            variables_x_end.discard(x)
-
             # Copies of the relevant expressions
             distributed_load_plot = isegment.distributed_load.expression
             shear_force_plot = isegment.shear_force
@@ -935,6 +935,29 @@ class beam:
             deflection_plot = isegment.deflection
             x_start_plot = isegment.x_start
             x_end_plot = isegment.x_end
+
+            # User defined substitutions
+            distributed_load_plot = distributed_load_plot.subs(subs)
+            shear_force_plot = shear_force_plot.subs(subs)
+            bending_moment_plot = bending_moment_plot.subs(subs)
+            deflection_plot = deflection_plot.subs(subs)
+            x_start_plot = x_start_plot.subs(subs)            
+            x_end_plot = x_end_plot.subs(subs)
+
+            # Create new expressions by substituting all remaining symbolic variables with
+            # '1', except for the x variable
+            variables_distributed_load = distributed_load_plot.free_symbols
+            variables_distributed_load.discard(x)
+            variables_shear_force = shear_force_plot.free_symbols
+            variables_shear_force.discard(x)
+            variables_bending_moment = bending_moment_plot.free_symbols
+            variables_bending_moment.discard(x)
+            variables_deflection = deflection_plot.free_symbols
+            variables_deflection.discard(x)
+            variables_x_start = x_start_plot.free_symbols
+            variables_x_start.discard(x)
+            variables_x_end = x_end_plot.free_symbols
+            variables_x_end.discard(x)
 
             for ivariable in variables_distributed_load:
                 distributed_load_plot = distributed_load_plot.subs({ivariable: 1})
@@ -1049,9 +1072,13 @@ class beam:
         # Loop over the points, draw the points and extract the magnitudes of the external
         # forces and moments.
         for i, ipoint in enumerate(self.points):
-            ipoint.draw_support(ax[0])
+            ipoint.draw_support(ax[0], input_substitution=subs)
             external_force_plot = ipoint.external_force
             external_moment_plot = ipoint.external_moment
+
+            # User-defined substitutions
+            external_force_plot = external_force_plot.subs(subs)
+            external_moment_plot = external_moment_plot.subs(subs)
 
             for ivariable in external_force_plot.free_symbols:
                 external_force_plot = external_force_plot.subs({ivariable: 1})

@@ -34,7 +34,7 @@ from symbeam.utils import check_x_variable
 tol = 1e-6
 # ==================================================================================== point
 class point(ABC):
-    """Abstract definition of a beam point.    
+    """Abstract definition of a beam point.
     """
 
     def __init__(self, x_coord):
@@ -214,8 +214,13 @@ class point(ABC):
         )
 
     # --------------------------------------------------------------- get_numeric_coordinate
-    def get_numeric_coordinate(self):
+    def get_numeric_coordinate(self, input_substitution={}):
         """Returns the coordinate of the point, by substituting all present symbols byb 1.
+
+        Parameters
+        ----------
+        input_substitution : dictionary
+          User-specified symbols substitution for the symbolic expressions
 
         Returns
         -------
@@ -223,13 +228,15 @@ class point(ABC):
           Numerical value of point coordinate
         """
         x_coord_plot = self.x_coord
+        input_substitution.pop('x', None)
+        x_coord_plot = x_coord_plot.subs(input_substitution)
         for ivariable in x_coord_plot.free_symbols:
             x_coord_plot = x_coord_plot.subs({ivariable: 1})
 
         return x_coord_plot
 
     # ------------------------------------------------------------------------- draw_support
-    def draw_support(self, ax):
+    def draw_support(self, ax, input_substitution={}):
         """Draws the point in the axis.
 
         Parameters
@@ -237,7 +244,7 @@ class point(ABC):
         ax : Matplotlib axis object
           Axis where to draw the point
         """
-        x_coord_plot = self.get_numeric_coordinate()
+        x_coord_plot = self.get_numeric_coordinate(input_substitution=input_substitution)
         self.draw_point(x_coord_plot, ax)
 
     # --------------------------------------------------------------------------- draw_force
