@@ -16,6 +16,7 @@ SymBeam furnishes to the outside world.
 # --------------
 # Ploting toolbox, Matplotlib
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 # Array toolbox, NumPy
 import numpy as np
@@ -1089,6 +1090,14 @@ class beam:
         ax[2].set_ylabel(r"Bending moment, $M(x)$")
         ax[3].set_ylabel(r"Deflection, $v(x)$")
         ax[3].set_xlabel(r"Coordinate, $x$")
+
+        # Axis ticks format.
+        ax[1].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[1].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[2].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
 
         return fig, ax
 
