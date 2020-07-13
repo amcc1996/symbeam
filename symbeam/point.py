@@ -259,10 +259,12 @@ class point(ABC):
           Length of the force in the figure
         """
         x_coord_plot = self.get_numeric_coordinate()
-        # Set the geometry scale.
+        # Set the geometry scale (heuristic).
+        scale_x = ax.get_xlim()[1] - ax.get_xlim()[0]
+        scale_y = ax.get_ylim()[1] - ax.get_ylim()[0]               
         width = 0.002
-        head_width = width * 7
-        head_length = width * 50
+        head_width = width * 7 * scale_x
+        head_length = width * 35 * scale_y
         color = "seagreen"
 
         # Draw the vector.
