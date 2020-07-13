@@ -1139,9 +1139,10 @@ class beam:
         )
         print(83 * "-")
         for ipoint in self.points:
+            x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)
             print(
                 "{0:^20} {1:^20} {2:^20} {3:^20}".format(
-                    str(ipoint.x_coord),
+                    x_coord_str,
                     ipoint.get_name(),
                     str(ipoint.external_force),
                     str(ipoint.external_moment),
@@ -1164,10 +1165,10 @@ class beam:
         print(83 * "-")
         for isegment in self.segments:
             # Trim decimal places when numeric
-            x_start = isegment.x_start
-            x_end = isegment.x_end
+            x_start_str = self._trim_trailing_zeros(isegment.x_start)
+            x_end_str = self._trim_trailing_zeros(isegment.x_end)
             span_string = "[ {0:^5} - {1:^5} ]".format(
-                str(x_start), str(x_end)
+                x_start_str, x_end_str
             )
             print(
                 "{0:^20} {1:^20} {2:^20} {3:^20}".format(
@@ -1190,16 +1191,18 @@ class beam:
         print(83 * "-")
         for ipoint in self.points:
             if ipoint.has_reaction_force():
+                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)                
                 print(
                     "{0:^27} {1:^27} {2:^27}".format(
-                        str(ipoint.x_coord), "Force", str(ipoint.reaction_force)
+                        x_coord_str, "Force", str(ipoint.reaction_force)
                     )
                 )
 
             if ipoint.has_reaction_moment():
+                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)                   
                 print(
                     "{0:^27} {1:^27} {2:^27}".format(
-                        str(ipoint.x_coord), "Moment", str(ipoint.reaction_moment)
+                        x_coord_str, "Moment", str(ipoint.reaction_moment)
                     )
                 )
 
@@ -1213,9 +1216,11 @@ class beam:
         print(83 * "=")
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Diagram", "Expression"))
         for isegment in self.segments:
+            x_start_str = self._trim_trailing_zeros(isegment.x_start)
+            x_end_str = self._trim_trailing_zeros(isegment.x_end)            
             print(83 * "-")
             span_string = "[ {0:^5} - {1:^5} ]".format(
-                str(isegment.x_start), str(isegment.x_end)
+                x_start_str, x_end_str
             )
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
@@ -1238,9 +1243,11 @@ class beam:
         print(83 * "=")
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Variable", "Expression"))
         for isegment in self.segments:
+            x_start_str = self._trim_trailing_zeros(isegment.x_start)
+            x_end_str = self._trim_trailing_zeros(isegment.x_end)             
             print(83 * "-")
             span_string = "[ {0:^5} - {1:^5} ]".format(
-                str(isegment.x_start), str(isegment.x_end)
+                x_start_str, x_end_str
             )
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
@@ -1255,6 +1262,28 @@ class beam:
 
         print(83 * "=" + "\n")
 
+    # ------------------------------------------------------------------ trim_trailing_zeros
+    @staticmethod
+    def _trim_trailing_zeros(expr):
+        """Removes the trailing zeros from a SymPy expression containing only numbers.
+        
+        Parameters
+        ----------
+        expr : SymPy expression
+          Input expression
+          
+        Returns
+        -------
+        expr_trimmed : SymPy expression
+          Output (trimmed expression)
+        """
+        expr_trimmed = str(expr)
+        if len(expr.free_symbols) == 0 and '.' in expr_trimmed:
+            expr_trimmed = expr_trimmed.rstrip('0')
+            if expr_trimmed[-1] == '.':
+                expr_trimmed = expr_trimmed[1:-1]
+                
+        return expr_trimmed      
 
 # ========================================================================= property_segment
 class _property_segment:
