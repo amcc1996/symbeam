@@ -1,11 +1,11 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Numeric length
-#           2 - Pin
-#           3 - Two rollers
-#           4 - Numeric constant distributed load
-#           5 - Numeric quadratic distributed load
+# Features: 1. Numeric length
+#           2. Pin
+#           3. Two rollers
+#           4. Numeric constant distributed load
+#           5. Numeric quadratic distributed load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

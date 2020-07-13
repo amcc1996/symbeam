@@ -1,14 +1,14 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Numeric length
-#           2 - Pin
-#           3 - Rollers
-#           4 - Symbolic point load
-#           5 - Discontinuous distribution of Young modulus
-#           6 - Discontinuous distribution of second moment of area
-#           7 - `E` and `I` imported directly from SymPy library
-#           8 - Used-speficied substitution
+# Features: 1. Numeric length
+#           2. Pin
+#           3. Rollers
+#           4. Symbolic point load
+#           5. Discontinuous distribution of Young modulus
+#           6. Discontinuous distribution of second moment of area
+#           7. `E` and `I` imported directly from SymPy library
+#           8. Used-speficied substitution
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

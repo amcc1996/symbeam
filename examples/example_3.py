@@ -1,11 +1,11 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Symbolic length
-#           2 - Fixed
-#           3 - Hinge
-#           4 - Symbolic contstant linear load
-#           5 - Symbolic point load
+# Features: 1. Symbolic length
+#           2. Fixed
+#           3. Hinge
+#           4. Symbolic contstant linear load
+#           5. Symbolic point load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

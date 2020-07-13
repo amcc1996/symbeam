@@ -1,12 +1,12 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Symbolic length
-#           2 - Roller
-#           3 - Pin
-#           4 - Symbolic distributed linear load
-#           5 - Symbolic contstant linear load
-#           6 - User-specified symbolic substitutions
+# Features: 1. Symbolic length
+#           2. Roller
+#           3. Pin
+#           4. Symbolic distributed linear load
+#           5. Symbolic contstant linear load
+#           6. User-specified symbolic substitutions
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

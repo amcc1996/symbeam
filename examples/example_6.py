@@ -1,10 +1,10 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Numeric length
-#           2 - Pin
-#           3 - Rollers
-#           4 - Symbolic point load
+# Features: 1. Numeric length
+#           2. Pin
+#           3. Rollers
+#           4. Symbolic point load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

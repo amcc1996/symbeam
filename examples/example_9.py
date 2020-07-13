@@ -1,12 +1,12 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1 - Numeric length
-#           2 - Fixed
-#           3 - Hinge
-#           4 - Roller
-#           5 - Numeric point moment
-#           6 - Two numeric linear distributed loads
+# Features: 1. Numeric length
+#           2. Fixed
+#           3. Hinge
+#           4. Roller
+#           5. Numeric point moment
+#           6. Two numeric linear distributed loads
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt
