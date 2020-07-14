@@ -111,6 +111,6 @@ with open('README.md', 'w') as file:
         # Wite terminal output
         file.write('\n```')
         for line in output_lines:
-            file.write('\n' + line)
+            file.write('line)
 
         file.write('\n```')
