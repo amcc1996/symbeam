@@ -17,7 +17,7 @@ if not os.path.exists(svg_dir):
 
 # Start writing the README.md
 with open('README.md', 'w') as file:
-    file.write('##Examples\n')
+    file.write('# Examples\n')
     file.write('Here you can find a comprehensive but by no means exhaustive list of'
                + ' examples exploring the capabilities of SymBeam. In each example,'
                + ' you will find a hyperlink to the associated file in the repository,'
@@ -26,7 +26,7 @@ with open('README.md', 'w') as file:
     # Loop over all examples
     for example in list_examples[0:2]:
         name = os.path.basename(example)
-        file.write('\n##[{0}](./{1})'.format(name, name))
+        file.write('\n## [{0}](./{1})'.format(name, name))
         print('\nRunning {0}'.format(example))
 
         # Create an emtpy temporary file
@@ -92,8 +92,11 @@ with open('README.md', 'w') as file:
         file.write('```')
 
         # Write image code
-        file.write("\n<img src='{0}', alt='{1}' width='60%'/>\n".format(svg_path, svg_path))
+        file.write("\n<img src='{0}', alt='{1}' width='60%'/>\n".format(new_svg_path, new_svg_path))
 
         # Wite terminal output
+        file.write('```')
         for line in output_lines:
             file.write(line)
+
+        file.write('```')

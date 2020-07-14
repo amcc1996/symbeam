@@ -1,7 +1,7 @@
-##Examples
+# Examples
 Here you can find a comprehensive but by no means exhaustive list of examples exploring the capabilities of SymBeam. In each example, you will find a hyperlink to the associated file in the repository, the respective source code and output: both console and plot.
 
-##[example_14.py](./example_14.py)
+## [example_14.py](./example_14.py)
 1. Numeric length
 2. Pin
 3. Roller
@@ -20,7 +20,7 @@ test_beam.solve()
 fig, ax = test_beam.plot()
 ```
 <img src='./example_14.svg', alt='./example_14.svg' width='60%'/>
-
+```
                                     Beam points                                    
 ===================================================================================
      Coordinate              Type                 Load                Moment       
@@ -72,8 +72,8 @@ fig, ax = test_beam.plot()
  [  l/2  -   l   ]    dv/dx(x)  -3*P*l**2/(16*E*I) + P*l*x/(2*E*I) - P*x**2/(4*E*I)
 ===================================================================================
 
-
-##[example_3.py](./example_3.py)
+```
+## [example_3.py](./example_3.py)
 1. Symbolic length
 2. Fixed
 3. Hinge
@@ -94,7 +94,7 @@ test_beam.solve()
 fig, ax = test_beam.plot()
 ```
 <img src='./example_3.svg', alt='./example_3.svg' width='60%'/>
-
+```
                                     Beam points                                    
 ===================================================================================
      Coordinate              Type                 Load                Moment       
@@ -155,3 +155,4 @@ fig, ax = test_beam.plot()
  [  l/2  -   l   ]    dv/dx(x)  3*l**3*q/(32*E*I) - l**2*q*x/(4*E*I) + 3*l*q*x**2/(8*E*I) - q*x**3/(6*E*I)
 ===================================================================================
 
+```
