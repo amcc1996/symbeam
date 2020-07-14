@@ -20,5 +20,3 @@ test_beam.solve()
 fig, ax = test_beam.plot(subs={'q':2, 'l':2, 'x':10}) # 'x' is not substituted
 
 plt.savefig(__file__.split('.py')[0]+'.svg')
-
-plt.show()

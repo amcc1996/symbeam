@@ -21,5 +21,3 @@ test_beam.solve()
 fig, ax = test_beam.plot()
 
 plt.savefig(__file__.split('.py')[0]+'.svg')
-
-plt.show()

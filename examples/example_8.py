@@ -27,5 +27,3 @@ test_beam.solve()
 fig, ax = test_beam.plot(subs={'P':1000})
 
 plt.savefig(__file__.split('.py')[0]+'.svg')
-
-plt.show()
