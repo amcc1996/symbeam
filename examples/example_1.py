@@ -5,7 +5,7 @@
 #           2. Roller
 #           3. Pin
 #           4. Symbolic distributed linear load
-#           5. Symbolic contstant linear load
+#           5. Symbolic distributed constant load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

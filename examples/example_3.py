@@ -4,7 +4,7 @@
 # Features: 1. Symbolic length
 #           2. Fixed
 #           3. Hinge
-#           4. Symbolic contstant linear load
+#           4. Symbolic distributed constant load
 #           5. Symbolic point load
 
 from symbeam.beam import beam

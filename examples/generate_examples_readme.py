@@ -38,7 +38,7 @@ with open('README.md', 'w') as file:
                + ' the respective source code and output: both console and plot.\n')
 
     # Loop over all examples
-    for example in list_examples[0:2]:
+    for example in list_examples:
         name = os.path.basename(example)
         file.write('\n## [{0}](./{1})'.format(name, name))
         print('\nRunning {0}'.format(example))
@@ -106,7 +106,7 @@ with open('README.md', 'w') as file:
         file.write('```')
 
         # Write image code
-        file.write('\n<p align="center">\n  <img src="{0}" width="50%">\n</p>\n'.format(new_svg_path))
+        file.write('\n<p align="center">\n  <img src="{0}" width="70%">\n</p>\n'.format(new_svg_path))
 
         # Wite terminal output
         file.write('\n```')
