@@ -92,7 +92,7 @@ with open('README.md', 'w') as file:
         file.write('```')
 
         # Write image code
-        file.write("\n<img src='{0}', alt='{1}' width='60%'/>\n".format(new_svg_path, new_svg_path))
+        file.write('\n<p align="center">\n  <img src="{0}" width="50%">\n</p>'.format(new_svg_path))
 
         # Wite terminal output
         file.write('```')

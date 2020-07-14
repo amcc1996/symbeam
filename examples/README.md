@@ -19,8 +19,9 @@ test_beam.add_point_load('l/2', '-P')
 test_beam.solve()
 fig, ax = test_beam.plot()
 ```
-<img src='./svg/./example_14.svg', alt='./svg/./example_14.svg' width='60%'/>
-```
+<p align="center">
+  <img src="./svg/./example_14.svg" width="50%">
+</p>```
                                     Beam points                                    
 ===================================================================================
      Coordinate              Type                 Load                Moment       
@@ -93,8 +94,9 @@ test_beam.add_point_load('l/4', '-q*l')
 test_beam.solve()
 fig, ax = test_beam.plot()
 ```
-<img src='./svg/./example_3.svg', alt='./svg/./example_3.svg' width='60%'/>
-```
+<p align="center">
+  <img src="./svg/./example_3.svg" width="50%">
+</p>```
                                     Beam points                                    
 ===================================================================================
      Coordinate              Type                 Load                Moment       
