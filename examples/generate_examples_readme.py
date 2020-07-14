@@ -5,10 +5,24 @@
 
 import glob
 import os
+import re
+
+# Human sorting: from https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    '''
+    alist.sort(key=natural_keys) sorts in human order
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    (See Toothy's implementation in the comments)
+    '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 # Get list of examples and remove the current script
 list_examples = glob.glob('./*.py')
 list_examples.remove('./'+__file__)
+list_examples.sort(key=natural_keys)
 
 # Create the directory for SVG files
 svg_dir = './svg'
@@ -92,7 +106,7 @@ with open('README.md', 'w') as file:
         file.write('```')
 
         # Write image code
-        file.write('\n<p align="center">\n  <img src="{0}" width="50%">\n</p>'.format(new_svg_path))
+        file.write('\n<p align="center">\n  <img src="{0}" width="50%">\n</p>\n'.format(new_svg_path))
 
         # Wite terminal output
         file.write('```')
