@@ -109,8 +109,8 @@ with open('README.md', 'w') as file:
         file.write('\n<p align="center">\n  <img src="{0}" width="50%">\n</p>\n'.format(new_svg_path))
 
         # Wite terminal output
-        file.write('```')
+        file.write('\n```')
         for line in output_lines:
-            file.write(line)
+            file.write('\n' + line)
 
-        file.write('```')
+        file.write('\n```')
