@@ -19,7 +19,7 @@ test_beam.add_point_load('l/2', '-P')
 test_beam.solve()
 fig, ax = test_beam.plot()
 ```
-<img src='./example_14.svg', alt='./example_14.svg' width='60%'/>
+<img src='./svg/./example_14.svg', alt='./svg/./example_14.svg' width='60%'/>
 ```
                                     Beam points                                    
 ===================================================================================
@@ -93,7 +93,7 @@ test_beam.add_point_load('l/4', '-q*l')
 test_beam.solve()
 fig, ax = test_beam.plot()
 ```
-<img src='./example_3.svg', alt='./example_3.svg' width='60%'/>
+<img src='./svg/./example_3.svg', alt='./svg/./example_3.svg' width='60%'/>
 ```
                                     Beam points                                    
 ===================================================================================
