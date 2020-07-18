@@ -247,8 +247,8 @@ fig, ax = test_beam.plot()
 1. Numeric length
 2. Fixed
 3. Hinge
-4. Numeric linear distributed load
-5. Numeric contstant distributed load
+4. Numeric distributed linear load
+5. Numeric distributed contstant load
 6. Numeric point moment
 
 ```python
@@ -336,8 +336,8 @@ fig, ax = test_beam.plot()
 1. Numeric length
 2. Pin
 3. Two rollers
-4. Numeric constant distributed load
-5. Numeric quadratic distributed load
+4. Numeric distributed constant load
+5. Numeric distributed quadratic load
 
 ```python
 from symbeam.beam import beam
@@ -423,7 +423,7 @@ fig, ax = test_beam.plot()
 ## [example_6.py](./example_6.py)
 1. Numeric length
 2. Pin
-3. Rollers
+3. Roller
 4. Symbolic point load
 
 ```python
@@ -512,7 +512,7 @@ fig, ax = test_beam.plot()
 5. Discontinuous distribution of Young modulus
 6. Discontinuous distribution of second moment of area
 7. `E` and `I` symbols created with SymPy
-8. Used-speficied substitution
+8. User-speficied substitution
 
 ```python
 from symbeam.beam import beam
@@ -623,7 +623,7 @@ fig, ax = test_beam.plot(subs={'P':1000})
 5. Discontinuous distribution of Young modulus
 6. Discontinuous distribution of second moment of area
 7. `E` and `I` imported directly from SymPy library
-8. Used-speficied substitution
+8. User-speficied substitution
 
 ```python
 from symbeam.beam import beam
@@ -730,7 +730,7 @@ fig, ax = test_beam.plot(subs={'P':1000})
 3. Hinge
 4. Roller
 5. Numeric point moment
-6. Two numeric linear distributed loads
+6. Two numeric distributed linear loads
 
 ```python
 from symbeam.beam import beam
@@ -817,9 +817,9 @@ fig, ax = test_beam.plot()
 1. Numeric length
 2. Roller
 3. Pin
-4. Numeric linear distriuted load
-5. Numeric quadratic distriuted load
-6. Two numeric linear distributed loads
+4. Numeric distriuted linear load
+5. Numeric distriuted quadratic load
+6. Two numeric distributed linear loads
 
 ```python
 from symbeam.beam import beam
@@ -898,8 +898,8 @@ fig, ax = test_beam.plot()
 2. Roller
 3. Hinge
 4. Fixed
-5. Numeric constant distributed load
-6. Numeric quadratic distributed load
+5. Numeric distributed constant load
+6. Numeric distributed quadratic load
 
 ```python
 from symbeam.beam import beam
