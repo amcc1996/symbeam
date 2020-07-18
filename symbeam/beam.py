@@ -83,6 +83,10 @@ class beam:
                     + "been defined with distinct symbols."
                 )
 
+        if len(self.length.free_symbols) > 1:
+            raise RuntimeError("Only one symbols is allowed to define the length of"
+                               + " the beam.")
+
         # Initialise the list storing all the input information for the beam
         self.support_list = []
         self.distributed_load_list = []
@@ -1191,7 +1195,7 @@ class beam:
         print(83 * "-")
         for ipoint in self.points:
             if ipoint.has_reaction_force():
-                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)                
+                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)
                 print(
                     "{0:^27} {1:^27} {2:^27}".format(
                         x_coord_str, "Force", str(ipoint.reaction_force)
@@ -1199,7 +1203,7 @@ class beam:
                 )
 
             if ipoint.has_reaction_moment():
-                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)                   
+                x_coord_str = self._trim_trailing_zeros(ipoint.x_coord)
                 print(
                     "{0:^27} {1:^27} {2:^27}".format(
                         x_coord_str, "Moment", str(ipoint.reaction_moment)
@@ -1217,7 +1221,7 @@ class beam:
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Diagram", "Expression"))
         for isegment in self.segments:
             x_start_str = self._trim_trailing_zeros(isegment.x_start)
-            x_end_str = self._trim_trailing_zeros(isegment.x_end)            
+            x_end_str = self._trim_trailing_zeros(isegment.x_end)
             print(83 * "-")
             span_string = "[ {0:^5} - {1:^5} ]".format(
                 x_start_str, x_end_str
@@ -1244,7 +1248,7 @@ class beam:
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Variable", "Expression"))
         for isegment in self.segments:
             x_start_str = self._trim_trailing_zeros(isegment.x_start)
-            x_end_str = self._trim_trailing_zeros(isegment.x_end)             
+            x_end_str = self._trim_trailing_zeros(isegment.x_end)
             print(83 * "-")
             span_string = "[ {0:^5} - {1:^5} ]".format(
                 x_start_str, x_end_str
@@ -1266,12 +1270,12 @@ class beam:
     @staticmethod
     def _trim_trailing_zeros(expr):
         """Removes the trailing zeros from a SymPy expression containing only numbers.
-        
+
         Parameters
         ----------
         expr : SymPy expression
           Input expression
-          
+
         Returns
         -------
         expr_trimmed : SymPy expression
@@ -1282,8 +1286,8 @@ class beam:
             expr_trimmed = expr_trimmed.rstrip('0')
             if expr_trimmed[-1] == '.':
                 expr_trimmed = expr_trimmed[1:-1]
-                
-        return expr_trimmed      
+
+        return expr_trimmed
 
 # ========================================================================= property_segment
 class _property_segment:

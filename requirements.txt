@@ -1,2 +1,13 @@
 pkg-resources==0.0.0
 -e git+git@github.com:amcc1996/symbeam.git@3b6e2184609bd7f7d69138f7345dc022bcad7c46#egg=symbeam
+cycler==0.10.0
+kiwisolver==1.2.0
+matplotlib==3.2.2
+mpmath==1.1.0
+numpy==1.19.0
+pkg-resources==0.0.0
+pyparsing==2.4.7
+python-dateutil==2.8.1
+six==1.15.0
+-e git+git@github.com:amcc1996/symbeam.git@4902a70adaa2949df39cef75497b672fb5639467#egg=symbeam
+sympy==1.6.1
