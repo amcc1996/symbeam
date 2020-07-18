@@ -4,8 +4,8 @@
 # Features: 1. Numeric length
 #           2. Fixed
 #           3. Hinge
-#           4. Numeric linear distributed load
-#           5. Numeric contstant distributed load
+#           4. Numeric distributed linear load
+#           5. Numeric distributed contstant load
 #           6. Numeric point moment
 
 from symbeam.beam import beam

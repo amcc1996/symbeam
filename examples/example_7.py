@@ -8,7 +8,7 @@
 #           5. Discontinuous distribution of Young modulus
 #           6. Discontinuous distribution of second moment of area
 #           7. `E` and `I` symbols created with SymPy
-#           8. Used-speficied substitution
+#           8. User-speficied substitution
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

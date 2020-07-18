@@ -3,7 +3,7 @@
 #                                                      António Carneiro <amcc@fe.up.pt> 2020
 # Features: 1. Numeric length
 #           2. Pin
-#           3. Rollers
+#           3. Roller
 #           4. Symbolic point load
 
 from symbeam.beam import beam

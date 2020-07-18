@@ -6,7 +6,7 @@
 #           3. Hinge
 #           4. Roller
 #           5. Numeric point moment
-#           6. Two numeric linear distributed loads
+#           6. Two numeric distributed linear loads
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

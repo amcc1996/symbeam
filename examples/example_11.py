@@ -5,8 +5,8 @@
 #           2. Roller
 #           3. Hinge
 #           4. Fixed
-#           5. Numeric constant distributed load
-#           6. Numeric quadratic distributed load
+#           5. Numeric distributed constant load
+#           6. Numeric distributed quadratic load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt

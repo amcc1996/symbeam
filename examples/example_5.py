@@ -4,8 +4,8 @@
 # Features: 1. Numeric length
 #           2. Pin
 #           3. Two rollers
-#           4. Numeric constant distributed load
-#           5. Numeric quadratic distributed load
+#           4. Numeric distributed constant load
+#           5. Numeric distributed quadratic load
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt
