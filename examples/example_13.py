@@ -6,7 +6,7 @@
 #           3. Symbolic point moment
 #           4. Classical clamped beam problem
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('L', x0=0)

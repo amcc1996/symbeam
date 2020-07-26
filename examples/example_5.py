@@ -7,7 +7,7 @@
 #           4. Numeric distributed constant load
 #           5. Numeric distributed quadratic load
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(6, x0=0)

@@ -10,7 +10,7 @@
 #           7. `E` and `I` symbols created with SymPy
 #           8. User-speficied substitution
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 import sympy as sym
 

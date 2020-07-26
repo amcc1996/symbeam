@@ -6,7 +6,7 @@
 #           3. Roller
 #           4. Symbolic point load
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(3, x0=0)

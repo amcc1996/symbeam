@@ -6,7 +6,7 @@
 #           3. Roller
 #           4. Set of numeric point forces and moments
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)

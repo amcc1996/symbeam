@@ -10,7 +10,7 @@
 #           7. `E` and `I` imported directly from SymPy library
 #           8. User-speficied substitution
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 from sympy.abc import E, I
 

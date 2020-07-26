@@ -8,7 +8,7 @@
 #           5. Numeric distributed contstant load
 #           6. Numeric point moment
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(6, x0=0)

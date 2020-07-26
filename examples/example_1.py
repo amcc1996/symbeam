@@ -7,7 +7,7 @@
 #           4. Symbolic distributed linear load
 #           5. Symbolic distributed constant load
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)

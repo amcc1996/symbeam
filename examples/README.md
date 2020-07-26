@@ -9,7 +9,7 @@ Here you can find a comprehensive but by no means exhaustive list of examples ex
 5. Symbolic distributed constant load
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
@@ -87,7 +87,7 @@ fig, ax = test_beam.plot()
 6. User-specified symbolic substitutions
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
@@ -164,7 +164,7 @@ fig, ax = test_beam.plot(subs={'q':2, 'l':2, 'x':10}) # 'x' is not substituted
 5. Symbolic point load
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
@@ -252,7 +252,7 @@ fig, ax = test_beam.plot()
 6. Numeric point moment
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(6, x0=0)
@@ -340,7 +340,7 @@ fig, ax = test_beam.plot()
 5. Numeric distributed quadratic load
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(6, x0=0)
@@ -427,7 +427,7 @@ fig, ax = test_beam.plot()
 4. Symbolic point load
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(3, x0=0)
@@ -515,7 +515,7 @@ fig, ax = test_beam.plot()
 8. User-speficied substitution
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 import sympy as sym
 
@@ -626,7 +626,7 @@ fig, ax = test_beam.plot(subs={'P':1000})
 8. User-speficied substitution
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 from sympy.abc import E, I
 
@@ -733,7 +733,7 @@ fig, ax = test_beam.plot(subs={'P':1000})
 6. Two numeric distributed linear loads
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(6, x0=0)
@@ -822,7 +822,7 @@ fig, ax = test_beam.plot()
 6. Two numeric distributed linear loads
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(4, x0=0)
@@ -902,7 +902,7 @@ fig, ax = test_beam.plot()
 6. Numeric distributed quadratic load
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(4, x0=0)
@@ -988,7 +988,7 @@ fig, ax = test_beam.plot()
 4. Classical clamped beam problem
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('L', x0=0)
@@ -1054,7 +1054,7 @@ fig, ax = test_beam.plot()
 4. Classical clamped beam problem
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('L', x0=0)
@@ -1121,7 +1121,7 @@ fig, ax = test_beam.plot()
 5. Classical pinned beam problem with half-span force
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
@@ -1196,7 +1196,7 @@ fig, ax = test_beam.plot()
 4. Set of numeric point forces and moments
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
@@ -1299,7 +1299,7 @@ fig, ax = test_beam.plot()
 4. Numeric sinusoidal distributed force
 
 ```python
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(1, x0=0)

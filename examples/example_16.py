@@ -6,7 +6,7 @@
 #           3. Roller
 #           4. Numeric sinusoidal distributed force
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam(1, x0=0)

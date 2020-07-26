@@ -7,7 +7,7 @@
 #           4. Numeric point force
 #           5. Classical pinned beam problem with half-span force
 
-from symbeam.beam import beam
+from symbeam import beam
 import matplotlib.pyplot as plt
 
 test_beam = beam('l', x0=0)
