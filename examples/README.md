@@ -1118,7 +1118,7 @@ fig, ax = test_beam.plot()
 2. Pin
 3. Roller
 4. Numeric point force
-5. Classical pinned beam problem without mid-length force
+5. Classical pinned beam problem with half-span force
 
 ```python
 from symbeam.beam import beam

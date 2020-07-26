@@ -5,7 +5,7 @@
 #           2. Pin
 #           3. Roller
 #           4. Numeric point force
-#           5. Classical pinned beam problem without mid-length force
+#           5. Classical pinned beam problem with half-span force
 
 from symbeam.beam import beam
 import matplotlib.pyplot as plt
