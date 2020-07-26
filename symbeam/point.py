@@ -228,7 +228,7 @@ class point(ABC):
           Numerical value of point coordinate
         """
         x_coord_plot = self.x_coord
-        input_substitution.pop('x', None)
+        input_substitution.pop("x", None)
         x_coord_plot = x_coord_plot.subs(input_substitution)
         for ivariable in x_coord_plot.free_symbols:
             x_coord_plot = x_coord_plot.subs({ivariable: 1})
@@ -261,7 +261,7 @@ class point(ABC):
         x_coord_plot = self.get_numeric_coordinate()
         # Set the geometry scale (heuristic).
         scale_x = ax.get_xlim()[1] - ax.get_xlim()[0]
-        scale_y = ax.get_ylim()[1] - ax.get_ylim()[0]               
+        scale_y = ax.get_ylim()[1] - ax.get_ylim()[0]
         width = 0.002
         head_width = width * 7 * scale_x
         head_length = width * 35 * scale_y
@@ -341,7 +341,7 @@ class point(ABC):
             zorder=1000,
             linewidth=linewidth,
             color=color,
-            clip_on=False
+            clip_on=False,
         )
         ax.add_patch(arc)
 

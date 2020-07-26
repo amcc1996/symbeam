@@ -84,8 +84,9 @@ class beam:
                 )
 
         if len(self.length.free_symbols) > 1:
-            raise RuntimeError("Only one symbols is allowed to define the length of"
-                               + " the beam.")
+            raise RuntimeError(
+                "Only one symbols is allowed to define the length of" + " the beam."
+            )
 
         # Initialise the list storing all the input information for the beam
         self.support_list = []
@@ -862,7 +863,7 @@ class beam:
             )
 
     # -------------------------------------------------------------------------------- solve
-    def solve(self):
+    def solve(self, output=True):
         """Solves the beam equilibirum problem, determining the reactions, diagrams of
         internal loads and deflections.
         """
@@ -878,11 +879,12 @@ class beam:
         self._solve_deflection()
 
         # Output the results.
-        self._print_points()
-        self._print_segments()
-        self._print_reactions()
-        self._print_internal_loads()
-        self._print_deflections()
+        if output:
+            self._print_points()
+            self._print_segments()
+            self._print_reactions()
+            self._print_internal_loads()
+            self._print_deflections()
 
     # --------------------------------------------------------------------------------- plot
     def plot(self, subs={}):
@@ -916,7 +918,7 @@ class beam:
         xmax = 0
 
         # Remove the 'x' variable from the user substitutions
-        subs.pop('x', None)
+        subs.pop("x", None)
 
         # Create the figure and plot the shear force, bending moment and deflection for
         # each segment.
@@ -1123,12 +1125,12 @@ class beam:
         ax[3].set_xlabel(r"Coordinate, $x$")
 
         # Axis ticks format.
-        ax[1].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
-        ax[1].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
-        ax[2].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
-        ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
-        ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
-        ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.0e'))
+        ax[1].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[1].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[2].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
 
         return fig, ax
 
@@ -1171,9 +1173,7 @@ class beam:
             # Trim decimal places when numeric
             x_start_str = self._trim_trailing_zeros(isegment.x_start)
             x_end_str = self._trim_trailing_zeros(isegment.x_end)
-            span_string = "[ {0:^5} - {1:^5} ]".format(
-                x_start_str, x_end_str
-            )
+            span_string = "[ {0:^5} - {1:^5} ]".format(x_start_str, x_end_str)
             print(
                 "{0:^20} {1:^20} {2:^20} {3:^20}".format(
                     span_string,
@@ -1223,9 +1223,7 @@ class beam:
             x_start_str = self._trim_trailing_zeros(isegment.x_start)
             x_end_str = self._trim_trailing_zeros(isegment.x_end)
             print(83 * "-")
-            span_string = "[ {0:^5} - {1:^5} ]".format(
-                x_start_str, x_end_str
-            )
+            span_string = "[ {0:^5} - {1:^5} ]".format(x_start_str, x_end_str)
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
                     span_string, "V(x)", str(isegment.shear_force)
@@ -1250,9 +1248,7 @@ class beam:
             x_start_str = self._trim_trailing_zeros(isegment.x_start)
             x_end_str = self._trim_trailing_zeros(isegment.x_end)
             print(83 * "-")
-            span_string = "[ {0:^5} - {1:^5} ]".format(
-                x_start_str, x_end_str
-            )
+            span_string = "[ {0:^5} - {1:^5} ]".format(x_start_str, x_end_str)
             print(
                 "{0:^20} {1:^10} {2:^50}".format(
                     span_string, "v(x)", str(isegment.deflection)
@@ -1282,12 +1278,13 @@ class beam:
           Output (trimmed expression)
         """
         expr_trimmed = str(expr)
-        if len(expr.free_symbols) == 0 and '.' in expr_trimmed:
-            expr_trimmed = expr_trimmed.rstrip('0')
-            if expr_trimmed[-1] == '.':
+        if len(expr.free_symbols) == 0 and "." in expr_trimmed:
+            expr_trimmed = expr_trimmed.rstrip("0")
+            if expr_trimmed[-1] == ".":
                 expr_trimmed = expr_trimmed[1:-1]
 
         return expr_trimmed
+
 
 # ========================================================================= property_segment
 class _property_segment:
