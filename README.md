@@ -95,11 +95,11 @@ new_beam = beam(L)
 
 # new_beam.set_young(x_start, x_end, value)
 new_beam.set_young(0, L/2, E)
-new_beam.set_young(L/2, L, E/100)
+new_beam.set_young(L/2, L, E/10)
 
 # new_beam.set_inertia(x_start, x_end, value)
 new_beam.set_inertia(0, L/2, I)
-new_beam.set_inertia(L/2, L, I/10)
+new_beam.set_inertia(L/2, L, I/2)
 ```
 By default, if the properties are not explicitely set by the user, `symbeam` considers constant values `E` and `I` along the span of the beam, this is, the property setting methods do not need to be evoked. If any segment is explicitely set, the user must then specify all segments in a consistent manner. 
 
@@ -126,7 +126,7 @@ The applied external loads are the missing item for completely defining the beam
 Point loads and moments are incorporated by calling the `add_point_load()` and `add_point_moment()` methods, which receive the coordinate of the point and the value of the load. Distributed loads are applied by calling the `add_distributed_load()` method, which takes the starting and ending point of the distributed load and the associated expression.
 
 ```python
-new_beam.add_point_load(L/2, -P)
+new_beam.add_point_load(3*L/4, -P)
 new_beam.add_point_moment(L, M)
 new_beam.add_distributed_load(0, L/2, -q * x)
 ```
@@ -162,24 +162,24 @@ new_beam = beam(L)
 
 # new_beam.set_young(x_start, x_end, value)
 new_beam.set_young(0, L/2, E)
-new_beam.set_young(L/2, L, E/100)
+new_beam.set_young(L/2, L, E/10)
 
 # new_beam.set_inertia(x_start, x_end, value)
 new_beam.set_inertia(0, L/2, I)
-new_beam.set_inertia(L/2, L, I/10)
+new_beam.set_inertia(L/2, L, I/2)
 
 # new_beam.add_support(x_coord, type)
 new_beam.add_support(0, 'fixed')
 new_beam.add_support(L, 'roller')
 new_beam.add_support(3*L/4, 'hinge')
 
-new_beam.add_point_load(L/2, -P)
+new_beam.add_point_load(3*L/4, -P)
 new_beam.add_point_moment(L, M)
 new_beam.add_distributed_load(0, L/2, -q * x)
 
 new_beam.solve()
 
-new_beam.plot()
+new_beam.plot(subs={'P':1000, 'q':5000, 'L':2})
 
 plt.show()
 ```
