@@ -74,10 +74,30 @@ new_beam = beam(L)
 ```
 
 5. Symbolic input from a symbolic variable provided by SymPy
-
 ```python
 from symbeam import beam
 from sympy.abc import L
 
 new_beam = beam(L)
 ```
+
+### Setting beam properties: Young modulus and second moment of area
+A beam must be associated with some distribution of material propertiy and section geometry along its length, namely, the Young modulus of the material and the second moment of area of the section. While these are not required for finding the bending diagramas, as these results simply from equilibirum considerations, they are mandatory for computing the deflections of the beam.
+
+In `symbeam`, these properties can be set in individual segments along the beam, such that the set of segments for each property must encompass all the beam span and not be overlapping at any region. For example, considering a beam of length `L`, the Young modulus and second moment of area are set by passing the stating and ending coordinate and the value as follows
+```python
+from symbeam import beam
+from sympy.abc import L, E, I
+
+new_beam = beam(L)
+
+# new_beam.set_young(x_start, x_end, value)
+new_beam.set_young(0, L/2, E)
+new_beam.set_young(L/2, L, E/100)
+
+# new_beam.set_inertia(x_start, x_end, value)
+new_beam.set_inertia(0, L/2, I)
+new_beam.set_inertia(L/2, L, I/10)
+```
+
+> :warning: **Our beloved symbols E and I**: Be careful when specifying symbolic Young modulus and second moment of area via a string, for instance, with "E" and "I". SymPy parses the string in the expression and will interpret "E" as the Nepper number and "I" as the imaginary operator. Prioritise using the variables directly imported from `sympy.abc` or create the variables explicitely with `sympy.symbols()`.
