@@ -84,7 +84,7 @@ new_beam = beam(L)
 ### Setting beam properties: Young modulus and second moment of area
 A beam must be associated with some distribution of material propertiy and section geometry along its length, namely, the Young modulus of the material and the second moment of area of the section. While these are not required for finding the bending diagramas, as these results simply from equilibirum considerations, they are mandatory for computing the deflections of the beam.
 
-In `symbeam`, these properties can be set in individual segments along the beam, such that the set of segments for each property must encompass all the beam span and not be overlapping at any region. For example, considering a beam of length `L`, the Young modulus and second moment of area are set by passing the stating and ending coordinate and the value as follows
+In `symbeam`, these properties can be set in individual segments along the beam, such that the set of segments for each property must encompass all the beam span and not be overlapping at any region. For example, considering a beam of length `L`, the Young modulus and second moment of area are set by passing the stating and ending coordinate and the value to the methods `set_young()` and `set_inertia()` as follows
 ```python
 from symbeam import beam
 from sympy.abc import L, E, I
@@ -101,3 +101,31 @@ new_beam.set_inertia(L/2, L, I/10)
 ```
 
 > :warning: **Our beloved symbols E and I**: Be careful when specifying symbolic Young modulus and second moment of area via a string, for instance, with "E" and "I". SymPy parses the string in the expression and will interpret "E" as the Nepper number and "I" as the imaginary operator. Prioritise using the variables directly imported from `sympy.abc` or create the variables explicitely with `sympy.symbols()`.
+
+### Adding supports
+The beam must be connected to the exterior via a set of supports, which materialise the geometric boundary conditions of the problem. Currently, `symbeam` can only solve statically determinate beams, therefore, redundant supports cannot be handled. A support can be added to the beam by specifying the coordinate and the type of support. Exemplarily, this is accomplished by calling the method `add_support()`
+
+```python
+from symbeam import beam
+from sympy.abc import L, E, I
+
+new_beam = beam(L)
+
+# new_beam.set_young(x_start, x_end, value)
+new_beam.set_young(0, L/2, E)
+new_beam.set_young(L/2, L, E/100)
+
+# new_beam.set_inertia(x_start, x_end, value)
+new_beam.set_inertia(0, L/2, I)
+new_beam.set_inertia(L/2, L, I/10)
+
+# new_beam.add_support(x_coord, type)
+new_beam.add_support(0, 'fixed')
+new_beam.add_support(L, 'roller')
+new_beam.add_support(3*L/4, 'hinge')
+```
+The types of support availbe in `symbeam` are
+* `roller` : a roller, fixed in y direction and allows rotations in z
+* `pin` : a pinned support, fixed in the x and y directions and allows rotations in z
+* `fixed` : a fixed/clamped support, all degrees of freedom are constrained (no displacement and no rotation)
+* `hinge` : allows distinct rotations on the left and right of the point, but does no fix the beam in any direction
