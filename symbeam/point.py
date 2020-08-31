@@ -248,7 +248,7 @@ class point(ABC):
         self.draw_point(x_coord_plot, ax)
 
     # --------------------------------------------------------------------------- draw_force
-    def draw_force(self, ax, length):
+    def draw_force(self, ax, length, input_substitution={}):
         """Draws a point force in the axis.
 
         Parameters
@@ -258,7 +258,7 @@ class point(ABC):
         length : float
           Length of the force in the figure
         """
-        x_coord_plot = self.get_numeric_coordinate()
+        x_coord_plot = self.get_numeric_coordinate(input_substitution=input_substitution)
         # Set the geometry scale (heuristic).
         scale_x = ax.get_xlim()[1] - ax.get_xlim()[0]
         scale_y = ax.get_ylim()[1] - ax.get_ylim()[0]
@@ -283,7 +283,7 @@ class point(ABC):
         )
 
     # -------------------------------------------------------------------------- draw_moment
-    def draw_moment(self, ax, value):
+    def draw_moment(self, ax, value, input_substitution={}):
         """Draws a point moment in the axis.
 
         Parameters
@@ -293,7 +293,7 @@ class point(ABC):
         value : float
           Relative absolute value the moment, relative to all present moments in the beam
         """
-        x_coord_plot = self.get_numeric_coordinate()
+        x_coord_plot = self.get_numeric_coordinate(input_substitution=input_substitution)
         color = "firebrick"
         # Get the limits of the x- and y-axis
         xlim = ax.get_xlim()

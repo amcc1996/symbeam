@@ -1114,9 +1114,9 @@ class beam:
 
         for i, ipoint in enumerate(self.points):
             if abs(external_force_plot_vector[i]) > tol:
-                ipoint.draw_force(ax[0], external_force_plot_vector[i])
+                ipoint.draw_force(ax[0], external_force_plot_vector[i], input_substitution=subs)
             if abs(external_moment_plot_vector[i]) > tol:
-                ipoint.draw_moment(ax[0], external_moment_plot_vector[i])
+                ipoint.draw_moment(ax[0], external_moment_plot_vector[i], input_substitution=subs)
 
         # Axis labels.
         ax[1].set_ylabel(r"Shear force, $V(x)$")

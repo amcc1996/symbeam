@@ -23,6 +23,6 @@ new_beam.add_distributed_load(0, L/2, -q * x)
 
 new_beam.solve()
 
-new_beam.plot(subs={'P':1000, 'q':5000, 'L':2})
+new_beam.plot(subs={'P':1000, 'q':5000, 'L':2, 'M':1000})
 
 plt.savefig(__file__.split('.py')[0]+'.svg')
