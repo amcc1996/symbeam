@@ -39,4 +39,4 @@ jobs:
         echo Just a test
     - name: Test with pytest
       run: |
-        pytest
+        pytest ..
