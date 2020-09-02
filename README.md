@@ -35,7 +35,7 @@ In the following sections, a thorough description of an exemplar application of 
 
 
 <p align="center">
-  <img src="./img/example.png" width="70%">
+  <img src="./img/example.svg" width="70%">
 </p>
 
 > :warning: The `x` symbol is used by SymBeam as the independent variable for the position along the beam. This variable must be used to specify any variation along the length of the beam and for nothing else. 
