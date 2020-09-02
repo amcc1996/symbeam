@@ -34,8 +34,8 @@ setup(
     url='https://github.com/amcc1996/symbeam',
 
     # Authors
-    author='António Manuel Couto Carneiro, Rodrigo Pinto Carvalho @FEUP',
-    author_email='amcc@fe.up.pt, rcarvalho@fe.up.pt',
+    author='António Manuel Couto Carneiro @FEUP',
+    author_email='amcc@fe.up.pt',
 
     # Licensing
     licence='MIT',
@@ -57,7 +57,7 @@ setup(
     ],
 
     # Keywords
-    keywords='bending beam deflection symbolic',
+    keywords='bending-moment-diagrams statics sympy python3',
 
     # Project URLs
     project_urls={
