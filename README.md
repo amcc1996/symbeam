@@ -28,6 +28,21 @@ At this point, SymBeam can be imported into your Python scripts and modules the 
 import symbeam
 ```
 
+## Theory
+SymBeam is based on classical Solid Mechanics and Strenght of Materials expressions to solve the beam equilibirum problem. A simple outline follows in the present section, without entering in any theoretical derivations.
+
+* **Reaction computation** - SymBeam does not allow for axial loads, currently. Therefore, depending on the support type, one shall either need to compute a either a transverse reaction force or a reaction moment. These are computed by solving the algebraic system of linear equations resulting from the equilibirum of forces and moments of the structure accounting simultaneously for point loads and moments and distributed forces.
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\sum&space;F_y&space;=&space;0&space;\qquad&space;\sum&space;M_O&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\sum&space;F_y&space;=&space;0&space;\qquad&space;\sum&space;M_O&space;=&space;0" title="\sum F_y = 0 \qquad \sum M_O = 0" /></a>
+
+* **Bending diagrams** - the shear force and bending moment diagrams are computed by integrating the differential equations of equilibirum of the beam and imposing the boundary conditions in a sequential manner, starting from one of the supports (known internal forces).
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\text{d}V}{\text{d}x}&space;=&space;-q(x)&space;\qquad&space;\frac{\text{d}M}{\text{d}x}&space;=&space;-V(x)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{\text{d}V}{\text{d}x}&space;=&space;-q(x)&space;\qquad&space;\frac{\text{d}M}{\text{d}x}&space;=&space;-V(x)" title="\frac{\text{d}V}{\text{d}x} = -q(x) \qquad \frac{\text{d}M}{\text{d}x} = -V(x)" /></a>
+
+* **Deflection** - the slope and deflection of the beam are obtained by integration the elastic curve equation in each segment of the beam one and two time, respectively.
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\text{d}^2v}{\text{d}x^2}&space;=&space;\frac{M}{EI}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{\text{d}^2v}{\text{d}x^2}&space;=&space;\frac{M}{EI}" title="\frac{\text{d}^2v}{\text{d}x^2} = \frac{M}{EI}" /></a>
+
 ## Usage
 All useful features of SymBeam can be accessed through the `beam` class. `beam` objects, this is, concrete instances of the `beam` class, are initially defined by the starting x-coordinate and the beam length (tacitly assumed to be in the positive x-direction). The beam's supports, material and section properties and loadings are set by calling a specific set of methods on the beam object.
 
