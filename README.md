@@ -31,7 +31,12 @@ import symbeam
 ## Usage
 All useful features of SymBeam can be accessed through the `beam` class. `beam` objects, this is, concrete instances of the `beam` class, are initially defined by the starting x-coordinate and the beam length (tacitaly assumed to be in the positive x-direction). The beam's supports, material and section properties and loadings are set by calling a specific set of methods on the beam object.
 
-In the following sections, a thorough description of an exemplar application of SymBeam is given. It should be noted beforehand that most (if not all) values characterising the problem can be set either using numerical input (e.g. 100) or a literal expression ('100 * x + 100'). In any case, this input is `sympified` using `SymPy` facilities, allowing to handle input of distinct types out-of-the-box.
+In the following sections, a thorough description of an exemplar application of SymBeam is given. It should be noted beforehand that most (if not all) values characterising the problem can be set either using numerical input (e.g. 100) or a literal expression ('100 * x + 100'). In any case, this input is `sympified` using `SymPy` facilities, allowing to handle input of distinct types out-of-the-box. The example to be analysed is illustrated in the following figure.
+
+
+<p align="center">
+  <img src="./img/example.png" width="70%">
+</p>
 
 > :warning: The `x` symbol is used by SymBeam as the independent variable for the position along the beam. This variable must be used to specify any variation along the length of the beam and for nothing else. 
 
