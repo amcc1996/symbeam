@@ -1,25 +1,3 @@
-attrs==19.3.0
-certifi==2020.6.20
-coverage==5.2.1
-cycler==0.10.0
-iniconfig==1.0.1
-kiwisolver==1.2.0
-matplotlib==3.3.1
-more-itertools==8.4.0
-mpmath==1.1.0
-numpy==1.19.1
-packaging==20.4
-Pillow==7.2.0
-pluggy==0.13.1
-py==1.9.0
-pyparsing==2.4.7
-pytest==6.0.1
-pytest-cov==2.10.1
-python-dateutil==2.8.1
-six==1.15.0
--e git+git@github.com:amcc1996/symbeam.git@4cc47c5bf65c6608933472a4ebbec6e700ea5a9d#egg=symbeam
-sympy==1.6.2
-toml==0.10.1
 attrs==20.1.0
 certifi==2020.6.20
 coverage==5.2.1
@@ -41,7 +19,7 @@ pytest==6.0.1
 pytest-cov==2.10.1
 python-dateutil==2.8.1
 six==1.15.0
--e git+git@github.com:amcc1996/symbeam.git@eec343f09b23b082ecd19e6ed5b80ef8cd98fa27#egg=symbeam
+-e git+git@github.com:amcc1996/symbeam.git@25aec4ec4221e9463dcf32a0bb11f35c6e4d9b8c#egg=symbeam
 sympy==1.6.2
 toml==0.10.1
 zipp==3.1.0
