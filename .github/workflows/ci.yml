@@ -25,7 +25,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get install -y python3-pip
+        python -m pip install --upgrade pip setuptools
         pip3 install .
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
         pip3 install pytest
