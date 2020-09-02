@@ -204,6 +204,9 @@ For the current example, the output shall be as follows.
 ===================================================================================
 ```
 
+
+> :warning: **Don't be scared by the output:** The chosen example encompasses several features of SymBeam, therefores, the analytical expressions tend to grow in size very rapidly, especially the deflection.
+
 ### Plotting the results
 The results can be plotted with [matplotlib](https://matplotlib.org/) by calling the method `plot` on the beam object. The produced figure contains
 1. a schematic representation of the problem
