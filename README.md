@@ -3,12 +3,12 @@
   <p align="center">A pedagogical package for beam beanding.</p>
 </p>
 
-`symbeam` is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and beam deflections.
+SymBeam is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and beam deflections.
 
-The modular object-oriented-based design of `symbeam` combined with the excelent symbolic engine [SymPy](https://www.sympy.org/pt/index.html), on which `symbeam` relies heavily, provides an unique computational learning environemnt for student grasping these concepts for the first time.
-`symbeam` can be exploited to quickly assess the solutions of exercises for a wide variety of bending loadings and supports while allowing to easily modify the parameters of the problem fostering physical intuition and improving the students' understanding of the phenomena.
+The modular object-oriented-based design of SymBeam combined with the excelent symbolic engine [SymPy](https://www.sympy.org/pt/index.html), on which SymBeam relies heavily, provides an unique computational learning environemnt for student grasping these concepts for the first time.
+SymBeam can be exploited to quickly assess the solutions of exercises for a wide variety of bending loadings and supports while allowing to easily modify the parameters of the problem fostering physical intuition and improving the students' understanding of the phenomena.
 
-Conversely, `symbeam` can also be used by teachers to create and validate new problems for classes and exams, faccilitating this sometimes cumbersome task.
+Conversely, SymBeam can also be used by teachers to create and validate new problems for classes and exams, faccilitating this sometimes cumbersome task.
 
 ## Installation
 
@@ -17,24 +17,24 @@ Clone this reposityory into your system
 ```
 git clone git@github.com:amcc1996/symbeam.git
 ```
-and install the Python package with `pip3`, running the following command inside `symbeam` root directory, where the `setup.py` is located
+and install the Python package with `pip3`, running the following command inside SymBeam root directory, where the `setup.py` is located
 ```
 pip3 install .
 ```
-At this point, `symbeam` can be imported into your Python scripts and modules the usual Python-way
+At this point, SymBeam can be imported into your Python scripts and modules the usual Python-way
 ```python
 import symbeam
 ```
 
 ## Usage
-Virtually all useful features of `symbeam` can be accessed through the `beam` class. `beam` objects, this is, concrete instances of the `beam` class, are initially defined by the starting point (0 by default) and the beam length. The beam supports, material and section properties and loadings are set by calling a specific set of methods on the beam object.
+Virtually all useful features of SymBeam can be accessed through the `beam` class. `beam` objects, this is, concrete instances of the `beam` class, are initially defined by the starting point (0 by default) and the beam length. The beam supports, material and section properties and loadings are set by calling a specific set of methods on the beam object.
 
-In the following sections, a thorough description of an exemplar application of `symbeam` is given. It should be noted beforehand that most (if not all) values characterising the problem can se set either using numerical input (e.g. 100) or a literal expression (100 * x + 100). In any case, this input is `sympified` using `SymPy` facilities, allowing to handle input of distinct types out-of-the-box.
+In the following sections, a thorough description of an exemplar application of SymBeam is given. It should be noted beforehand that most (if not all) values characterising the problem can se set either using numerical input (e.g. 100) or a literal expression (100 * x + 100). In any case, this input is `sympified` using `SymPy` facilities, allowing to handle input of distinct types out-of-the-box.
 
-> :warning: The `x` symbol is used by `symbeam` as the independent variable for the position along the beam. This variable must be used to specify any variation along the length of the beam and for nothing else. 
+> :warning: The `x` symbol is used by SymBeam as the independent variable for the position along the beam. This variable must be used to specify any variation along the length of the beam and for nothing else. 
 
 ### Creating a beam
-The fundamental tool for a bending analysis with `symbeam` is a `beam` object, as emphasised above. To create a new beam, import the `beam` class from the `symbeam` package. Then, simply call the `beam` constructor by passing the length of the beam and, if needed, a starting point. For instance, a beam with length equal to 1 and starting at 0 can be created by
+The fundamental tool for a bending analysis with SymBeam is a `beam` object, as emphasised above. To create a new beam, import the `beam` class from the SymBeam package. Then, simply call the `beam` constructor by passing the length of the beam and, if needed, a starting point. For instance, a beam with length equal to 1 and starting at 0 can be created by
 
 ```python
 from symbeam import beam
@@ -86,7 +86,7 @@ new_beam = beam(L)
 ### Setting beam properties: Young modulus and second moment of area
 A beam must be associated with some distribution of material propertiy and section geometry along its length, namely, the Young modulus of the material and the second moment of area of the section. While these are not required for finding the bending diagramas, as these results simply from equilibirum considerations, they are mandatory for computing the deflections of the beam.
 
-In `symbeam`, these properties can be set in individual segments along the beam, such that the set of segments for each property must encompass all the beam span and not be overlapping at any region. For example, considering a beam of length `L`, the Young modulus and second moment of area are set by passing the stating and ending coordinate and the value to the methods `set_young()` and `set_inertia()` as follows
+In SymBeam, these properties can be set in individual segments along the beam, such that the set of segments for each property must encompass all the beam span and not be overlapping at any region. For example, considering a beam of length `L`, the Young modulus and second moment of area are set by passing the stating and ending coordinate and the value to the methods `set_young()` and `set_inertia()` as follows
 ```python
 from symbeam import beam
 from sympy.abc import L, E, I, P, M, q, x
@@ -101,12 +101,12 @@ new_beam.set_young(L/2, L, E/10)
 new_beam.set_inertia(0, L/2, I)
 new_beam.set_inertia(L/2, L, I/2)
 ```
-By default, if the properties are not explicitely set by the user, `symbeam` considers constant values `E` and `I` along the span of the beam, this is, the property setting methods do not need to be evoked. If any segment is explicitely set, the user must then specify all segments in a consistent manner. 
+By default, if the properties are not explicitely set by the user, SymBeam considers constant values `E` and `I` along the span of the beam, this is, the property setting methods do not need to be evoked. If any segment is explicitely set, the user must then specify all segments in a consistent manner. 
 
 > :warning: **Our beloved symbols E and I**: Be careful when specifying symbolic Young modulus and second moment of area via a string, for instance, with "E" and "I". SymPy parses the string in the expression and will interpret "E" as the Nepper number and "I" as the imaginary operator. Prioritise using the variables directly imported from `sympy.abc` or create the variables explicitely with `sympy.symbols()`.
 
 ### Adding supports
-The beam must be connected to the exterior via a set of supports, which materialise the geometric boundary conditions of the problem. Currently, `symbeam` can only solve statically determinate beams, therefore, redundant supports cannot be handled. A support can be added to the beam by specifying the coordinate and the type of support. Exemplarily, this is accomplished by calling the method `add_support()`
+The beam must be connected to the exterior via a set of supports, which materialise the geometric boundary conditions of the problem. Currently, SymBeam can only solve statically determinate beams, therefore, redundant supports cannot be handled. A support can be added to the beam by specifying the coordinate and the type of support. Exemplarily, this is accomplished by calling the method `add_support()`
 
 ```python
 # new_beam.add_support(x_coord, type)
@@ -114,7 +114,7 @@ new_beam.add_support(0, 'fixed')
 new_beam.add_support(L, 'roller')
 new_beam.add_support(3*L/4, 'hinge')
 ```
-The types of support availbe in `symbeam` are
+The types of support availbe in SymBeam are
 * `roller` : a roller, fixed in transverse direction and allows rotations in the bending plane
 * `pin` : a pinned support, fixed in the axial and transverse directions and allows rotations in the bending plane
 * `fixed` : a fixed/clamped support, all degrees of freedom are constrained (no displacements and no rotation)
@@ -183,4 +183,3 @@ new_beam.plot(subs={'P':1000, 'q':5000, 'L':2})
 
 plt.show()
 ```
-
