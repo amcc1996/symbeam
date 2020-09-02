@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
         python3 -m pip install --upgrade pip
         pip3 install flake8
         pip3 install pytest
-        pip3 install pytest-cov
+        pip3 install flake8
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
     - name: Lint with flake8
       run: |
