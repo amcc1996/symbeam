@@ -278,3 +278,7 @@ The coverage reports can be generated with
 pytest --cov-report html --cov symbeam
 ```
 which will run the test and create the coverage information in `htmlcov`.
+
+## License
+Copyright 2020, António Carneiro
+SymBeam is free and open-source software and is published [MIT License](https://opensource.org/licenses/MIT).
