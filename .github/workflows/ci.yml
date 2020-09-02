@@ -25,12 +25,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install pip, setuptools and testing tools
       run: |
-        python -m pip install --upgrade pip setuptools
+        python -m pip install --upgrade pip setuptools wheel
         pip3 install pytest
-        # pip3 install flake8        
+        # pip3 install flake8
     - name: Install package and dependencies
       run: |
         pip3 install .
+        echo Finished symbeam installation
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
