@@ -68,31 +68,18 @@ setup(
 
     # Python version compatibility
     python_requires='>=3.5, <3.9',
-
+    
     install_requires=[
-    'attrs>=20.1.0'
-    'certifi>=2020.6.20'
-    'coverage>=5.2.1'
-    'cycler>=0.10.0'
-    'importlib-metadata>=1.7.0'
-    'iniconfig>=1.0.1'
-    'kiwisolver>=1.2.0'
-    'matplotlib>=3.3.1'
-    'more-itertools>=8.5.0'
-    'mpmath>=1.1.0'
-    'numpy>=1.19.1'
-    'packaging>=20.4'
-    'Pillow>=7.2.0'
-    'pkg-resources>=0.0.0'
-    'pluggy>=0.13.1'
-    'py>=1.9.0'
-    'pyparsing>=2.4.7'
-    'pytest>=6.0.1'
-    'pytest-cov>=2.10.1'
-    'python-dateutil>=2.8.1'
-    'six>=1.15.0'
+    'certifi>=2020.6.20',
+    'cycler>=0.10.0',
+    'kiwisolver>=1.2.0',
+    'matplotlib>=3.3.1',
+    'mpmath>=1.1.0',
+    'numpy>=1.19.1',
+    'Pillow>=7.2.0',
+    'pyparsing>=2.4.7',
+    'python-dateutil>=2.8.1',
+    'six>=1.15.0',
     'sympy>=1.6.2'
-    'toml>=0.10.1'
-    'zipp>=3.1.0'
     ]
     )
