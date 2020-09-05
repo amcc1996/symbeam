@@ -15,19 +15,13 @@ moments and changes of beam properties.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
-# Import modules
-# --------------
-# Abstract classes and methods
 from abc import ABC, abstractmethod
 
-# Ploting toolbox, Matplotlib
 import matplotlib.patches as patches
 
-# Symbolic Python Package, SymPy
 import sympy as sym
 from sympy.abc import x
 
-# SymBeam, use the variable checking function
 from symbeam.utils import check_x_variable
 
 # Set numerical tolerance

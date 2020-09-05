@@ -5,7 +5,6 @@
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
-# Symbolic Python Package, SymPy
 from sympy.abc import x
 
 # ========================================================================= check_x_variable

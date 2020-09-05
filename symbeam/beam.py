@@ -12,23 +12,20 @@ SymBeam furnishes to the outside world.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
-# Import modules
-# --------------
-# Ploting toolbox, Matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-# Array toolbox, NumPy
+
 import numpy as np
 
-# Symbolic Python Package, SymPy
+
 import sympy as sym
 from sympy.abc import x, E, I
 
-# Beam supports classes
+
 from symbeam.point import pin, roller, continuity, fixed, hinge
 
-# Loads classes
+
 from symbeam.load import distributed_load, point_load, point_moment
 
 # Set numerical tolerance

@@ -13,13 +13,8 @@ of the equilibirum equations.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
-
-# Import modules
-# --------------
-# SymBeam, use the variable checking function
 from symbeam.utils import check_x_variable
 
-# Symbolic Python Package, SymPy
 import sympy as sym
 from sympy.abc import x
 
