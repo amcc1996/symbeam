@@ -3,6 +3,8 @@
   <p align="center">A pedagogical package for beam beanding.</p>
 </p>
 
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+
 SymBeam is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and deflections.
 
 The modular object-oriented-based design of SymBeam combined with the excellent symbolic engine [SymPy](https://www.sympy.org/pt/index.html), on which SymBeam relies heavily, provides a unique computational learning environment for students grasping these concepts for the first time.
