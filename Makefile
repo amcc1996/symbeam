@@ -8,7 +8,8 @@ lint:
 format:
 	isort --color .
 	black -l 92 .
-	blacken-docs -l 92 README.md examples/README.md
+	blacken-docs -l 92 README.md
+	blacken-docs -l 92 examples/README.md
 
 coverage:
 	pytest --cov-report html --cov symbeam
