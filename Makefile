@@ -6,7 +6,7 @@ lint:
 	flake8 .
 
 format:
-	isort .
+	isort --color .
 	black -l 92 .
 	blacken-docs README.md examples/README.md
 
