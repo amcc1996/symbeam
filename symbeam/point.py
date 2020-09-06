@@ -304,7 +304,7 @@ class point(ABC):
             end_angle = 90
         else:
             start_angle = 90
-            end_angle = 280
+            end_angle = 75
 
         # In order to draw an approximately circular arc, get the aspect ratio associated
         # with the data and the figure/axis itself, and scale the diameter.

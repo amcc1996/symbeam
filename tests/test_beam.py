@@ -1,7 +1,7 @@
 import pytest
 import sympy as sym
 
-from sympy.abc import E, I, L, M, P, x
+from sympy.abc import E, I, L, M, P, q, x
 
 from symbeam.beam import beam
 
@@ -628,3 +628,45 @@ def test_discontinuous_properties():
 
     # An empty list is False for Python
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+
+
+@pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
+def test_plot_point_loads():
+    """Test the plotting function for pins, rollers, hinges  and point forces and moments.
+    The figures generated with the current version are compared against reference files.
+    """
+    a = beam(L)
+    a.add_support(0, "fixed")
+    a.add_support(L / 2, "hinge")
+    a.add_support(L, "roller")
+    a.add_point_load(L / 4, -P)
+    a.add_point_load(3 * L / 4, P / 2)
+    a.add_point_moment(L / 8, M)
+    a.add_point_moment(7 * L / 8, -M / 2)
+    a.solve()
+    fig, ax = a.plot(subs={"P": 1000, "L": 2, "M": 1000})
+    return fig
+
+
+@pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
+def test_plot_distributed_loads_fixed_left():
+    """Test the plotting function for distributed loads and fixed support on the left."""
+    a = beam(L)
+    a.add_support(0, "fixed")
+    a.add_distributed_load(0, L / 2, "-q * x")
+    a.add_distributed_load(L / 2, L, "q * (L - x)")
+    a.solve()
+    fig, ax = a.plot(subs={"q": 1000})
+    return fig
+
+
+@pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
+def test_plot_distributed_loads_fixed_right():
+    """Test the plotting function for distributed loads and fixed support on the right."""
+    a = beam(L)
+    a.add_support(L, "fixed")
+    a.add_distributed_load(0, L / 2, "-q * x")
+    a.add_distributed_load(L / 2, L, "q * (L - x)")
+    a.solve()
+    fig, ax = a.plot(subs={"q": 1000})
+    return fig

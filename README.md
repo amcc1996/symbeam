@@ -287,18 +287,18 @@ plt.show()
 
 ## Running the tests
 
-SymBeam [tests](tests) can by run with [pytest](https://docs.pytest.org/en/stable/contents.html), so start by installing the framework
+SymBeam [tests](tests) can by run with [pytest](https://docs.pytest.org/en/stable/contents.html) and the image comparison plugin [pytest-mpl](https://github.com/matplotlib/pytest-mpl), so start by installing the framework
 ```
-pip3 install pytest
+pip3 install pytest pytest-mpl
 pip3 install pytest-cov # optional, to generate coverage reports
 ```
 and launch the testing utility from SymBeam root directory
 ```
-pytest
+make tests
 ```
 The coverage reports can be generated with
 ```
-pytest --cov-report html --cov symbeam
+make coverage
 ```
 which will run the test and create the coverage information in `htmlcov`.
 

@@ -54,3 +54,6 @@ target/
 
 # Rope
 .ropeproject/
+
+# Results from image comparison
+tests/results
