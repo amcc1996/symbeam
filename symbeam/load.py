@@ -17,8 +17,6 @@ import sympy as sym
 
 from sympy.abc import x
 
-from symbeam.utils import check_x_variable
-
 
 # ========================================================================= distributed_load
 class distributed_load:
@@ -27,8 +25,6 @@ class distributed_load:
     def __init__(self, x_start, x_end, expression):
         self.x_start = sym.sympify(x_start)
         self.x_end = sym.sympify(x_end)
-        check_x_variable(self.x_end)
-        check_x_variable(self.x_start)
         self.expression = sym.sympify(expression)
 
         self.equivalent_magnitude = sym.integrate(
@@ -50,7 +46,6 @@ class point_load:
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)
         self.value = sym.sympify(value)
-        check_x_variable(self.x_coord)
 
 
 # ============================================================================= point_moment
@@ -60,7 +55,6 @@ class point_moment:
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)
         self.value = sym.sympify(value)
-        check_x_variable(self.x_coord)
 
 
 # ==========================================================================================

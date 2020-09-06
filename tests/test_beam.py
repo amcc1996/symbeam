@@ -120,6 +120,13 @@ def test_hyperstatic_2():
         a.solve(output=False)
 
 
+def test_invalid_symbol_load():
+    """Test if errors are raised when the coordinate of a load include the x variable."""
+    with pytest.raises(RuntimeError):
+        a = beam("l")
+        a.add_point_load("2*x", 1)
+
+
 def test_cantilever_point():
     """Test classical cantilever beam with point load."""
     a = beam("L", x0=0)
