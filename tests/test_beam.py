@@ -636,7 +636,8 @@ def test_plot_point_loads():
     The figures generated with the current version are compared against reference files.
     """
     a = beam(L)
-    a.add_support(0, "fixed")
+    a.add_support(0, "pin")
+    a.add_support(L / 4, "roller")
     a.add_support(L / 2, "hinge")
     a.add_support(L, "roller")
     a.add_point_load(L / 4, -P)
@@ -650,7 +651,9 @@ def test_plot_point_loads():
 
 @pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
 def test_plot_distributed_loads_fixed_left():
-    """Test the plotting function for distributed loads and fixed support on the left."""
+    """Test the plotting function for distributed loads and fixed support on the left.
+    Additionally, test plotting of continuity points.
+    """
     a = beam(L)
     a.add_support(0, "fixed")
     a.add_distributed_load(0, L / 2, "-q * x")
