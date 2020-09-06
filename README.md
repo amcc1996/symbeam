@@ -296,7 +296,7 @@ and launch the testing utility from SymBeam root directory
 ```
 make tests
 ```
-SymBeam uses [pytest-mpl](https://github.com/matplotlib/pytest-mpl) for comparing the benging plots between versions. By evoking `make tests`, pytest will be called with the appropriate command-line tool and directory settings. The reference images are stored in [tests/baseline[(tests/baseline). If there image comparison fails, the baseline image is written to [tests/results](tests/results), together with the (failing) image produced my the current version and the respective difference.
+SymBeam uses [pytest-mpl](https://github.com/matplotlib/pytest-mpl) for comparing the bending plots between versions. By evoking `make tests`, pytest will be called with the appropriate command-line tool and directory settings. The reference images are stored in [tests/baseline](tests/baseline). If there image comparison fails, the baseline image is written to [tests/results](tests/results), together with the (failing) image produced my the current version and the respective difference.
 
 The coverage reports can be generated with
 ```
