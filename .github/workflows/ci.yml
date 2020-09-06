@@ -47,5 +47,5 @@ jobs:
         pip3 install -r requirements.txt
     - name: Test with pytest
       run: |
-        echo $PWD
+        cd ..
         pytest --mpl --mpl-results-path=tests/results
