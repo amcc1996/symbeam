@@ -32,7 +32,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -42,10 +41,11 @@ jobs:
     - name: Install pip, setuptools and testing tools
       run: |
         python3 -m pip install --upgrade pip setuptools wheel
-        pip3 install pytest
+        pip3 install pytest pytest-mpl
     - name: Install package and dependencies
       run: |
-        pip3 install .
+        pip3 install -r requirements.txt
     - name: Test with pytest
       run: |
-        pytest
+        echo $PWD
+        pytest --mpl --mpl-results-path=tests/results
