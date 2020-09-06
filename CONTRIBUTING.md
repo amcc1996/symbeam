@@ -1,5 +1,5 @@
 ## Contributing to SymBeam
-It is special to have the contribution of enthusiast coders and students worldwide so, I must deeply thank young for reading this page and working for improving SymBeam and Engineering teaching.
+:star: :sparkling_heart: It is special to have the contribution of enthusiast coders and students worldwide so, I must deeply thank young for reading this page and working for improving SymBeam and Engineering teaching. :sparkling_heart: :star:
 
 If you have not read it yet, visit the [Code of Conduct](CODE_OF_CONDUCT.md) of SymBeam to act in conformity to it.
 
