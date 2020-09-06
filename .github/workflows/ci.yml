@@ -52,4 +52,4 @@ jobs:
         cd tests
         cat test_beam.py
         cd ..
-        pytest --mpl --mpl-results-path=tests/results
+        pytest --mpl --mpl-results-path=tests/results tests
