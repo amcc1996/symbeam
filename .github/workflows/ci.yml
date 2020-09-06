@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip3 install pytest pytest-mpl black flake8 isort flake8-colors
+        pip3 install pytest pytest-mpl black flake8 isort[colors] flake8-colors
     - name: Check code
       run: |
         isort --check --color .
