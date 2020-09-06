@@ -48,4 +48,8 @@ jobs:
         pip3 install .
     - name: Test with pytest
       run: |
+        ls
+        cd tests
+        cat test_beam.py
+        cd ..
         pytest --mpl --mpl-results-path=tests/results

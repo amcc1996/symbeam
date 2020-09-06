@@ -20,7 +20,7 @@ clean:
 	@if [ -d "tests/results" ]; then rm -rf tests/results; echo Removed tests/results; fi
 
 img:
-	@pytest --mpl-generate-path=tests/baseline
+	pytest --mpl-generate-path=tests/baseline
 
 tests:
-	@pytest --mpl --mpl-results-path=tests/results
+	pytest --mpl --mpl-results-path=tests/results
