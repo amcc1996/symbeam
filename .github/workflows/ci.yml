@@ -45,7 +45,7 @@ jobs:
     - name: Install package and dependencies
       run: |
         pip3 install -r requirements.txt
+        pip3 install .
     - name: Test with pytest
       run: |
-        echo $PWD; ls
         pytest --mpl --mpl-results-path=tests/results
