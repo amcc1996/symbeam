@@ -4,6 +4,7 @@
 </p>
 
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 
 SymBeam is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and deflections.
 
@@ -296,7 +297,7 @@ and launch the testing utility from SymBeam root directory
 ```
 make tests
 ```
-SymBeam uses [pytest-mpl](https://github.com/matplotlib/pytest-mpl) for comparing the benging plots between versions. By evoking `make tests`, pytest will be called with the appropriate command-line tool and directory settings. The reference images are stored in [tests/baseline[(tests/baseline). If there image comparison fails, the baseline image is written to [tests/results](tests/results), together with the (failing) image produced my the current version and the respective difference.
+SymBeam uses [pytest-mpl](https://github.com/matplotlib/pytest-mpl) for comparing the bending plots between versions. By evoking `make tests`, pytest will be called with the appropriate command-line tool and directory settings. The reference images are stored in [tests/baseline](tests/baseline). If there image comparison fails, the baseline image is written to [tests/results](tests/results), together with the (failing) image produced my the current version and the respective difference.
 
 The coverage reports can be generated with
 ```
