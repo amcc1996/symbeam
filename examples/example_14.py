@@ -7,14 +7,16 @@
 #           4. Numeric point force
 #           5. Classical pinned beam problem with half-span force
 
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'pin')
-test_beam.add_support('l', 'roller')
-test_beam.add_point_load('l/2', '-P')
+from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "pin")
+test_beam.add_support("l", "roller")
+test_beam.add_point_load("l/2", "-P")
 test_beam.solve()
 fig, ax = test_beam.plot()
 
-plt.savefig(__file__.split('.py')[0]+'.svg')
+plt.savefig(__file__.split(".py")[0] + ".svg")

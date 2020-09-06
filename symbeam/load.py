@@ -13,15 +13,16 @@ of the equilibirum equations.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
+import sympy as sym
+
+from sympy.abc import x
+
 from symbeam.utils import check_x_variable
 
-import sympy as sym
-from sympy.abc import x
 
 # ========================================================================= distributed_load
 class distributed_load:
-    """Distributed transverse load class.
-    """
+    """Distributed transverse load class."""
 
     def __init__(self, x_start, x_end, expression):
         self.x_start = sym.sympify(x_start)
@@ -44,8 +45,7 @@ class distributed_load:
 
 # =============================================================================== point_load
 class point_load:
-    """Concentrated transverse point load.
-    """
+    """Concentrated transverse point load."""
 
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)
@@ -55,8 +55,7 @@ class point_load:
 
 # ============================================================================= point_moment
 class point_moment:
-    """Concentrated point moment.
-    """
+    """Concentrated point moment."""
 
     def __init__(self, x_coord, value):
         self.x_coord = sym.sympify(x_coord)

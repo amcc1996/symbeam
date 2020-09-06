@@ -14,19 +14,14 @@ SymBeam furnishes to the outside world.
 """
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-
-
 import numpy as np
-
-
 import sympy as sym
-from sympy.abc import x, E, I
 
-
-from symbeam.point import pin, roller, continuity, fixed, hinge
-
+from sympy.abc import E, I, x
 
 from symbeam.load import distributed_load, point_load, point_moment
+from symbeam.point import continuity, fixed, hinge, pin, roller
+
 
 # Set numerical tolerance
 tol = 1e-6
@@ -210,8 +205,7 @@ class beam:
 
     # -------------------------------------------------------------------------- set_inertia
     def set_inertia(self, x_start, x_end, value):
-        """Sets the second moment of area of a portion of the beam.
-        """
+        """Sets the second moment of area of a portion of the beam."""
         # First check if the coordinate inside the beam.
         self._check_coordinates(x_start, x_end)
 
@@ -1137,8 +1131,7 @@ class beam:
 
     # ------------------------------------------------------------------------- print_points
     def _print_points(self):
-        """Prints the information of points identified along the beam.
-        """
+        """Prints the information of points identified along the beam."""
         print("\n{0:^83}".format("Beam points"))
         print(83 * "=")
         print(
@@ -1160,8 +1153,7 @@ class beam:
 
     # ----------------------------------------------------------------------- print_segments
     def _print_segments(self):
-        """Prints the information of the identified segments.
-        """
+        """Prints the information of the identified segments."""
         print("\n{0:^83}".format("Beam segments"))
         print(83 * "=")
         print(
@@ -1188,8 +1180,7 @@ class beam:
 
     # ---------------------------------------------------------------------- print_reactions
     def _print_reactions(self):
-        """Prints the reactions forces.
-        """
+        """Prints the reactions forces."""
         print("\n{0:^83}".format("Exterior Reactions"))
         print(83 * "=")
         print("{0:^27} {1:^27} {2:^27}".format("Point", "Type", "Value"))
@@ -1215,8 +1206,7 @@ class beam:
 
     # ----------------------------------------------------------------- print_internal_loads
     def _print_internal_loads(self):
-        """Prints the shear force and bending moment expression for each segment.
-        """
+        """Prints the shear force and bending moment expression for each segment."""
         print("\n{0:^83}".format("Internal Loads"))
         print(83 * "=")
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Diagram", "Expression"))
@@ -1240,8 +1230,7 @@ class beam:
 
     # -------------------------------------------------------------------- print_deflections
     def _print_deflections(self):
-        """Prints the shear force and bending moment expression for each segment.
-        """
+        """Prints the shear force and bending moment expression for each segment."""
         print("\n{0:^83}".format("Rotation and deflection"))
         print(83 * "=")
         print("{0:^20} {1:^10} {2:^50}".format("Span", "Variable", "Expression"))
@@ -1289,8 +1278,7 @@ class beam:
 
 # ========================================================================= property_segment
 class _property_segment:
-    """Class for segments properties in a symbolic-compatible fashion.
-    """
+    """Class for segments properties in a symbolic-compatible fashion."""
 
     def __init__(self, x_start, x_end, value):
         self.x_start = sym.sympify(x_start)
@@ -1300,8 +1288,7 @@ class _property_segment:
 
 # ================================================================================== segment
 class _segment:
-    """Beam segments with locally continuous properties and loadings.
-    """
+    """Beam segments with locally continuous properties and loadings."""
 
     def __init__(self, x_start, x_end, distributed_load, young, inertia):
         self.x_start = sym.sympify(x_start)

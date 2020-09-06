@@ -8,15 +8,17 @@
 #           5. Symbolic distributed constant load
 #           6. User-specified symbolic substitutions
 
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support('l', 'pin')
-test_beam.add_distributed_load(0, 'l/2', '-2 * q / l * x')
-test_beam.add_distributed_load('l/2', 'l', '-q')
-test_beam.solve()
-fig, ax = test_beam.plot(subs={'q':2, 'l':2, 'x':10}) # 'x' is not substituted
+from symbeam import beam
 
-plt.savefig(__file__.split('.py')[0]+'.svg')
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "roller")
+test_beam.add_support("l", "pin")
+test_beam.add_distributed_load(0, "l/2", "-2 * q / l * x")
+test_beam.add_distributed_load("l/2", "l", "-q")
+test_beam.solve()
+fig, ax = test_beam.plot(subs={"q": 2, "l": 2, "x": 10})  # 'x' is not substituted
+
+plt.savefig(__file__.split(".py")[0] + ".svg")

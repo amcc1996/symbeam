@@ -1,13 +1,14 @@
-import sympy as sym
-from sympy.abc import x, E, I, L, P, M
-from symbeam.beam import beam
 import pytest
+import sympy as sym
+
+from sympy.abc import E, I, L, M, P, x
+
+from symbeam.beam import beam
 
 
 def test_beam_two_symbols():
-    """Test if an error is reaised if more than one symbols is used to initialise the beam.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if an error is reaised if more than one symbols is used to initialise the beam."""
+    with pytest.raises(RuntimeError):
         a = beam("L * a", x0=0)
 
 
@@ -15,78 +16,69 @@ def test_beam_distinct_symbols():
     """Test if an error is reaised if the symbols used for the inital position and length
     are distinct.
     """
-    with pytest.raises(RuntimeError) as error:
+    with pytest.raises(RuntimeError):
         a = beam("L * a", x0="b")
 
 
 def test_beam_numeric_length():
-    """Test if a numeric length is accepted for the beam.
-    """
+    """Test if a numeric length is accepted for the beam."""
     a = beam(1)
     assert a.length == 1
 
 
 def test_beam_symbolic_length():
-    """Test if a symbolic length is accepted for the beam.
-    """
+    """Test if a symbolic length is accepted for the beam."""
     a = beam("l")
     assert a.length == sym.sympify("l")
 
 
 def test_repeated_support():
-    """Test if an error is raised when a repeated support is specified.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if an error is raised when a repeated support is specified."""
+    with pytest.raises(RuntimeError):
         a = beam("l")
         a.add_support(0, "fixed")
         a.add_support(0, "pin")
 
 
 def test_support_inside_beam():
-    """Test if an error is raised when the supports lies outside the beam.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if an error is raised when the supports lies outside the beam."""
+    with pytest.raises(RuntimeError):
         a = beam("l")
         a.add_support("2*l", "fixed")
 
 
 def test_point_load_inside_beam():
-    """Test if an error is raised when the point load lies outside the beam.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if an error is raised when the point load lies outside the beam."""
+    with pytest.raises(RuntimeError):
         a = beam("l")
         a.add_point_load("2*l", "P")
 
 
 def test_point_moment_inside_beam():
-    """Test if an error is raised when the point moment lies outside the beam.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if an error is raised when the point moment lies outside the beam."""
+    with pytest.raises(RuntimeError):
         a = beam("l")
         a.add_point_moment("2*l", "M")
 
 
 def test_distributed_load_coordinates():
-    """Test if the coordinates of the distributed load are consistent.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if the coordinates of the distributed load are consistent."""
+    with pytest.raises(RuntimeError):
         a = beam(1)
         a.add_distributed_load(1, 0.5, "q")
 
 
 def test_young_specification_missing():
-    """Test if the Young modulus is specified in all lengths.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if the Young modulus is specified in all lengths."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.set_young(0, "l/2", E)
         a.solve(output=False)
 
 
 def test_young_specification_overlap():
-    """Test if the Young modulus is specified in all lengths.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if the Young modulus is specified in all lengths."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.set_young(0, "l/2", E)
         a.set_young("l/2", "3*l/4", 4 * E)
@@ -94,18 +86,16 @@ def test_young_specification_overlap():
 
 
 def test_inertia_specification_missing():
-    """Test if the inertia is specified in all lengths.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if the inertia is specified in all lengths."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.set_inertia(0, "l/2", I)
         a.solve(output=False)
 
 
 def test_inertia_specification_overlap():
-    """Test if the inertia is specified in all lengths.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if the inertia is specified in all lengths."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.set_inertia(0, "l/2", "I")
         a.set_inertia("l/2", "3*l/4", 4 * I)
@@ -113,9 +103,8 @@ def test_inertia_specification_overlap():
 
 
 def test_hyperstatic_1():
-    """Test if hyperstatic beams are detected.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if hyperstatic beams are detected."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.add_support(0, "pin")
         a.add_support("l", "pin")
@@ -123,9 +112,8 @@ def test_hyperstatic_1():
 
 
 def test_hyperstatic_2():
-    """Test if hyperstatic beams are detected.
-    """
-    with pytest.raises(RuntimeError) as error:
+    """Test if hyperstatic beams are detected."""
+    with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.add_support(0, "fixed")
         a.add_support("l", "roller")
@@ -133,8 +121,7 @@ def test_hyperstatic_2():
 
 
 def test_cantilever_point():
-    """Test classical cantilever beam with point load.
-    """
+    """Test classical cantilever beam with point load."""
     a = beam("L", x0=0)
     a.add_support(0, "fixed")
     a.add_point_load(L, -P)
@@ -195,8 +182,7 @@ def test_cantilever_point():
 
 
 def test_cantilever_moment():
-    """Test classical cantilever beam with point moment.
-    """
+    """Test classical cantilever beam with point moment."""
     a = beam("L", x0=0)
     a.add_support(0, "fixed")
     a.add_point_moment(L, M)
@@ -255,8 +241,7 @@ def test_cantilever_moment():
 
 
 def test_half_span_force():
-    """Test classical problem of pin-roller beam with half-span point force.
-    """
+    """Test classical problem of pin-roller beam with half-span point force."""
     a = beam("L", x0=0)
     a.add_support(0, "pin")
     a.add_support("L", "roller")
@@ -342,8 +327,7 @@ def test_half_span_force():
 
 
 def test_complex_beam_hinge():
-    """Test a complex structure with distributed loadings and hinges.
-    """
+    """Test a complex structure with distributed loadings and hinges."""
     a = beam(6, x0=0)
     a.add_support(0, "fixed")
     a.add_support(4, "hinge")
@@ -474,8 +458,7 @@ def test_complex_beam_hinge():
 
 
 def test_discontinuous_properties():
-    """Test a beam with discontinuous inertia and Young modulus.
-    """
+    """Test a beam with discontinuous inertia and Young modulus."""
 
     a = beam(3, x0=0)
     a.add_support(0.5, "pin")

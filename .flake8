@@ -1,10 +1,11 @@
 [flake8]
-ignore = E266, E501, C901, E302, W503
+ignore = E266, E501, C901, E302, W503, E203,    E741
 max-line-length = 92
 max-doc-length = 92
 max-complexity = 15
 select = B,C,E,F,W,T4,B9
-exclude = venv
+exclude = venv, tests
 show_source = True
 statistics = True
 doctests = True
+format = ${cyan}%(path)s${reset}:${yellow_bold}%(row)d${reset}:${green_bold}%(col)d${reset}: ${red_bold}%(code)s${reset} %(text)s

@@ -7,6 +7,7 @@
 """
 from sympy.abc import x
 
+
 # ========================================================================= check_x_variable
 def check_x_variable(expr):
     """Checks if the independent x-variable is present on a given expression.

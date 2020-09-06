@@ -10,22 +10,24 @@
 #           7. `E` and `I` symbols created with SymPy
 #           8. User-speficied substitution
 
-from symbeam import beam
 import matplotlib.pyplot as plt
 import sympy as sym
 
-E = sym.symbols('E')
-I = sym.symbols('I')
-test_beam = beam(3, x0=0)
-test_beam.add_support(0.5, 'pin')
-test_beam.add_support(2.5, 'roller')
-test_beam.add_point_load(0, '-P')
-test_beam.add_point_load(3, '-P')
-test_beam.set_young(0, 1.5, E/1000)
-test_beam.set_young(1.5, 3,  E)
-test_beam.set_inertia(0, 1, I)
-test_beam.set_inertia(1, 3,  100*I)
-test_beam.solve()
-fig, ax = test_beam.plot(subs={'P':1000})
+from symbeam import beam
 
-plt.savefig(__file__.split('.py')[0]+'.svg')
+
+E = sym.symbols("E")
+I = sym.symbols("I")
+test_beam = beam(3, x0=0)
+test_beam.add_support(0.5, "pin")
+test_beam.add_support(2.5, "roller")
+test_beam.add_point_load(0, "-P")
+test_beam.add_point_load(3, "-P")
+test_beam.set_young(0, 1.5, E / 1000)
+test_beam.set_young(1.5, 3, E)
+test_beam.set_inertia(0, 1, I)
+test_beam.set_inertia(1, 3, 100 * I)
+test_beam.solve()
+fig, ax = test_beam.plot(subs={"P": 1000})
+
+plt.savefig(__file__.split(".py")[0] + ".svg")

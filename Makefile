@@ -2,7 +2,7 @@
 
 lint:
 	isort --check --color .
-	black --check .
+	black -l 92 --check .
 	flake8 .
 
 format:

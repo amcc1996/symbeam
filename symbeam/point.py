@@ -18,18 +18,18 @@ moments and changes of beam properties.
 from abc import ABC, abstractmethod
 
 import matplotlib.patches as patches
-
 import sympy as sym
+
 from sympy.abc import x
 
 from symbeam.utils import check_x_variable
+
 
 # Set numerical tolerance
 tol = 1e-6
 # ==================================================================================== point
 class point(ABC):
-    """Abstract definition of a beam point.
-    """
+    """Abstract definition of a beam point."""
 
     def __init__(self, x_coord):
         self.x_coord = sym.sympify(x_coord)
@@ -375,8 +375,7 @@ class point(ABC):
 
 # ====================================================================================== pin
 class pin(point):
-    """Concrete implementation of a pinned support.
-    """
+    """Concrete implementation of a pinned support."""
 
     @staticmethod
     def get_name():
@@ -518,7 +517,6 @@ class roller(point):
         ymin = ylim[0]
         ymax = ylim[1]
         yspan = ymax - ymin
-        ymid = (ymax + ymin) / 2
 
         # Draw the triangle.
         length_bottom_line = xspan / 20
@@ -576,8 +574,7 @@ class roller(point):
 
 # =============================================================================== continuity
 class continuity(point):
-    """Concrete implementation of a continuity point in a beam.
-    """
+    """Concrete implementation of a continuity point in a beam."""
 
     @staticmethod
     def get_name():
@@ -620,8 +617,7 @@ class continuity(point):
 
 # ==================================================================================== fixed
 class fixed(point):
-    """Concrete implementation of a fixed/clamped support.
-    """
+    """Concrete implementation of a fixed/clamped support."""
 
     @staticmethod
     def get_name():
@@ -671,10 +667,8 @@ class fixed(point):
         ymin = ylim[0]
         ymax = ylim[1]
         yspan = ymax - ymin
-        ymid = (ymax + ymin) / 2
 
         # Draw the triangle.
-        length_fixed_line = yspan / 20
         if abs(x_coord_plot - xmin) < tol:
             ax.plot(
                 [x_coord_plot - xspan / 150, x_coord_plot - xspan / 150],
@@ -738,8 +732,7 @@ class fixed(point):
 
 # ==================================================================================== hinge
 class hinge(point):
-    """Concrete implementation of a hinge.
-    """
+    """Concrete implementation of a hinge."""
 
     @staticmethod
     def get_name():
