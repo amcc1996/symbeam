@@ -4,7 +4,7 @@
 </p>
 
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat)](https://github.com/psf/black)
 [![CodeFactor](https://www.codefactor.io/repository/github/amcc1996/symbeam/badge/development?s=aa7aec16e5c3c7c74f96d414568d7c4a2d2227f2)](https://www.codefactor.io/repository/github/amcc1996/symbeam/overview/development)
 [![codecov](https://codecov.io/gh/amcc1996/symbeam/branch/development/graph/badge.svg?token=2JLOK50CJJ)](https://codecov.io/gh/amcc1996/symbeam)
 
