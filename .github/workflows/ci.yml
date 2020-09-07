@@ -41,14 +41,14 @@ jobs:
     - name: Install pip, setuptools and testing tools
       run: |
         python3 -m pip install --upgrade pip setuptools wheel
-        pip3 install pytest pytest-mpl
+        pip3 install pytest pytest-mpl pytest-cov
     - name: Install package and dependencies
       run: |
         pip3 install -r requirements.txt
         pip3 install -e .
     - name: Test with pytest
       run: |
-        pytest --mpl --mpl-results-path=tests/results tests
+        pytest --mpl --mpl-results-path=tests/results --cov=symbeam/ --cov-report=xml tests
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:
