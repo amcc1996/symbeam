@@ -95,30 +95,30 @@ class beam:
         self.points = []
 
     # -------------------------------------------------------------------------- add_support
-    def add_support(self, x_coord, type):
+    def add_support(self, x_coord, support_type):
         """Appends a new support to the list of input supports.
 
         Parameters
         ----------
         x_coord : sympifiable type (int, float, string, SympP symbol, etc)
           Coordiante of the support
-        type : str
+        support_type : str
           Type of support
         """
         # First check if the coordinate inside the beam.
         self._check_inside_beam(x_coord)
 
         # Now allocate the correct point type (polymorphism).
-        if type.lower() == "pin":
+        if support_type.lower() == "pin":
             new_point = pin(x_coord)
 
-        elif type.lower() == "roller":
+        elif support_type.lower() == "roller":
             new_point = roller(x_coord)
 
-        elif type.lower() == "hinge":
+        elif support_type.lower() == "hinge":
             new_point = hinge(x_coord)
 
-        elif type.lower() == "fixed":
+        elif support_type.lower() == "fixed":
             new_point = fixed(x_coord)
 
         else:
@@ -255,14 +255,13 @@ class beam:
                 raise RuntimeError(
                     "Yound modulus specified for segment starting outside " + "the beam."
                 )
-            elif young_x_end_numeric[i] > length_numeric + x0_numeric:
+
+            if young_x_end_numeric[i] > length_numeric + x0_numeric:
                 raise RuntimeError(
                     "Young modulus specified for segment ending outside " + "the beam."
                 )
-            else:
-                length_young = (
-                    length_young + young_x_end_numeric[i] - young_x_start_numeric[i]
-                )
+
+            length_young = length_young + young_x_end_numeric[i] - young_x_start_numeric[i]
 
         if abs(length_young - length_numeric) > tol:
             raise RuntimeError(
@@ -293,14 +292,15 @@ class beam:
                     "Moment of inertia specified for segment starting "
                     + "outside the beam."
                 )
-            elif inertia_x_end_numeric[i] > length_numeric + x0_numeric:
+
+            if inertia_x_end_numeric[i] > length_numeric + x0_numeric:
                 raise RuntimeError(
                     "Moment of inertia specified for segment ending " + "outside the beam."
                 )
-            else:
-                length_inertia = (
-                    length_inertia + inertia_x_end_numeric[i] - inertia_x_start_numeric[i]
-                )
+
+            length_inertia = (
+                length_inertia + inertia_x_end_numeric[i] - inertia_x_start_numeric[i]
+            )
 
         if abs(length_inertia - length_numeric) > tol:
             raise RuntimeError(
@@ -370,7 +370,8 @@ class beam:
             raise RuntimeError(
                 "The specified beam segment is too short. The poits are " + "overlapping."
             )
-        elif x_start_numeric > x_end_numeric:
+
+        if x_start_numeric > x_end_numeric:
             raise RuntimeError(
                 "The starting coordinate is greater than the ending " + "coordinte."
             )
@@ -521,7 +522,8 @@ class beam:
                 "Error in segment creation: the first x-coordinate does "
                 + "not match the initial beam coordinate."
             )
-        elif abs(beam_x_coord_numeric[-1] - x0_numeric - length_numeric) > tol:
+
+        if abs(beam_x_coord_numeric[-1] - x0_numeric - length_numeric) > tol:
             raise RuntimeError(
                 "Error in segment creation: the last x-coordinate is not "
                 + "consistent with the length of the beam."
@@ -587,8 +589,8 @@ class beam:
 
             if not (found_segment):
                 raise RuntimeError("Search for valid Young modulus segment failed.")
-            else:
-                young = self.young_segment_list[j].value
+
+            young = self.young_segment_list[j].value
 
             # Second, find the correct inertia segment.
             found_segment = False
@@ -602,8 +604,8 @@ class beam:
 
             if not (found_segment):
                 raise RuntimeError("Search for valid moment of ienrtia segment failed.")
-            else:
-                inertia = self.inertia_segment_list[j].value
+
+            inertia = self.inertia_segment_list[j].value
 
             # Lastly, find the expression of the resultant distributed load.
             q_load_expression = sym.sympify(0)
@@ -734,12 +736,16 @@ class beam:
 
         # Unpack solution.
         variable_index = 0
-        for id in reaction_force_points:
-            self.points[id].reaction_force = solution[0][self.points[id].reaction_force]
+        for point_id in reaction_force_points:
+            self.points[point_id].reaction_force = solution[0][
+                self.points[point_id].reaction_force
+            ]
             variable_index = variable_index + 1
 
-        for id in reaction_moment_points:
-            self.points[id].reaction_moment = solution[0][self.points[id].reaction_moment]
+        for point_id in reaction_moment_points:
+            self.points[point_id].reaction_moment = solution[0][
+                self.points[point_id].reaction_moment
+            ]
             variable_index = variable_index + 1
 
     # ----------------------------------------------------------------- solve_internal_loads

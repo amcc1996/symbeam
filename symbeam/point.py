@@ -47,7 +47,6 @@ class point(ABC):
         name : str
           Name of the support
         """
-        pass
 
     # ------------------------------------------------------------------- has_reaction_force
     @abstractmethod
@@ -59,7 +58,6 @@ class point(ABC):
         flag : bool
           Flags if the point supports exterior reaction forces
         """
-        pass
 
     # ------------------------------------------------------------------ has_reaction_moment
     @abstractmethod
@@ -72,7 +70,6 @@ class point(ABC):
         flag : bool
           Flags if the point supports exterior reaction moments
         """
-        pass
 
     # ---------------------------------------------------- get_deflection_boundary_condition
     @abstractmethod
@@ -91,7 +88,6 @@ class point(ABC):
           List of equations setting the deflection boundary condition at the point that
           allow the determination of the integration constants
         """
-        pass
 
     # ------------------------------------------------------ get_rotation_boundary_condition
     @abstractmethod
@@ -110,7 +106,6 @@ class point(ABC):
           List of equations setting the rotation boundary condition at the point that
           allow the determination of the integration constants
         """
-        pass
 
     # ---------------------------------------------------------- get_fixed_degree_of_freedom
     @abstractmethod
@@ -122,7 +117,6 @@ class point(ABC):
         number_fixed : int
           Number of fixed degrees of freedom at the point
         """
-        pass
 
     # --------------------------------------------------------------------------- draw_point
     @abstractmethod
