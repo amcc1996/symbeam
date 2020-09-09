@@ -5,9 +5,11 @@ name: ci
 
 on:
   push:
-    branches: [ development ]
+    branches: 
+      - '*'
   pull_request:
-    branches: [ master ]
+    branches: 
+      - master
 
 jobs:
   lint:
