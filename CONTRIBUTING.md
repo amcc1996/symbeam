@@ -14,7 +14,8 @@ Assuming that you are already familiar with git and GitHub, I will walk you thro
 make format
 ```
 before submitting the pull-request. Additionally, SymBeam adheres to several guidelines of [flake8](https://flake8.pycqa.org/en/latest/). To run flake8 against SymBeam, run
-```make lint
+```
+make lint
 ```
 in SymBeam root directory. This will check if the current code is compliant with black, isort and flake8. If flake8 fails, a list of issues is printed in the terminal. Please, go through these code style issues and fixe them in your code before submitting the Pull Request.
 
