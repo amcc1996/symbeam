@@ -253,7 +253,7 @@ Adopting the substitutions `L=2`, `P=1000`, `q=5000` and `M=1000`, SymBeam outpu
   <img src="./img/example_readme.svg" width="70%">
 </p>
 
-> :warning: Do not forget to call the method `show()` from `matplotlib.pyplot` in order to plot the figure to the screen or tho save the figure in some format.
+> :warning: Do not forget to save the figures with `savefig()` method from `matplotlib.pyplot.figure`. In fact, you can also simply print the figure to the screen with `show()` from `matplotlib.pyplot`, but be aware that this might unformat the layout slightly, depending on the characteristics of your system.
 
 ### Final script
 Here you can find the complete script discussed on the previous sections.
@@ -285,7 +285,7 @@ new_beam.solve()
 
 new_beam.plot(subs={'P':1000, 'q':5000, 'L':2, 'M':1000})
 
-plt.show()
+plt.savefig("beam.pdf")
 ```
 
 ## Running the tests
