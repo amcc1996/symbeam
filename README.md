@@ -7,6 +7,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat)](https://github.com/psf/black)
 [![CodeFactor](https://www.codefactor.io/repository/github/amcc1996/symbeam/badge/development?s=aa7aec16e5c3c7c74f96d414568d7c4a2d2227f2)](https://www.codefactor.io/repository/github/amcc1996/symbeam/overview/development)
 [![codecov](https://codecov.io/gh/amcc1996/symbeam/branch/development/graph/badge.svg?token=2JLOK50CJJ)](https://codecov.io/gh/amcc1996/symbeam)
+[![gh-actions](https://img.shields.io/github/workflow/status/amcc1996/symbeam/ci?style=flat)](https://github.com/amcc1996/symbeam/actions?query=workflow%3Aci)
 
 SymBeam is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and deflections.
 
