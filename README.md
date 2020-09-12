@@ -62,7 +62,7 @@ In the following sections, a thorough description of an exemplar application of 
 
 
 <p align="center">
-  <img src="./img/example.svg" width="70%">
+  <img src="https://gist.githubusercontent.com/amcc1996/ca430a30adc69b1c1616cd949196466a/raw/00c07608d21e2f692e91032e82094f2f0d7d8931/example.svg" width="70%">
 </p>
 
 > :warning: The `x` symbol is used by SymBeam as the independent variable for the position along the beam. This variable must be used to specify any variation along the length of the beam and for nothing else. 
@@ -251,7 +251,7 @@ At this stage, to be able to plot the expressions, all the parameters of the pro
 Adopting the substitutions `L=2`, `P=1000`, `q=5000` and `M=1000`, SymBeam outputs the figure below.
 
 <p align="center">
-  <img src="./img/example_readme.svg" width="70%">
+  <img src="https://gist.githubusercontent.com/amcc1996/ca430a30adc69b1c1616cd949196466a/raw/00c07608d21e2f692e91032e82094f2f0d7d8931/example_readme.svg" width="70%">
 </p>
 
 > :warning: Do not forget to save the figures with `savefig()` method from `matplotlib.pyplot.figure`. In fact, you can also simply print the figure to the screen with `show()` from `matplotlib.pyplot`, but be aware that this might unformat the layout slightly, depending on the characteristics of your system.
