@@ -1,5 +1,5 @@
 <p align="center">
-  <a href=""><img alt="symbeam" src="img/symbeam_logo.svg" width="60%"></a>
+  <a href=""><img alt="symbeam" src="https://gist.githubusercontent.com/amcc1996/ca430a30adc69b1c1616cd949196466a/raw/00c07608d21e2f692e91032e82094f2f0d7d8931/symbeam_logo.svg" width="60%"></a>
   <p align="center">A pedagogical package for beam beanding.</p>
 </p>
 
