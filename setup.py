@@ -4,7 +4,7 @@
 # --------------
 import os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 # Get path of the package, where steup.py is located
@@ -58,6 +58,8 @@ setup(
         "Source": "https://github.com/amcc1996/symbeam",
         "Tracker": "https://github.com/amcc1996/symbeam/issues",
     },
+    # Include packages in distribution archives
+   packages=find_packages(),
     # Python version compatibility
     python_requires=">=3.5, <3.9",
     install_requires=[
