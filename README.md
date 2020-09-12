@@ -3,6 +3,9 @@
   <p align="center">A pedagogical package for beam beanding.</p>
 </p>
 
+[![PyPi Version](https://img.shields.io/pypi/v/symbeam.svg?style=flat)](https://pypi.org/project/symbeam)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/symbeam.svg?style=flat-square)](https://pypi.org/pypi/symbeam/)
+
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat)](https://github.com/psf/black)
 [![CodeFactor](https://www.codefactor.io/repository/github/amcc1996/symbeam/badge/master?s=aa7aec16e5c3c7c74f96d414568d7c4a2d2227f2)](https://www.codefactor.io/repository/github/amcc1996/symbeam/overview/master)
