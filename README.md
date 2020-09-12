@@ -33,6 +33,12 @@ At this point, SymBeam can be imported into your Python scripts and modules the 
 import symbeam
 ```
 
+### Installing from the Python Package Index PyPI
+Download and install SymBeam in your system or virtual environment by simply running
+```
+pip3 install symbeam
+```
+
 ## Theory
 SymBeam is based on classical Solid Mechanics and Strenght of Materials results to solve the beam equilibirum problem. A simple outline follows in the present section, without entering in any mathematical derivations.
 
