@@ -14,10 +14,11 @@ coverage:
 
 clean:
 	@rm -rf *.egg-info/
-	@if [ -d "htmlcov" ]; then rm -rf htmlcov; echo Removed hmltcov; fi
+	@rm -rf build
+	@rm -rf dist
+	@rm -rf htmlcov
 	@find . -name *__pycache__ -exec rm -rf {} +
-	@echo Removed *.egg-info and __pycache__
-	@if [ -d "tests/results" ]; then rm -rf tests/results; echo Removed tests/results; fi
+	@rm -rf tests/results
 
 img:
 	pytest --mpl-generate-path=tests/baseline
