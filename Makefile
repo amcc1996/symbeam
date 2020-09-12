@@ -1,4 +1,4 @@
-.PHONY: format coverage clean img tests
+.PHONY: format coverage clean img tests publish
 
 lint:
 	isort --check --color .
