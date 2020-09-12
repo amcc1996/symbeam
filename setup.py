@@ -30,6 +30,7 @@ setup(
     long_description_content_type="text/markdown",
     # Github url
     url="https://github.com/amcc1996/symbeam",
+    download_urt="https://github.com/amcc1996/symbeam/releases/tag/v1.0.0",
     # Authors
     author="António Manuel Couto Carneiro @FEUP",
     author_email="amcc@fe.up.pt",
