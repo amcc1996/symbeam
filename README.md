@@ -11,7 +11,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/amcc1996/symbeam/badge/master?s=aa7aec16e5c3c7c74f96d414568d7c4a2d2227f2)](https://www.codefactor.io/repository/github/amcc1996/symbeam/overview/master)
 [![codecov](https://codecov.io/gh/amcc1996/symbeam/branch/master/graph/badge.svg?token=2JLOK50CJJ)](https://codecov.io/gh/amcc1996/symbeam)
 [![gh-actions](https://img.shields.io/github/workflow/status/amcc1996/symbeam/ci?style=flat)](https://github.com/amcc1996/symbeam/actions?query=workflow%3Aci)
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/amcc1996/bending-playground/master?urlpath=https%3A%2F%2Fgithub.com%2Famcc1996%2Fbending-playground%2Fblob%2Fmaster%2Fbending-diagrams.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/amcc1996/bending-playground/master?filepath=bending-diagrams.ipynb)
 
 SymBeam is a pedagogical software package, written in Python, targeted at Mechanical, Civil and Industrial Engineering students learning the fundamentals of bending of beams, namely, bending diagrams and deflections.
 
@@ -23,7 +23,7 @@ Conversely, SymBeam can also be used by teachers to create and validate new prob
 The following paragraphs provide a detailed description of how to use SymBeam for solving a beam equilibrium problem, together with the extent of its capabilities and also limitations. Check the comprehensive list of SymBeam application [examples](examples) for a more visual overview.
 
 ## Try it out
-You do not need to be a Python Pro or even know Python at all to embed SymBeam in your study. Explore this [interactive notebook](https://mybinder.org/v2/gh/amcc1996/bending-playground/master?urlpath=https%3A%2F%2Fgithub.com%2Famcc1996%2Fbending-playground%2Fblob%2Fmaster%2Fbending-diagrams.ipynb) and enjoy from SymBeam features in your study!
+You do not need to be a Python Pro or even know Python at all to embed SymBeam in your study. Explore this [interactive notebook](https://mybinder.org/v2/gh/amcc1996/bending-playground/master?filepath=bending-diagrams.ipynb) and enjoy from SymBeam features in your study!
 
 ## Installation
 
