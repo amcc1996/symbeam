@@ -62,7 +62,7 @@ setup(
     # Include packages in distribution archives
     packages=find_packages(),
     # Python version compatibility
-    python_requires=">=3.5, <3.9",
+    python_requires=">=3.6, <3.9",
     install_requires=[
         "certifi>=2020.6.20",
         "cycler>=0.10.0",
