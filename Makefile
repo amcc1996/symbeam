@@ -36,9 +36,9 @@ tests:
 	pytest --mpl --mpl-results-path=tests/results
 
 deploy: clean
-	@if [ "$(GIT_BRANCH)" =! "master" ]; then echo Not in master branch!; exit 1; fi
+	@if [ $(GIT_BRANCH) =! "master" ]; then echo Not in master branch!; exit 1; fi
 	curl -H "Authorization: token $(TOKEN)" --data '$(API_JSON)' $(URL)
-	python3 setup.py sdist bdist_wheel
-	python3 -m twine upload dist/*
+	#python3 setup.py sdist bdist_wheel
+	#python3 -m twine upload dist/*
 
 
