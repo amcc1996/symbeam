@@ -44,7 +44,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         # Python version obtained with https://pypi.org/project/check-python-versions/
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
