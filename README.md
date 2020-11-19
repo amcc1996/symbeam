@@ -1,6 +1,6 @@
 <p align="center">
   <a href=""><img alt="symbeam" src="https://gist.githubusercontent.com/amcc1996/ca430a30adc69b1c1616cd949196466a/raw/00c07608d21e2f692e91032e82094f2f0d7d8931/symbeam_logo.svg" width="60%"></a>
-  <p align="center">A pedagogical package for beam beanding.</p>
+  <p align="center">A pedagogical package for beam bending.</p>
 </p>
 
 [![PyPi Version](https://img.shields.io/pypi/v/symbeam.svg?style=flat)](https://pypi.org/project/symbeam)
@@ -318,4 +318,4 @@ which will run the test and create the coverage information in `htmlcov`.
 ## License
 Copyright 2020, António Carneiro
 
-SymBeam is free and open-source software and is published [MIT License](https://opensource.org/licenses/MIT).
+SymBeam is free and open-source software and is published under [MIT License](https://opensource.org/licenses/MIT).
