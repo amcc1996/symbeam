@@ -426,10 +426,10 @@ class beam:
             support_x_numeric = [item.x_coord for item in self.support_list]
             point_load_x_numeric = [item.x_coord for item in self.point_load_list]
             point_moment_x_numeric = [item.x_coord for item in self.point_moment_list]
-            distibuted_x_start_numeric = [
+            distributed_x_start_numeric = [
                 item.x_start for item in self.distributed_load_list
             ]
-            distibuted_x_end_numeric = [item.x_end for item in self.distributed_load_list]
+            distributed_x_end_numeric = [item.x_end for item in self.distributed_load_list]
         else:
             length_numeric = self.length.subs({self.length: 1.0})
             x0_numeric = self.x0.subs({self.length: 1.0})
@@ -454,10 +454,10 @@ class beam:
             point_moment_x_numeric = [
                 item.x_coord.subs({self.length: 1.0}) for item in self.point_moment_list
             ]
-            distibuted_x_start_numeric = [
+            distributed_x_start_numeric = [
                 item.x_start.subs({self.length: 1.0}) for item in self.distributed_load_list
             ]
-            distibuted_x_end_numeric = [
+            distributed_x_end_numeric = [
                 item.x_end.subs({self.length: 1.0}) for item in self.distributed_load_list
             ]
 
@@ -468,8 +468,8 @@ class beam:
         support_x_symbol = [item.x_coord for item in self.support_list]
         point_load_x_symbol = [item.x_coord for item in self.point_load_list]
         point_moment_x_symbol = [item.x_coord for item in self.point_moment_list]
-        distibuted_x_start_symbol = [item.x_start for item in self.distributed_load_list]
-        distibuted_x_end_symbol = [item.x_end for item in self.distributed_load_list]
+        distributed_x_start_symbol = [item.x_start for item in self.distributed_load_list]
+        distributed_x_end_symbol = [item.x_end for item in self.distributed_load_list]
 
         # Store all coordinates in a single list, sort by ascending order and remove
         # possible duplicate entries.
@@ -481,8 +481,8 @@ class beam:
         all_x_coord_numeric.extend(support_x_numeric)
         all_x_coord_numeric.extend(point_load_x_numeric)
         all_x_coord_numeric.extend(point_moment_x_numeric)
-        all_x_coord_numeric.extend(distibuted_x_start_numeric)
-        all_x_coord_numeric.extend(distibuted_x_end_numeric)
+        all_x_coord_numeric.extend(distributed_x_start_numeric)
+        all_x_coord_numeric.extend(distributed_x_end_numeric)
 
         all_x_coord_symbol = []
         all_x_coord_symbol.extend(young_x_start_symbol)
@@ -492,8 +492,8 @@ class beam:
         all_x_coord_symbol.extend(support_x_symbol)
         all_x_coord_symbol.extend(point_load_x_symbol)
         all_x_coord_symbol.extend(point_moment_x_symbol)
-        all_x_coord_symbol.extend(distibuted_x_start_symbol)
-        all_x_coord_symbol.extend(distibuted_x_end_symbol)
+        all_x_coord_symbol.extend(distributed_x_start_symbol)
+        all_x_coord_symbol.extend(distributed_x_end_symbol)
 
         all_x_coord_symbol = [
             item for _, item in sorted(zip(all_x_coord_numeric, all_x_coord_symbol))
@@ -610,8 +610,8 @@ class beam:
             # Lastly, find the expression of the resultant distributed load.
             q_load_expression = sym.sympify(0)
             for j in range(len(self.distributed_load_list)):
-                lower_bound = x_start_numeric > distibuted_x_start_numeric[j] - tol
-                upper_bound = x_end_numeric < distibuted_x_end_numeric[j] + tol
+                lower_bound = x_start_numeric > distributed_x_start_numeric[j] - tol
+                upper_bound = x_end_numeric < distributed_x_end_numeric[j] + tol
 
                 if lower_bound and upper_bound:
                     q_load_expression = (
