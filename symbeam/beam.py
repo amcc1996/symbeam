@@ -80,6 +80,9 @@ class beam:
                 "Only one symbols is allowed to define the length of" + " the beam."
             )
 
+        # Store the length symbol
+        self.length_symbol = next(iter(self.length.free_symbols))
+
         # Initialise the list storing all the input information for the beam
         self.support_list = []
         self.distributed_load_list = []
@@ -230,19 +233,23 @@ class beam:
             inertia_x_start_numeric = [item.x_start for item in self.inertia_segment_list]
             inertia_x_end_numeric = [item.x_end for item in self.inertia_segment_list]
         else:
-            length_numeric = self.length.subs({self.length: 1.0})
-            x0_numeric = self.x0.subs({self.length: 1.0})
+            length_numeric = self.length.subs({self.length_symbol: 1.0})
+            x0_numeric = self.x0.subs({self.length_symbol: 1.0})
             young_x_start_numeric = [
-                item.x_start.subs({self.length: 1.0}) for item in self.young_segment_list
+                item.x_start.subs({self.length_symbol: 1.0})
+                for item in self.young_segment_list
             ]
             young_x_end_numeric = [
-                item.x_end.subs({self.length: 1.0}) for item in self.young_segment_list
+                item.x_end.subs({self.length_symbol: 1.0})
+                for item in self.young_segment_list
             ]
             inertia_x_start_numeric = [
-                item.x_start.subs({self.length: 1.0}) for item in self.inertia_segment_list
+                item.x_start.subs({self.length_symbol: 1.0})
+                for item in self.inertia_segment_list
             ]
             inertia_x_end_numeric = [
-                item.x_end.subs({self.length: 1.0}) for item in self.inertia_segment_list
+                item.x_end.subs({self.length_symbol: 1.0})
+                for item in self.inertia_segment_list
             ]
 
         length_young = 0.0
@@ -346,14 +353,14 @@ class beam:
             raise RuntimeError("More than one symbol used for coordinate coordinate.")
 
         if len(x_start_symbol.free_symbols) == 1:
-            if next(iter(x_start_symbol.free_symbols)) != self.length:
+            if next(iter(x_start_symbol.free_symbols)) != self.length_symbol:
                 raise RuntimeError(
                     "Distinct symbols have been used for coordinate along "
                     + "the the beam and beam length."
                 )
 
         if len(x_end_symbol.free_symbols) == 1:
-            if next(iter(x_end_symbol.free_symbols)) != self.length:
+            if next(iter(x_end_symbol.free_symbols)) != self.length_symbol:
                 raise RuntimeError(
                     "Distinct symbols have been used for coordinate along"
                     + " the the beam and beam length."
@@ -363,8 +370,8 @@ class beam:
             x_start_numeric = x_start_symbol
             x_end_numeric = x_end_symbol
         else:
-            x_start_numeric = x_start_symbol.subs({self.length: 1})
-            x_end_numeric = x_end_symbol.subs({self.length: 1})
+            x_start_numeric = x_start_symbol.subs({self.length_symbol: 1})
+            x_end_numeric = x_end_symbol.subs({self.length_symbol: 1})
 
         if abs(x_start_numeric - x_end_numeric) < tol:
             raise RuntimeError(
@@ -391,7 +398,7 @@ class beam:
             raise RuntimeError("More than one symbol used for coordinate.")
 
         if len(x_coord_symbol.free_symbols) == 1:
-            if next(iter(x_coord_symbol.free_symbols)) != self.length:
+            if next(iter(x_coord_symbol.free_symbols)) != self.length_symbol:
                 raise RuntimeError(
                     "Distinct symbols have been used for coordinate along "
                     + "the the beam and beam length."
@@ -402,9 +409,9 @@ class beam:
             length_numeric = self.length
             x0_numeric = self.x0
         else:
-            x_coord_numeric = x_coord_symbol.subs({self.length: 1})
-            length_numeric = self.length.subs({self.length: 1.0})
-            x0_numeric = self.x0.subs({self.length: 1.0})
+            x_coord_numeric = x_coord_symbol.subs({self.length_symbol: 1})
+            length_numeric = self.length.subs({self.length_symbol: 1.0})
+            x0_numeric = self.x0.subs({self.length_symbol: 1.0})
 
         if not (x0_numeric - tol <= x_coord_numeric <= x0_numeric + length_numeric + tol):
             raise RuntimeError("The specified coordinate lies outside the beam.")
@@ -431,34 +438,42 @@ class beam:
             ]
             distributed_x_end_numeric = [item.x_end for item in self.distributed_load_list]
         else:
-            length_numeric = self.length.subs({self.length: 1.0})
-            x0_numeric = self.x0.subs({self.length: 1.0})
+            length_numeric = self.length.subs({self.length_symbol: 1.0})
+            x0_numeric = self.x0.subs({self.length_symbol: 1.0})
             young_x_start_numeric = [
-                item.x_start.subs({self.length: 1.0}) for item in self.young_segment_list
+                item.x_start.subs({self.length_symbol: 1.0})
+                for item in self.young_segment_list
             ]
             young_x_end_numeric = [
-                item.x_end.subs({self.length: 1.0}) for item in self.young_segment_list
+                item.x_end.subs({self.length_symbol: 1.0})
+                for item in self.young_segment_list
             ]
             inertia_x_start_numeric = [
-                item.x_start.subs({self.length: 1.0}) for item in self.inertia_segment_list
+                item.x_start.subs({self.length_symbol: 1.0})
+                for item in self.inertia_segment_list
             ]
             inertia_x_end_numeric = [
-                item.x_end.subs({self.length: 1.0}) for item in self.inertia_segment_list
+                item.x_end.subs({self.length_symbol: 1.0})
+                for item in self.inertia_segment_list
             ]
             support_x_numeric = [
-                item.x_coord.subs({self.length: 1.0}) for item in self.support_list
+                item.x_coord.subs({self.length_symbol: 1.0}) for item in self.support_list
             ]
             point_load_x_numeric = [
-                item.x_coord.subs({self.length: 1.0}) for item in self.point_load_list
+                item.x_coord.subs({self.length_symbol: 1.0})
+                for item in self.point_load_list
             ]
             point_moment_x_numeric = [
-                item.x_coord.subs({self.length: 1.0}) for item in self.point_moment_list
+                item.x_coord.subs({self.length_symbol: 1.0})
+                for item in self.point_moment_list
             ]
             distributed_x_start_numeric = [
-                item.x_start.subs({self.length: 1.0}) for item in self.distributed_load_list
+                item.x_start.subs({self.length_symbol: 1.0})
+                for item in self.distributed_load_list
             ]
             distributed_x_end_numeric = [
-                item.x_end.subs({self.length: 1.0}) for item in self.distributed_load_list
+                item.x_end.subs({self.length_symbol: 1.0})
+                for item in self.distributed_load_list
             ]
 
         young_x_start_symbol = [item.x_start for item in self.young_segment_list]
@@ -551,7 +566,7 @@ class beam:
             if self.length.is_number:
                 this_x_numeric = this_point.x_coord
             else:
-                this_x_numeric = this_point.x_coord.subs({self.length: 1.0})
+                this_x_numeric = this_point.x_coord.subs({self.length_symbol: 1.0})
 
             # Second, go add all external point loads and moments.
             for j, load in enumerate(self.point_load_list):
@@ -574,8 +589,8 @@ class beam:
                 x_start_numeric = x_start
                 x_end_numeric = x_end
             else:
-                x_start_numeric = x_start.subs({self.length: 1.0})
-                x_end_numeric = x_end.subs({self.length: 1.0})
+                x_start_numeric = x_start.subs({self.length_symbol: 1.0})
+                x_end_numeric = x_end.subs({self.length_symbol: 1.0})
 
             # First, find the correct Young modulus segment.
             found_segment = False
