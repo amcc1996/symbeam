@@ -36,6 +36,10 @@ and install the Python package with `pip3`, running the following command inside
 ```
 pip3 install .
 ```
+Alternatively, you can install it directly from PyPI with
+```
+pip3 install symbeam
+```
 At this point, SymBeam can be imported into your Python scripts and modules the usual Python-way
 ```python
 import symbeam
