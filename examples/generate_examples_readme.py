@@ -72,7 +72,7 @@ with open("README.md", "w") as file:
         with open(tmp_file, "r") as tfile:
             output_lines = tfile.readlines()
 
-        # Finda documentation and source code
+        # Find the documentation and source code
         doc_start = 0
         doc_end = 0
         for i, line in enumerate(example_lines):

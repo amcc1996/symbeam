@@ -9,16 +9,9 @@ Here you can find a comprehensive but by no means exhaustive list of examples ex
 5. Symbolic distributed constant load
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support('l', 'pin')
-test_beam.add_distributed_load(0, 'l/2', '-2 * q / l * x')
-test_beam.add_distributed_load('l/2', 'l', '-q')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_1.svg" width="70%">
@@ -87,16 +80,9 @@ fig, ax = test_beam.plot()
 6. User-specified symbolic substitutions
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support('l', 'pin')
-test_beam.add_distributed_load(0, 'l/2', '-2 * q / l * x')
-test_beam.add_distributed_load('l/2', 'l', '-q')
-test_beam.solve()
-fig, ax = test_beam.plot(subs={'q':2, 'l':2, 'x':10}) # 'x' is not substituted
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_2.svg" width="70%">
@@ -164,17 +150,9 @@ fig, ax = test_beam.plot(subs={'q':2, 'l':2, 'x':10}) # 'x' is not substituted
 5. Symbolic point load
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'fixed')
-test_beam.add_support('l/2', 'hinge')
-test_beam.add_support('l', 'roller')
-test_beam.add_distributed_load('l/2', 'l', '-q')
-test_beam.add_point_load('l/4', '-q*l')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_3.svg" width="70%">
@@ -252,18 +230,9 @@ fig, ax = test_beam.plot()
 6. Numeric point moment
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(6, x0=0)
-test_beam.add_support(0, 'fixed')
-test_beam.add_support(2, 'hinge')
-test_beam.add_support(4, 'roller')
-test_beam.add_distributed_load(0, 4, '-5/4 * x')
-test_beam.add_distributed_load(4, 6, -5)
-test_beam.add_point_moment(4, 20)
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_4.svg" width="70%">
@@ -340,18 +309,9 @@ fig, ax = test_beam.plot()
 5. Numeric distributed quadratic load
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(6, x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support(2, 'roller')
-test_beam.add_support(6, 'pin')
-test_beam.add_support(4, 'hinge')
-test_beam.add_distributed_load(0, 4, -5)
-test_beam.add_distributed_load(4, 6, '-(-3*(x-5)**2 + 8)')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_5.svg" width="70%">
@@ -427,16 +387,9 @@ fig, ax = test_beam.plot()
 4. Symbolic point load
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(3, x0=0)
-test_beam.add_support(0.5, 'pin')
-test_beam.add_support(2.5, 'roller')
-test_beam.add_point_load(0, '-P')
-test_beam.add_point_load(3, '-P')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_6.svg" width="70%">
@@ -515,23 +468,10 @@ fig, ax = test_beam.plot()
 8. User-speficied substitution
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 import sympy as sym
 
-E = sym.symbols('E')
-I = sym.symbols('I')
-test_beam = beam(3, x0=0)
-test_beam.add_support(0.5, 'pin')
-test_beam.add_support(2.5, 'roller')
-test_beam.add_point_load(0, '-P')
-test_beam.add_point_load(3, '-P')
-test_beam.set_young(0, 1.5, E/1000)
-test_beam.set_young(1.5, 3,  E)
-test_beam.set_inertia(0, 1, I)
-test_beam.set_inertia(1, 3,  100*I)
-test_beam.solve()
-fig, ax = test_beam.plot(subs={'P':1000})
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_7.svg" width="70%">
@@ -626,21 +566,9 @@ fig, ax = test_beam.plot(subs={'P':1000})
 8. User-speficied substitution
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
-from sympy.abc import E, I
 
-test_beam = beam(3, x0=0)
-test_beam.add_support(0.5, 'pin')
-test_beam.add_support(2.5, 'roller')
-test_beam.add_point_load(0, '-P')
-test_beam.add_point_load(3, '-P')
-test_beam.set_young(0, 1.5, E/1000)
-test_beam.set_young(1.5, 3,  E)
-test_beam.set_inertia(0, 1, I)
-test_beam.set_inertia(1, 3,  100*I)
-test_beam.solve()
-fig, ax = test_beam.plot(subs={'P':1000})
+from sympy.abc import E, I
 ```
 <p align="center">
   <img src="./svg/./example_8.svg" width="70%">
@@ -733,18 +661,9 @@ fig, ax = test_beam.plot(subs={'P':1000})
 6. Two numeric distributed linear loads
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(6, x0=0)
-test_beam.add_support(0, 'fixed')
-test_beam.add_support(4, 'hinge')
-test_beam.add_support(6, 'roller')
-test_beam.add_point_moment(6, 20)
-test_beam.add_distributed_load(0, 2, '-5*x')
-test_beam.add_distributed_load(2, 4, '-(20-5*x)')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_9.svg" width="70%">
@@ -822,18 +741,9 @@ fig, ax = test_beam.plot()
 6. Two numeric distributed linear loads
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(4, x0=0)
-test_beam.add_support(2, 'roller')
-test_beam.add_support(4, 'pin')
-test_beam.add_distributed_load(0, 2, '-5*x')
-test_beam.add_distributed_load(2, 4, '-(4*x**2-24*x+42)')
-test_beam.set_inertia(0, 4, 2.051e-5)
-test_beam.set_young(0, 4, 210e9)
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_10.svg" width="70%">
@@ -902,17 +812,9 @@ fig, ax = test_beam.plot()
 6. Numeric distributed quadratic load
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(4, x0=0)
-test_beam.add_support(0, 'roller')
-test_beam.add_support(1, 'hinge')
-test_beam.add_support(4, 'fixed')
-test_beam.add_distributed_load(0, 2, '-5')
-test_beam.add_distributed_load(2, 4, '-(4*x**2 - 24 *x + 37)')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_11.svg" width="70%">
@@ -988,14 +890,9 @@ fig, ax = test_beam.plot()
 4. Classical clamped beam problem
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('L', x0=0)
-test_beam.add_support(0, 'fixed')
-test_beam.add_point_load('L', '-P')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_12.svg" width="70%">
@@ -1054,14 +951,9 @@ fig, ax = test_beam.plot()
 4. Classical clamped beam problem
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('L', x0=0)
-test_beam.add_support(0, 'fixed')
-test_beam.add_point_moment('L', 'M')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_13.svg" width="70%">
@@ -1121,15 +1013,9 @@ fig, ax = test_beam.plot()
 5. Classical pinned beam problem with half-span force
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'pin')
-test_beam.add_support('l', 'roller')
-test_beam.add_point_load('l/2', '-P')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_14.svg" width="70%">
@@ -1196,19 +1082,9 @@ fig, ax = test_beam.plot()
 4. Set of numeric point forces and moments
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam('l', x0=0)
-test_beam.add_support(0, 'pin')
-test_beam.add_support('l', 'roller')
-test_beam.add_point_load('l/4', 'P')
-test_beam.add_point_moment('l/4', 'P*l / 2')
-test_beam.add_point_load('l/2', '-2*P')
-test_beam.add_point_moment('7*l/8', '-P*l')
-test_beam.add_point_load('3*l/4', '-3*P')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_15.svg" width="70%">
@@ -1299,15 +1175,9 @@ fig, ax = test_beam.plot()
 4. Numeric sinusoidal distributed force
 
 ```python
-from symbeam import beam
 import matplotlib.pyplot as plt
 
-test_beam = beam(1, x0=0)
-test_beam.add_support(0, 'pin')
-test_beam.add_support(1, 'roller')
-test_beam.add_distributed_load(0, 1, 'sin(20 * x)')
-test_beam.solve()
-fig, ax = test_beam.plot()
+from symbeam import beam
 ```
 <p align="center">
   <img src="./svg/./example_16.svg" width="70%">
@@ -1355,6 +1225,86 @@ fig, ax = test_beam.plot()
 -----------------------------------------------------------------------------------
  [   0   -   1   ]      v(x)    -203*x*sin(20)/(480000*E*I) + (x**3*sin(20)/2400 + sin(20*x)/160000)/(E*I)
  [   0   -   1   ]    dv/dx(x)  (x**2*sin(20)/800 + cos(20*x)/8000)/(E*I) - 203*sin(20)/(480000*E*I)
+===================================================================================
+
+
+```
+## [example_17.py](./example_17.py)
+1. Symbolic length scaled by number
+2. Roller
+3. Hinge
+4. Fixed
+4. Symbolic distributed linear load
+4. Symbolic distributed quadratic load
+
+```python
+import matplotlib.pyplot as plt
+from symbeam import beam
+
+```
+<p align="center">
+  <img src="./svg/./example_17.svg" width="70%">
+</p>
+
+```
+                                    Beam points                                    
+===================================================================================
+     Coordinate              Type                 Load                Moment       
+-----------------------------------------------------------------------------------
+         0             Continuity point            0                    0          
+         l                  Roller                 0                    0          
+        2*l                 Hinge                  0                    0          
+        3*l                 Fixed                  0                    0          
+===================================================================================
+
+
+                                   Beam segments                                   
+===================================================================================
+        Span            Young modulus           Inertia          Distributed load  
+-----------------------------------------------------------------------------------
+ [   0   -   l   ]            E                    I                  -q*x/l       
+ [   l   -  2*l  ]            E                    I                    0          
+ [  2*l  -  3*l  ]            E                    I           9*q - 6*q*x/l + q*x**2/l**2
+===================================================================================
+
+
+                                Exterior Reactions                                 
+===================================================================================
+           Point                       Type                        Value           
+-----------------------------------------------------------------------------------
+             l                         Force                      2*l*q/3          
+            3*l                        Force                      -l*q/2           
+            3*l                       Moment                    5*l**2*q/12        
+===================================================================================
+
+
+                                  Internal Loads                                   
+===================================================================================
+        Span          Diagram                       Expression                    
+-----------------------------------------------------------------------------------
+ [   0   -   l   ]      V(x)                       q*x**2/(2*l)                   
+ [   0   -   l   ]      M(x)                      -q*x**3/(6*l)                   
+-----------------------------------------------------------------------------------
+ [   l   -  2*l  ]      V(x)                          -l*q/6                      
+ [   l   -  2*l  ]      M(x)                   -l**2*q/3 + l*q*x/6                
+-----------------------------------------------------------------------------------
+ [  2*l  -  3*l  ]      V(x)     17*l*q/2 - 9*q*x + 3*q*x**2/l - q*x**3/(3*l**2)  
+ [  2*l  -  3*l  ]      M(x)    17*l**2*q/3 - 17*l*q*x/2 + 9*q*x**2/2 - q*x**3/l + q*x**4/(12*l**2)
+===================================================================================
+
+
+                              Rotation and deflection                              
+===================================================================================
+        Span          Variable                      Expression                    
+-----------------------------------------------------------------------------------
+ [   0   -   l   ]      v(x)    -13*l**4*q/(60*E*I) + 9*l**3*q*x/(40*E*I) - q*x**5/(120*E*I*l)
+ [   0   -   l   ]    dv/dx(x)        9*l**3*q/(40*E*I) - q*x**4/(24*E*I*l)       
+-----------------------------------------------------------------------------------
+ [   l   -  2*l  ]      v(x)    -53*l**4*q/(180*E*I) + 13*l**3*q*x/(30*E*I) - l**2*q*x**2/(6*E*I) + l*q*x**3/(36*E*I)
+ [   l   -  2*l  ]    dv/dx(x)  13*l**3*q/(30*E*I) - l**2*q*x/(3*E*I) + l*q*x**2/(12*E*I)
+-----------------------------------------------------------------------------------
+ [  2*l  -  3*l  ]      v(x)    33*l**4*q/(20*E*I) - 61*l**3*q*x/(20*E*I) + 17*l**2*q*x**2/(6*E*I) - 17*l*q*x**3/(12*E*I) + 3*q*x**4/(8*E*I) - q*x**5/(20*E*I*l) + q*x**6/(360*E*I*l**2)
+ [  2*l  -  3*l  ]    dv/dx(x)  -61*l**3*q/(20*E*I) + 17*l**2*q*x/(3*E*I) - 17*l*q*x**2/(4*E*I) + 3*q*x**3/(2*E*I) - q*x**4/(4*E*I*l) + q*x**5/(60*E*I*l**2)
 ===================================================================================
 
 
