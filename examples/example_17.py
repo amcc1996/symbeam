@@ -12,6 +12,7 @@
 #           4. Symbolic distributed quadratic load
 
 import matplotlib.pyplot as plt
+
 from symbeam import beam
 
 
