@@ -9,9 +9,16 @@ Here you can find a comprehensive but by no means exhaustive list of examples ex
 5. Symbolic distributed constant load
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "roller")
+test_beam.add_support("l", "pin")
+test_beam.add_distributed_load(0, "l/2", "-2 * q / l * x")
+test_beam.add_distributed_load("l/2", "l", "-q")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_1.svg" width="70%">
@@ -80,9 +87,16 @@ from symbeam import beam
 6. User-specified symbolic substitutions
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "roller")
+test_beam.add_support("l", "pin")
+test_beam.add_distributed_load(0, "l/2", "-2 * q / l * x")
+test_beam.add_distributed_load("l/2", "l", "-q")
+test_beam.solve()
+fig, ax = test_beam.plot(subs={"q": 2, "l": 2, "x": 10})  # 'x' is not substituted
 ```
 <p align="center">
   <img src="./svg/./example_2.svg" width="70%">
@@ -150,9 +164,17 @@ from symbeam import beam
 5. Symbolic point load
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "fixed")
+test_beam.add_support("l/2", "hinge")
+test_beam.add_support("l", "roller")
+test_beam.add_distributed_load("l/2", "l", "-q")
+test_beam.add_point_load("l/4", "-q*l")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_3.svg" width="70%">
@@ -230,9 +252,18 @@ from symbeam import beam
 6. Numeric point moment
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(6, x0=0)
+test_beam.add_support(0, "fixed")
+test_beam.add_support(2, "hinge")
+test_beam.add_support(4, "roller")
+test_beam.add_distributed_load(0, 4, "-5/4 * x")
+test_beam.add_distributed_load(4, 6, -5)
+test_beam.add_point_moment(4, 20)
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_4.svg" width="70%">
@@ -309,9 +340,18 @@ from symbeam import beam
 5. Numeric distributed quadratic load
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(6, x0=0)
+test_beam.add_support(0, "roller")
+test_beam.add_support(2, "roller")
+test_beam.add_support(6, "pin")
+test_beam.add_support(4, "hinge")
+test_beam.add_distributed_load(0, 4, -5)
+test_beam.add_distributed_load(4, 6, "-(-3*(x-5)**2 + 8)")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_5.svg" width="70%">
@@ -387,9 +427,16 @@ from symbeam import beam
 4. Symbolic point load
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(3, x0=0)
+test_beam.add_support(0.5, "pin")
+test_beam.add_support(2.5, "roller")
+test_beam.add_point_load(0, "-P")
+test_beam.add_point_load(3, "-P")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_6.svg" width="70%">
@@ -468,10 +515,9 @@ from symbeam import beam
 8. User-speficied substitution
 
 ```python
-import matplotlib.pyplot as plt
-import sympy as sym
 
 from symbeam import beam
+
 ```
 <p align="center">
   <img src="./svg/./example_7.svg" width="70%">
@@ -566,9 +612,10 @@ from symbeam import beam
 8. User-speficied substitution
 
 ```python
-import matplotlib.pyplot as plt
-
 from sympy.abc import E, I
+
+from symbeam import beam
+
 ```
 <p align="center">
   <img src="./svg/./example_8.svg" width="70%">
@@ -661,9 +708,18 @@ from sympy.abc import E, I
 6. Two numeric distributed linear loads
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(6, x0=0)
+test_beam.add_support(0, "fixed")
+test_beam.add_support(4, "hinge")
+test_beam.add_support(6, "roller")
+test_beam.add_point_moment(6, 20)
+test_beam.add_distributed_load(0, 2, "-5*x")
+test_beam.add_distributed_load(2, 4, "-(20-5*x)")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_9.svg" width="70%">
@@ -741,9 +797,18 @@ from symbeam import beam
 6. Two numeric distributed linear loads
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(4, x0=0)
+test_beam.add_support(2, "roller")
+test_beam.add_support(4, "pin")
+test_beam.add_distributed_load(0, 2, "-5*x")
+test_beam.add_distributed_load(2, 4, "-(4*x**2-24*x+42)")
+test_beam.set_inertia(0, 4, 2.051e-5)
+test_beam.set_young(0, 4, 210e9)
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_10.svg" width="70%">
@@ -812,9 +877,17 @@ from symbeam import beam
 6. Numeric distributed quadratic load
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(4, x0=0)
+test_beam.add_support(0, "roller")
+test_beam.add_support(1, "hinge")
+test_beam.add_support(4, "fixed")
+test_beam.add_distributed_load(0, 2, "-5")
+test_beam.add_distributed_load(2, 4, "-(4*x**2 - 24 *x + 37)")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_11.svg" width="70%">
@@ -890,9 +963,14 @@ from symbeam import beam
 4. Classical clamped beam problem
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("L", x0=0)
+test_beam.add_support(0, "fixed")
+test_beam.add_point_load("L", "-P")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_12.svg" width="70%">
@@ -951,9 +1029,14 @@ from symbeam import beam
 4. Classical clamped beam problem
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("L", x0=0)
+test_beam.add_support(0, "fixed")
+test_beam.add_point_moment("L", "M")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_13.svg" width="70%">
@@ -1013,9 +1096,15 @@ from symbeam import beam
 5. Classical pinned beam problem with half-span force
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "pin")
+test_beam.add_support("l", "roller")
+test_beam.add_point_load("l/2", "-P")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_14.svg" width="70%">
@@ -1082,9 +1171,19 @@ from symbeam import beam
 4. Set of numeric point forces and moments
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam("l", x0=0)
+test_beam.add_support(0, "pin")
+test_beam.add_support("l", "roller")
+test_beam.add_point_load("l/4", "P")
+test_beam.add_point_moment("l/4", "P*l / 2")
+test_beam.add_point_load("l/2", "-2*P")
+test_beam.add_point_moment("7*l/8", "-P*l")
+test_beam.add_point_load("3*l/4", "-3*P")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_15.svg" width="70%">
@@ -1175,9 +1274,15 @@ from symbeam import beam
 4. Numeric sinusoidal distributed force
 
 ```python
-import matplotlib.pyplot as plt
-
 from symbeam import beam
+
+
+test_beam = beam(1, x0=0)
+test_beam.add_support(0, "pin")
+test_beam.add_support(1, "roller")
+test_beam.add_distributed_load(0, 1, "sin(20 * x)")
+test_beam.solve()
+fig, ax = test_beam.plot()
 ```
 <p align="center">
   <img src="./svg/./example_16.svg" width="70%">
@@ -1238,9 +1343,18 @@ from symbeam import beam
 4. Symbolic distributed quadratic load
 
 ```python
-import matplotlib.pyplot as plt
 from symbeam import beam
 
+
+test_beam = beam("3*l", x0=0)
+test_beam.add_support("l", "roller")
+test_beam.add_support("2*l", "hinge")
+test_beam.add_support("3*l", "fixed")
+test_beam.add_distributed_load(0, "l", "- q / l * x")
+test_beam.add_distributed_load("2*l", "3*l", "q / l**2 * x**2 - 6*q*x/l + 9*q")
+test_beam.solve()
+fig, ax = test_beam.plot()
+plt.savefig(__file__.split(".py")[0] + ".svg")
 ```
 <p align="center">
   <img src="./svg/./example_17.svg" width="70%">
