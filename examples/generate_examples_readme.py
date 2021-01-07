@@ -99,7 +99,7 @@ with open("README.md", "w") as file:
         # Write the source code and output to the README.md file
         file.write("\n```python\n")
         found_blank = 0
-        for line in example_lines[source_start + 2: source_end + 1]:
+        for line in example_lines[source_start + 2 : source_end + 1]:
             # Stop when an emtpy line is found
             if len(line.split()) == 0:
                 found_blank = found_blank + 1
