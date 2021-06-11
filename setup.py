@@ -66,7 +66,7 @@ setup(
         "certifi>=2020.6.20",
         "cycler>=0.10.0",
         "kiwisolver>=1.2.0",
-        "matplotlib=3.3.1",
+        "matplotlib==3.3.1",
         "mpmath>=1.1.0",
         "numpy>=1.19.1",
         "Pillow>=7.2.0",
