@@ -693,7 +693,7 @@ class beam:
             sum_forces_y = sum_forces_y + ipoint.external_force + ipoint.reaction_force
 
         for isegment in self.segments:
-            sum_forces_y = sum_forces_y + isegment.distributed_load.equivalent_magnitude
+            sum_forces_y = sum_forces_y + isegment.distributed_load.equivalent_force
 
         # Equilibirum of moments in the z-direction on the initial point.
         sum_moments_z = sym.sympify(0)
@@ -709,11 +709,7 @@ class beam:
             )
 
         for isegment in self.segments:
-            sum_moments_z = (
-                sum_moments_z
-                + isegment.distributed_load.equivalent_magnitude
-                * (isegment.distributed_load.equivalent_coord - self.x0)
-            )
+            sum_moments_z = sum_moments_z + isegment.distributed_load.equivalent_moment
 
         # System of global equations.
         equilibirum_equations = [sum_forces_y, sum_moments_z]
@@ -735,8 +731,8 @@ class beam:
                 for jsegment in self.segments[i:]:
                     sum_moments_z_hinge = (
                         sum_moments_z_hinge
-                        + jsegment.distributed_load.equivalent_magnitude
-                        * (jsegment.distributed_load.equivalent_coord - ipoint.x_coord)
+                        + jsegment.distributed_load.equivalent_moment
+                        - jsegment.distributed_load.equivalent_force * ipoint.x_coord
                     )
 
                 equilibirum_equations.extend([sum_moments_z_hinge])

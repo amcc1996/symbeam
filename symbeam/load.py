@@ -27,16 +27,12 @@ class distributed_load:
         self.x_end = sym.sympify(x_end)
         self.expression = sym.sympify(expression)
 
-        self.equivalent_magnitude = sym.integrate(
+        self.equivalent_force = sym.integrate(
             self.expression, (x, self.x_start, self.x_end)
         )
-        if self.equivalent_magnitude == sym.sympify(0):
-            self.equivalent_coord = sym.sympify(0)
-        else:
-            self.equivalent_coord = (
-                sym.integrate(self.expression * x, (x, self.x_start, self.x_end))
-                / self.equivalent_magnitude
-            )
+        self.equivalent_moment = sym.integrate(
+            self.expression * x, (x, self.x_start, self.x_end)
+        )
 
 
 # =============================================================================== point_load

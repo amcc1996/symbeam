@@ -156,10 +156,10 @@ def test_cantilever_point():
     shear_force = a.segments[0].shear_force == -P
     bending_moment = a.segments[0].bending_moment == -L * P + P * x
 
-    deflection = a.segments[0].deflection == -L * P * x ** 2 / (2 * E * I) + P * x ** 3 / (
+    deflection = a.segments[0].deflection == -L * P * x**2 / (2 * E * I) + P * x**3 / (
         6 * E * I
     )
-    rotation = a.segments[0].rotation == -L * P * x / (E * I) + P * x ** 2 / (2 * E * I)
+    rotation = a.segments[0].rotation == -L * P * x / (E * I) + P * x**2 / (2 * E * I)
 
     if not (length_points):
         errors.append("Error in the length of the list of points.")
@@ -217,7 +217,7 @@ def test_cantilever_moment():
     shear_force = a.segments[0].shear_force == sym.sympify(0)
     bending_moment = a.segments[0].bending_moment == M
 
-    deflection = a.segments[0].deflection == M * x ** 2 / (2 * E * I)
+    deflection = a.segments[0].deflection == M * x**2 / (2 * E * I)
     rotation = a.segments[0].rotation == M * x / (E * I)
 
     if not (length_points):
@@ -289,16 +289,16 @@ def test_half_span_force():
         and a.segments[1].bending_moment == P * L / 2 - P * x / 2
     )
 
-    deflection_1 = -P * L ** 2 * x / (16 * E * I) + P * x ** 3 / (12 * E * I)
+    deflection_1 = -P * L**2 * x / (16 * E * I) + P * x**3 / (12 * E * I)
     deflection_2 = (
-        P * L ** 3 / (48 * E * I)
-        - 3 * P * L ** 2 * x / (16 * E * I)
-        + P * L * x ** 2 / (4 * E * I)
-        - P * x ** 3 / (12 * E * I)
+        P * L**3 / (48 * E * I)
+        - 3 * P * L**2 * x / (16 * E * I)
+        + P * L * x**2 / (4 * E * I)
+        - P * x**3 / (12 * E * I)
     )
-    rotation_1 = -P * L ** 2 / (16 * E * I) + P * x ** 2 / (4 * E * I)
+    rotation_1 = -P * L**2 / (16 * E * I) + P * x**2 / (4 * E * I)
     rotation_2 = (
-        -3 * P * L ** 2 / (16 * E * I) + P * L * x / (2 * E * I) - P * x ** 2 / (4 * E * I)
+        -3 * P * L**2 / (16 * E * I) + P * L * x / (2 * E * I) - P * x**2 / (4 * E * I)
     )
     deflection = (
         a.segments[0].deflection == deflection_1
@@ -385,8 +385,8 @@ def test_complex_beam_hinge():
         and a.points[2].reaction_moment == sym.sympify(0)
     )
 
-    shear_force1 = sym.sympify(5 * x ** 2 / 2 - 30)
-    shear_force2 = sym.sympify(-5 * x ** 2 / 2 + 20 * x - 50)
+    shear_force1 = sym.sympify(5 * x**2 / 2 - 30)
+    shear_force2 = sym.sympify(-5 * x**2 / 2 + 20 * x - 50)
     shear_force3 = sym.sympify(-10)
     shear_force = (
         a.segments[0].shear_force == shear_force1
@@ -402,18 +402,18 @@ def test_complex_beam_hinge():
         and a.segments[2].bending_moment == bending_moment3
     )
 
-    deflection_1 = -(x ** 5) / (24 * E * I) + 5 * x ** 3 / (E * I) - 40 * x ** 2 / (E * I)
+    deflection_1 = -(x**5) / (24 * E * I) + 5 * x**3 / (E * I) - 40 * x**2 / (E * I)
     deflection_2 = (
-        x ** 5 / (24 * E * I)
-        - 5 * x ** 4 / (6 * E * I)
-        + 25 * x ** 3 / (3 * E * I)
-        - 140 * x ** 2 / (3 * E * I)
+        x**5 / (24 * E * I)
+        - 5 * x**4 / (6 * E * I)
+        + 25 * x**3 / (3 * E * I)
+        - 140 * x**2 / (3 * E * I)
         + 20 * x / (3 * E * I)
         - 8 / (3 * E * I)
     )
     deflection_3 = (
-        5 * x ** 3 / (3 * E * I)
-        - 20 * x ** 2 / (E * I)
+        5 * x**3 / (3 * E * I)
+        - 20 * x**2 / (E * I)
         + 760 * x / (3 * E * I)
         - 1160 / (E * I)
     )
@@ -422,15 +422,15 @@ def test_complex_beam_hinge():
         and a.segments[1].deflection == deflection_2
         and a.segments[2].deflection == deflection_3
     )
-    rotation_1 = -5 * x ** 4 / (24 * E * I) + 15 * x ** 2 / (E * I) - 80 * x / (E * I)
+    rotation_1 = -5 * x**4 / (24 * E * I) + 15 * x**2 / (E * I) - 80 * x / (E * I)
     rotation_2 = (
-        5 * x ** 4 / (24 * E * I)
-        - 10 * x ** 3 / (3 * E * I)
-        + 25 * x ** 2 / (E * I)
+        5 * x**4 / (24 * E * I)
+        - 10 * x**3 / (3 * E * I)
+        + 25 * x**2 / (E * I)
         - 280 * x / (3 * E * I)
         + 20 / (3 * E * I)
     )
-    rotation_3 = 5 * x ** 2 / (E * I) - 40 * x / (E * I) + 760 / (3 * E * I)
+    rotation_3 = 5 * x**2 / (E * I) - 40 * x / (E * I) + 760 / (3 * E * I)
     rotation = (
         a.segments[0].rotation == rotation_1
         and a.segments[1].rotation == rotation_2
@@ -560,24 +560,24 @@ def test_discontinuous_properties():
     )
 
     deflection_1 = (
-        -500 * P * x ** 3 / (3 * E * I)
+        -500 * P * x**3 / (3 * E * I)
         + 345.31375 * P * x / (E * I)
         - 151.823541666667 * P / (E * I)
     )
     deflection_2 = (
-        -250.0 * P * x ** 2 / (E * I)
+        -250.0 * P * x**2 / (E * I)
         + 470.31375 * P * x / (E * I)
         - 172.656875 * P / (E * I)
     )
     deflection_3 = (
-        -2.5 * P * x ** 2 / (E * I) - 24.68625 * P * x / (E * I) + 74.843125 * P / (E * I)
+        -2.5 * P * x**2 / (E * I) - 24.68625 * P * x / (E * I) + 74.843125 * P / (E * I)
     )
     deflection_4 = (
-        -0.0025 * P * x ** 2 / (E * I) - 32.17875 * P * x / (E * I) + 80.4625 * P / (E * I)
+        -0.0025 * P * x**2 / (E * I) - 32.17875 * P * x / (E * I) + 80.4625 * P / (E * I)
     )
     deflection_5 = (
-        0.0016666666666666 * P * x ** 3 / (E * I)
-        - 0.015 * P * x ** 2 / (E * I)
+        0.0016666666666666 * P * x**3 / (E * I)
+        - 0.015 * P * x**2 / (E * I)
         - 32.1475 * P * x / (E * I)
         + 80.4364583333333 * P / (E * I)
     )
@@ -588,12 +588,12 @@ def test_discontinuous_properties():
         and a.segments[3].deflection == deflection_4
         and a.segments[4].deflection.evalf(10) == deflection_5.evalf(10)
     )
-    rotation_1 = -500 * P * x ** 2 / (E * I) + 345.31375 * P / (E * I)
+    rotation_1 = -500 * P * x**2 / (E * I) + 345.31375 * P / (E * I)
     rotation_2 = -500.0 * P * x / (E * I) + 470.31375 * P / (E * I)
     rotation_3 = -5.0 * P * x / (E * I) - 24.68625 * P / (E * I)
     rotation_4 = -0.005 * P * x / (E * I) - 32.17875 * P / (E * I)
     rotation_5 = (
-        0.005 * P * x ** 2 / (E * I) - 0.03 * P * x / (E * I) - 32.1475 * P / (E * I)
+        0.005 * P * x**2 / (E * I) - 0.03 * P * x / (E * I) - 32.1475 * P / (E * I)
     )
     rotation = (
         a.segments[0].rotation == rotation_1
