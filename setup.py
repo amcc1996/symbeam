@@ -47,6 +47,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Physics",
     ],
@@ -61,7 +63,7 @@ setup(
     # Include packages in distribution archives
     packages=find_packages(),
     # Python version compatibility
-    python_requires=">=3.6, <3.9",
+    python_requires=">=3.6, <3.11",
     install_requires=[
         "certifi>=2020.6.20",
         "cycler>=0.10.0",

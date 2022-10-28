@@ -931,14 +931,19 @@ class beam:
 
         # Create the figure and plot the shear force, bending moment and deflection for
         # each segment.
-        fig, ax = plt.subplots(
-            4,
-            1,
-            num="Internal loads and deflection",
-            figsize=(7, 8),
-            constrained_layout=True,
-            sharex="all",
+        fig = plt.figure(num="Internal loads and deflection", figsize=(7, 8))
+        gs = fig.add_gridspec(
+            nrows=4,
+            ncols=1,
+            left=0.12,
+            right=0.95,
+            bottom=0.07,
+            top=0.95,
+            hspace=0.10,
+            width_ratios=[1],
+            height_ratios=[1, 1, 1, 1],
         )
+        ax = [fig.add_subplot(x) for x in gs]
 
         # Plots segments
         # --------------
@@ -1073,7 +1078,7 @@ class beam:
         if ymax < tol:
             ymax = 1.0
 
-        # FIx the limits of the first axis. This is mandatory for plotting the beam
+        # Fix the limits of the first axis. This is mandatory for plotting the beam
         # configuration.
         ymin = -ymax
         ax[0].set_ylim(ymin, ymax)
@@ -1103,10 +1108,6 @@ class beam:
 
             external_force_plot_vector[i] = float(external_force_plot)
             external_moment_plot_vector[i] = float(external_moment_plot)
-
-        # Reset the aaxis limits of the configuration plot.
-        ax[0].set_ylim(ymin, ymax)
-        ax[0].set_xlim(xmin, xmax)
 
         # Scale the forces so that the maximum point load has the length of the upper bound
         # of the configuration plot and draw the forces.
@@ -1144,6 +1145,13 @@ class beam:
         ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
         ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
         ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+
+        # Set the x-axis settings
+        ax[1].set_xlim(xmin, xmax)
+        ax[1].set_xticklabels([])
+        ax[2].set_xlim(xmin, xmax)
+        ax[2].set_xticklabels([])
+        ax[3].set_xlim(xmin, xmax)
 
         return fig, ax
 
