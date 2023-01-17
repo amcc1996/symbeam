@@ -1297,7 +1297,7 @@ class beam:
         if len(expr.free_symbols) == 0 and "." in expr_trimmed:
             expr_trimmed = expr_trimmed.rstrip("0")
             if expr_trimmed[-1] == ".":
-                expr_trimmed = expr_trimmed[1:-1]
+                expr_trimmed = expr_trimmed[:-1]
 
         return expr_trimmed
 
