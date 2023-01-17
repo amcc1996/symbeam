@@ -15,8 +15,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
       with:
         python-version: "3.x"
     - name: Install dependencies
@@ -28,7 +28,7 @@ jobs:
         isort --check --color .
         black -l 92 --check .
         flake8 .
-          
+
   build:
     runs-on: ubuntu-latest
     strategy:
