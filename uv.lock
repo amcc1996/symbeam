@@ -3225,6 +3225,7 @@ wheels = [
 
 [[package]]
 name = "symbeam"
+version = "2.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "certifi", version = "2025.4.26", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.7'" },
