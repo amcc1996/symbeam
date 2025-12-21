@@ -29,28 +29,6 @@ jobs:
         black -l 92 --check .
         flake8 .
 
-  build-legacy:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        python-version: ["3.6", "3.7"]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install pip, setuptools and testing tools
-      run: |
-        python3 -m pip install --upgrade pip setuptools wheel
-        pip3 install pytest pytest-mpl pytest-cov
-    - name: Install package and dependencies
-      run: |
-        pip3 install .
-    - name: Test with pytest
-      run: |
-        pytest --mpl --mpl-results-path=tests/results --cov=symbeam/ --cov-report=xml tests
-
   build:
     runs-on: ubuntu-latest
     strategy:
