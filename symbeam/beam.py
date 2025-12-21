@@ -12,6 +12,7 @@ SymBeam furnishes to the outside world.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -25,6 +26,8 @@ from symbeam.point import continuity, fixed, hinge, pin, roller
 
 # Set numerical tolerance
 tol = 1e-6
+
+
 # ===================================================================================== beam
 class beam:
     """Beam main class.
@@ -845,18 +848,25 @@ class beam:
         # beam and determine the integration coefficients.
         geometry_equations = []
         self.points[0].set_geometric_boundary_conditions(
-            [self.segments[0].rotation], [self.segments[0].deflection], geometry_equations
+            [self.segments[0].rotation],
+            [self.segments[0].deflection],
+            geometry_equations,
         )
 
         for i, point in enumerate(self.points[1:-1]):
             self.points[i + 1].set_geometric_boundary_conditions(
                 [self.segments[i].rotation, self.segments[i + 1].rotation],
-                [self.segments[i].deflection, self.segments[i + 1].deflection],
+                [
+                    self.segments[i].deflection,
+                    self.segments[i + 1].deflection,
+                ],
                 geometry_equations,
             )
 
         self.points[-1].set_geometric_boundary_conditions(
-            [self.segments[-1].rotation], [self.segments[-1].deflection], geometry_equations
+            [self.segments[-1].rotation],
+            [self.segments[-1].deflection],
+            geometry_equations,
         )
 
         sol = sym.solve(geometry_equations, unknowns_deflection, dict=True)
@@ -999,7 +1009,10 @@ class beam:
 
             # Numeric plotting x variable.
             x_plot = np.linspace(
-                float(x_start_plot), float(x_end_plot), num=100, endpoint=True
+                float(x_start_plot),
+                float(x_end_plot),
+                num=100,
+                endpoint=True,
             )
 
             # Distributed load plot.
@@ -1021,7 +1034,10 @@ class beam:
                 alpha=alpha,
             )
             ax[0].plot(
-                [x_plot[0], x_plot[-1]], [0, 0], color=color_beam, linewidth=line_width_beam
+                [x_plot[0], x_plot[-1]],
+                [0, 0],
+                color=color_beam,
+                linewidth=line_width_beam,
             )
 
             # Shear force plot.
@@ -1125,11 +1141,15 @@ class beam:
         for i, ipoint in enumerate(self.points):
             if abs(external_force_plot_vector[i]) > tol:
                 ipoint.draw_force(
-                    ax[0], external_force_plot_vector[i], input_substitution=subs
+                    ax[0],
+                    external_force_plot_vector[i],
+                    input_substitution=subs,
                 )
             if abs(external_moment_plot_vector[i]) > tol:
                 ipoint.draw_moment(
-                    ax[0], external_moment_plot_vector[i], input_substitution=subs
+                    ax[0],
+                    external_moment_plot_vector[i],
+                    input_substitution=subs,
                 )
 
         # Axis labels.

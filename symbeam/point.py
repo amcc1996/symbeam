@@ -15,6 +15,7 @@ moments and changes of beam properties.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
+
 from abc import ABC, abstractmethod
 
 import matplotlib.patches as patches
@@ -25,6 +26,8 @@ from sympy.abc import x
 
 # Set numerical tolerance
 tol = 1e-6
+
+
 # ==================================================================================== point
 class point(ABC):
     """Abstract definition of a beam point."""
@@ -438,7 +441,10 @@ class pin(point):
 
         # Draw the final line.
         ax.plot(
-            [x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2],
+            [
+                x_coord_plot - length_bottom_line / 2,
+                x_coord_plot + length_bottom_line / 2,
+            ],
             [ymid - yspan / 5, ymid - yspan / 5],
             color="silver",
             linewidth=5,
@@ -446,7 +452,10 @@ class pin(point):
             solid_capstyle="butt",
         )
         ax.plot(
-            [x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2],
+            [
+                x_coord_plot - length_bottom_line / 2,
+                x_coord_plot + length_bottom_line / 2,
+            ],
             [ymid - yspan / 5.5, ymid - yspan / 5.5],
             color="black",
             linewidth=1.5,
@@ -546,7 +555,10 @@ class roller(point):
 
         # Draw the final line.
         ax.plot(
-            [x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2],
+            [
+                x_coord_plot - length_bottom_line / 2,
+                x_coord_plot + length_bottom_line / 2,
+            ],
             [-yspan / 5, -yspan / 5],
             color="silver",
             linewidth=5,
@@ -554,7 +566,10 @@ class roller(point):
             solid_capstyle="butt",
         )
         ax.plot(
-            [x_coord_plot - length_bottom_line / 2, x_coord_plot + length_bottom_line / 2],
+            [
+                x_coord_plot - length_bottom_line / 2,
+                x_coord_plot + length_bottom_line / 2,
+            ],
             [-yspan / 5.5, -yspan / 5.5],
             color="black",
             linewidth=1.5,

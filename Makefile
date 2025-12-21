@@ -10,16 +10,16 @@ URL=https://api.github.com/repos/amcc1996/symbeam/releases
 .PHONY: format coverage clean img tests deploy
 
 lint:
-	isort --check --color .
-	black -l 92 --check .
-	flake8 .
+	uv tool run isort --check --skip .venv --skip .pytest_cache .
+	uv tool run black --check .
+	uv tool run flake8 --exclude .venv,.pytest_cache .
 
 format:
-	isort --color .
-	black -l 92 .
+	uv tool run isort --skip .venv --skip .pytest_cache .
+	uv tool run black .
 
 coverage:
-	pytest --cov-report html --cov symbeam
+	uv run pytest --cov-report html --cov symbeam
 
 clean:
 	@rm -rf *.egg-info/
@@ -30,10 +30,10 @@ clean:
 	@rm -rf tests/results
 
 img:
-	pytest --mpl-generate-path=tests/baseline
+	uv run pytest --mpl-generate-path=tests/baseline
 
 tests:
-	pytest --mpl --mpl-results-path=tests/results
+	uv run 	pytest --mpl --mpl-results-path=tests/results
 
 deploy: clean
 	if [ "$(GIT_BRANCH)" != "master" ]; then echo "Not in master branch"; exit 1; fi

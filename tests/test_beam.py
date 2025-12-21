@@ -1,13 +1,15 @@
 import pytest
 import sympy as sym
 
-from sympy.abc import E, I, L, M, P, q, x
+from sympy.abc import E, I, L, M, P, x
 
 from symbeam.beam import beam
 
 
 def test_beam_two_symbols():
-    """Test if an error is reaised if more than one symbols is used to initialise the beam."""
+    """Test if an error is reaised if more than one symbols is used to initialise
+    the beam.
+    """
     with pytest.raises(RuntimeError):
         a = beam("L * a", x0=0)
 
@@ -565,9 +567,7 @@ def test_discontinuous_properties():
         - 151.823541666667 * P / (E * I)
     )
     deflection_2 = (
-        -250.0 * P * x**2 / (E * I)
-        + 470.31375 * P * x / (E * I)
-        - 172.656875 * P / (E * I)
+        -250.0 * P * x**2 / (E * I) + 470.31375 * P * x / (E * I) - 172.656875 * P / (E * I)
     )
     deflection_3 = (
         -2.5 * P * x**2 / (E * I) - 24.68625 * P * x / (E * I) + 74.843125 * P / (E * I)
@@ -592,9 +592,7 @@ def test_discontinuous_properties():
     rotation_2 = -500.0 * P * x / (E * I) + 470.31375 * P / (E * I)
     rotation_3 = -5.0 * P * x / (E * I) - 24.68625 * P / (E * I)
     rotation_4 = -0.005 * P * x / (E * I) - 32.17875 * P / (E * I)
-    rotation_5 = (
-        0.005 * P * x**2 / (E * I) - 0.03 * P * x / (E * I) - 32.1475 * P / (E * I)
-    )
+    rotation_5 = 0.005 * P * x**2 / (E * I) - 0.03 * P * x / (E * I) - 32.1475 * P / (E * I)
     rotation = (
         a.segments[0].rotation == rotation_1
         and a.segments[1].rotation == rotation_2

@@ -13,6 +13,7 @@ of the equilibirum equations.
 
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
+
 import sympy as sym
 
 from sympy.abc import x
