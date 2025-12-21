@@ -13,8 +13,7 @@ on:
 
 jobs:
   lint:
-    # runs-on: ubuntu-latest
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
@@ -30,11 +29,11 @@ jobs:
         black -l 92 --check .
         flake8 .
 
-  build:
-    runs-on: ubuntu-latest
+  build-legacy:
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.6", "3.7"]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -47,11 +46,34 @@ jobs:
         pip3 install pytest pytest-mpl pytest-cov
     - name: Install package and dependencies
       run: |
-        pip3 install -e .
+        pip3 install .
+    - name: Test with pytest
+      run: |
+        pytest --mpl --mpl-results-path=tests/results --cov=symbeam/ --cov-report=xml tests
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install pip, setuptools and testing tools
+      run: |
+        python3 -m pip install --upgrade pip setuptools wheel
+        pip3 install pytest pytest-mpl pytest-cov
+    - name: Install package and dependencies
+      run: |
+        pip3 install .
     - name: Test with pytest
       run: |
         pytest --mpl --mpl-results-path=tests/results --cov=symbeam/ --cov-report=xml tests
     - name: Upload coverage to Codecov
+      if: matrix.python-version == '3.13'
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
