@@ -4,7 +4,13 @@ import sympy as sym
 from sympy.abc import E, I, L, M, P, x
 
 from symbeam.beam import beam
-from symbeam.utils import euler_bernoulli_stiff_matrix, hermite_polynomials, compute_rotation, compute_bending_moment, computes_shear_force
+from symbeam.utils import (
+    compute_bending_moment,
+    compute_rotation,
+    computes_shear_force,
+    euler_bernoulli_stiff_matrix,
+    hermite_polynomials,
+)
 
 
 def test_beam_two_symbols():
@@ -545,7 +551,7 @@ def test_discontinuous_properties():
     shear_force2 = sym.sympify(0)
     shear_force3 = -P
     shear_force = (
-            (a.segments[0].shear_force - shear_force1).is_zero
+        (a.segments[0].shear_force - shear_force1).is_zero
         and (a.segments[1].shear_force - shear_force2).is_zero
         and (a.segments[2].shear_force - shear_force2).is_zero
         and (a.segments[3].shear_force - shear_force2).is_zero
@@ -595,7 +601,7 @@ def test_discontinuous_properties():
     rotation_4 = -0.005 * P * x / (E * I) - 32.17875 * P / (E * I)
     rotation_5 = 0.005 * P * x**2 / (E * I) - 0.03 * P * x / (E * I) - 32.1475 * P / (E * I)
     rotation = (
-            (a.segments[0].rotation - rotation_1).is_zero
+        (a.segments[0].rotation - rotation_1).is_zero
         and (a.segments[1].rotation - rotation_2).is_zero
         and (a.segments[2].rotation - rotation_3).is_zero
         and (a.segments[3].rotation - rotation_4).is_zero
@@ -628,6 +634,7 @@ def test_discontinuous_properties():
     # An empty list is False for Python
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
 
+
 def test_cantilever_beam_with_endpoint_springs():
     """Test a beam with endpoint springs."""
     # Solve the problem with Euler-Bernoulli finite elements
@@ -649,7 +656,7 @@ def test_cantilever_beam_with_endpoint_springs():
     k = euler_bernoulli_stiff_matrix(E, I, L)
     equations = [
         k[2, 2] * v2 + k[2, 3] * theta2 + k_v * v2 - P,
-        k[3, 2] * v2 + k[3, 3] * theta2 + k_theta * theta2 - M
+        k[3, 2] * v2 + k[3, 3] * theta2 + k_theta * theta2 - M,
     ]
     solutions = sym.solve(equations, (v2, theta2))
     v2 = solutions[v2]
@@ -673,7 +680,9 @@ def test_cantilever_beam_with_endpoint_springs():
     # Compare results
     disp_comp = (sym.simplify(test_beam.segments[0].deflection - displacement)).is_zero
     rot_comp = (sym.simplify(test_beam.segments[0].rotation - rotation)).is_zero
-    bend_comp = (sym.simplify(test_beam.segments[0].bending_moment - bending_moment)).is_zero
+    bend_comp = (
+        sym.simplify(test_beam.segments[0].bending_moment - bending_moment)
+    ).is_zero
     shear_comp = (sym.simplify(test_beam.segments[0].shear_force - shear_force)).is_zero
 
     errors = []
@@ -687,6 +696,7 @@ def test_cantilever_beam_with_endpoint_springs():
         errors.append("Error in the shear force.")
 
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+
 
 def test_cantilever_beam_with_midpoint_springs():
     """Test a beam with midpoint springs."""
@@ -708,12 +718,20 @@ def test_cantilever_beam_with_midpoint_springs():
     v1 = sym.sympify(0)
     theta1 = sym.sympify(0)
 
-    k = euler_bernoulli_stiff_matrix(E, I, L/2)
+    k = euler_bernoulli_stiff_matrix(E, I, L / 2)
     equations = [
-        (k[2, 2] + k[0, 0]) * v2 + (k[2, 3] + k[0,1]) * theta2 + k[0, 2] * v3 + k[0, 3] * theta3 + k_v * v2,
-        (k[3, 2] + k[1, 0]) * v2 + (k[3, 3] + k[1,1]) * theta2 + k[1, 2] * v3 + k[1, 3] * theta3 + k_theta * theta2,
+        (k[2, 2] + k[0, 0]) * v2
+        + (k[2, 3] + k[0, 1]) * theta2
+        + k[0, 2] * v3
+        + k[0, 3] * theta3
+        + k_v * v2,
+        (k[3, 2] + k[1, 0]) * v2
+        + (k[3, 3] + k[1, 1]) * theta2
+        + k[1, 2] * v3
+        + k[1, 3] * theta3
+        + k_theta * theta2,
         k[2, 0] * v2 + k[2, 1] * theta2 + k[2, 2] * v3 + k[2, 3] * theta3 - P,
-        k[3, 0] * v2 + k[3, 1] * theta2 + k[3, 2] * v3 + k[3, 3] * theta3 - M
+        k[3, 0] * v2 + k[3, 1] * theta2 + k[3, 2] * v3 + k[3, 3] * theta3 - M,
     ]
     solutions = sym.solve(equations, (v2, theta2, v3, theta3))
     v2 = solutions[v2]
@@ -721,13 +739,13 @@ def test_cantilever_beam_with_midpoint_springs():
     v3 = solutions[v3]
     theta3 = solutions[theta3]
 
-    N = hermite_polynomials(x, 0, L/2)
+    N = hermite_polynomials(x, 0, L / 2)
     displacement_1 = N[0] * v1 + N[1] * theta1 + N[2] * v2 + N[3] * theta2
     rotation_1 = compute_rotation(displacement_1, x)
     bending_moment_1 = compute_bending_moment(displacement_1, E, I, x)
     shear_force_1 = computes_shear_force(bending_moment_1, x)
 
-    N = hermite_polynomials(x, L/2, L/2)
+    N = hermite_polynomials(x, L / 2, L / 2)
     displacement_2 = N[0] * v2 + N[1] * theta2 + N[2] * v3 + N[3] * theta3
     rotation_2 = compute_rotation(displacement_2, x)
     bending_moment_2 = compute_bending_moment(displacement_2, E, I, x)
@@ -743,14 +761,20 @@ def test_cantilever_beam_with_midpoint_springs():
     test_beam.solve(output=False)
 
     # Compare results
-    disp_comp = (sym.simplify(test_beam.segments[0].deflection - displacement_1)).is_zero \
-        and (sym.simplify(test_beam.segments[1].deflection - displacement_2)).is_zero
-    rot_comp = (sym.simplify(test_beam.segments[0].rotation - rotation_1)).is_zero \
-        and (sym.simplify(test_beam.segments[1].rotation - rotation_2)).is_zero
-    bend_comp = (sym.simplify(test_beam.segments[0].bending_moment - bending_moment_1)).is_zero \
-        and (sym.simplify(test_beam.segments[1].bending_moment - bending_moment_2)).is_zero
-    shear_comp = (sym.simplify(test_beam.segments[0].shear_force - shear_force_1)).is_zero \
-        and (sym.simplify(test_beam.segments[1].shear_force - shear_force_2)).is_zero
+    disp_comp = (
+        sym.simplify(test_beam.segments[0].deflection - displacement_1)
+    ).is_zero and (sym.simplify(test_beam.segments[1].deflection - displacement_2)).is_zero
+    rot_comp = (sym.simplify(test_beam.segments[0].rotation - rotation_1)).is_zero and (
+        sym.simplify(test_beam.segments[1].rotation - rotation_2)
+    ).is_zero
+    bend_comp = (
+        sym.simplify(test_beam.segments[0].bending_moment - bending_moment_1)
+    ).is_zero and (
+        sym.simplify(test_beam.segments[1].bending_moment - bending_moment_2)
+    ).is_zero
+    shear_comp = (
+        sym.simplify(test_beam.segments[0].shear_force - shear_force_1)
+    ).is_zero and (sym.simplify(test_beam.segments[1].shear_force - shear_force_2)).is_zero
 
     errors = []
     if not (disp_comp):
@@ -763,6 +787,7 @@ def test_cantilever_beam_with_midpoint_springs():
         errors.append("Error in the shear force.")
 
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+
 
 def test_complex_beam_with_springs_and_hinge():
     """Test a beam with midpoint springs."""
@@ -795,7 +820,7 @@ def test_complex_beam_with_springs_and_hinge():
     theta1 = sym.sympify(0)
     v7 = sym.sympify(0)
 
-    k = euler_bernoulli_stiff_matrix(E, I, L/6)
+    k = euler_bernoulli_stiff_matrix(E, I, L / 6)
     equations = [sym.sympify(0) for _i in range(12)]
     map_eldof_glbdof = {
         1: [v1, theta1, v2, theta2],
@@ -806,7 +831,7 @@ def test_complex_beam_with_springs_and_hinge():
         6: [v6, theta6, v7, theta7],
     }
     map_glbdof_equation_index = {
-        v1 : -1,
+        v1: -1,
         theta1: -1,
         v2: 0,
         theta2: 1,
@@ -837,7 +862,10 @@ def test_complex_beam_with_springs_and_hinge():
     equations[map_glbdof_equation_index[theta5]] -= M
     equations[map_glbdof_equation_index[v3]] += k_v * v3
     equations[map_glbdof_equation_index[theta6]] += k_theta * theta6
-    solutions = sym.solve(equations, (v2, theta2, v3, theta3, v4, theta4l, theta4r, v5, theta5, v6, theta6, v7, theta7))
+    solutions = sym.solve(
+        equations,
+        (v2, theta2, v3, theta3, v4, theta4l, theta4r, v5, theta5, v6, theta6, v7, theta7),
+    )
 
     v2 = solutions[v2]
     theta2 = solutions[theta2]
@@ -891,10 +919,30 @@ def test_complex_beam_with_springs_and_hinge():
     test_beam.solve(output=False)
 
     # Compare results
-    disp_comp = all([(sym.simplify(test_beam.segments[i].deflection - displacement[i])).is_zero for i in range(len(test_beam.segments))])
-    rot_comp = all([(sym.simplify(test_beam.segments[i].rotation - rotation[i])).is_zero for i in range(len(test_beam.segments))])
-    bend_comp = all([(sym.simplify(test_beam.segments[i].bending_moment - bending_moment[i])).is_zero for i in range(len(test_beam.segments))])
-    shear_comp = all([(sym.simplify(test_beam.segments[i].shear_force - shear_force[i])).is_zero for i in range(len(test_beam.segments))])
+    disp_comp = all(
+        [
+            (sym.simplify(test_beam.segments[i].deflection - displacement[i])).is_zero
+            for i in range(len(test_beam.segments))
+        ]
+    )
+    rot_comp = all(
+        [
+            (sym.simplify(test_beam.segments[i].rotation - rotation[i])).is_zero
+            for i in range(len(test_beam.segments))
+        ]
+    )
+    bend_comp = all(
+        [
+            (sym.simplify(test_beam.segments[i].bending_moment - bending_moment[i])).is_zero
+            for i in range(len(test_beam.segments))
+        ]
+    )
+    shear_comp = all(
+        [
+            (sym.simplify(test_beam.segments[i].shear_force - shear_force[i])).is_zero
+            for i in range(len(test_beam.segments))
+        ]
+    )
 
     errors = []
     if not (disp_comp):
@@ -908,6 +956,7 @@ def test_complex_beam_with_springs_and_hinge():
 
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
 
+
 def test_rotational_spring_on_hinge():
     """Test that a rotational spring cannot be added on a hinge."""
     with pytest.raises(RuntimeError):
@@ -918,6 +967,7 @@ def test_rotational_spring_on_hinge():
         a.add_point_load("l/2", "P")
         a.add_rotational_spring("l/2", "k_theta")
         a.solve(output=False)
+
 
 def test_rotational_spring_on_fixed():
     """Test that a rotational spring cannot be added on a fixed support."""
@@ -930,6 +980,7 @@ def test_rotational_spring_on_fixed():
         a.add_rotational_spring(0, "k_theta")
         a.solve(output=False)
 
+
 def test_transverse_spring_on_pin():
     """Test that a transverse spring cannot be added on a pin support."""
     with pytest.raises(RuntimeError):
@@ -939,6 +990,7 @@ def test_transverse_spring_on_pin():
         a.add_point_load("l/2", "P")
         a.add_transverse_spring(0, "k_v")
         a.solve(output=False)
+
 
 def test_transverse_spring_on_roller():
     """Test that a transverse spring cannot be added on a roller support."""
@@ -951,6 +1003,7 @@ def test_transverse_spring_on_roller():
         a.add_transverse_spring("l", "k_v")
         a.solve(output=False)
 
+
 def test_rotational_spring_on_fixed():
     """Test that a spring cannot be added on fixed support"""
     with pytest.raises(RuntimeError):
@@ -962,6 +1015,7 @@ def test_rotational_spring_on_fixed():
         a.add_transverse_spring(0, "k_v")
         a.solve(output=False)
 
+
 def test_monolithic_not_unique_solution():
     """Test that an error is raised when a beam with springs (monolithic solver) has not a unique solution."""
     with pytest.raises(RuntimeError):
@@ -969,6 +1023,7 @@ def test_monolithic_not_unique_solution():
         a.add_transverse_spring(0, "k_v")
         a.add_point_moment("l", "M")
         a.solve(output=False)
+
 
 def test_monolithic_hyperstatic():
     """Test that an error is raised when a beam with springs (monolithic solver) is hyperstatic."""
@@ -980,6 +1035,7 @@ def test_monolithic_hyperstatic():
         a.add_point_load("l/2", "P")
         a.solve(output=True)
         a.plot()
+
 
 @pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
 def test_plot_point_loads():
@@ -1025,6 +1081,7 @@ def test_plot_distributed_loads_fixed_right():
     fig, ax = a.plot(subs={"q": 1000})
     return fig
 
+
 @pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
 def test_beam_with_springs():
     L = 1.0
@@ -1038,19 +1095,19 @@ def test_beam_with_springs():
     a.set_inertia(0, L, I)
     a.set_young(0, L, E)
     a.add_support(0, "pin")
-    a.add_support(0.25*L, "hinge")
-    a.add_support(0.5*L, "roller")
+    a.add_support(0.25 * L, "hinge")
+    a.add_support(0.5 * L, "roller")
     a.add_support(L, "roller")
-    a.add_transverse_spring(0.125*L, kv)
+    a.add_transverse_spring(0.125 * L, kv)
     a.add_rotational_spring(0, ktheta)
-    a.add_rotational_spring(0.5*L, ktheta)
-    a.add_transverse_spring(0.25*L, kv)
-    a.add_transverse_spring(0.75*L, kv)
-    a.add_rotational_spring(0.75*L, ktheta)
-    a.add_rotational_spring(0.875*L, ktheta)
+    a.add_rotational_spring(0.5 * L, ktheta)
+    a.add_transverse_spring(0.25 * L, kv)
+    a.add_transverse_spring(0.75 * L, kv)
+    a.add_rotational_spring(0.75 * L, ktheta)
+    a.add_rotational_spring(0.875 * L, ktheta)
     a.add_point_moment(L, M)
-    a.add_point_load(L/3, -P)
-    a.add_distributed_load(L/7, 5*L/7, "-(2 - 2*x**2)")
+    a.add_point_load(L / 3, -P)
+    a.add_distributed_load(L / 7, 5 * L / 7, "-(2 - 2*x**2)")
     a.solve(output=True)
     fig, ax = a.plot()
 

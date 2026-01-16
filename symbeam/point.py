@@ -19,13 +19,13 @@ moments and changes of beam properties.
 from abc import ABC, abstractmethod
 
 import matplotlib.patches as patches
+import numpy as np
 import sympy as sym
 
 from sympy.abc import x
 
-from symbeam.spring import transverse_spring, rotational_spring
+from symbeam.spring import rotational_spring, transverse_spring
 
-import numpy as np
 
 # Set numerical tolerance
 tol = 1e-6
@@ -320,10 +320,28 @@ class point(ABC):
             needs_ground = True
 
         if needs_ground:
-            self.draw_ground(ax, x_coord_plot, y_ground=y_ground, y_below_ground=y_below_ground, ground_length=ground_length)
+            self.draw_ground(
+                ax,
+                x_coord_plot,
+                y_ground=y_ground,
+                y_below_ground=y_below_ground,
+                ground_length=ground_length,
+            )
 
-    #--------------------------------------------------------------------------- draw_ground
-    def draw_ground(self, ax, x_coord_plot, y_ground, y_below_ground, ground_length, x_offset=0, xspan=None, yspan=None, xmid=None, ymid=None):
+    # --------------------------------------------------------------------------- draw_ground
+    def draw_ground(
+        self,
+        ax,
+        x_coord_plot,
+        y_ground,
+        y_below_ground,
+        ground_length,
+        x_offset=0,
+        xspan=None,
+        yspan=None,
+        xmid=None,
+        ymid=None,
+    ):
         """Draws the ground lines.
 
         Parameters
@@ -408,13 +426,13 @@ class point(ABC):
             include_ending_rotational = True
             if type(self) in [pin, roller]:
                 include_ending_rotational = False
-                ending = 'support'
+                ending = "support"
             else:
-                ending = 'center'
+                ending = "center"
 
         elif self.has_transverse_spring() and self.has_rotational_spring():
             ystart_transverse = y_start
-            spring_length_transverse = (ymid - y_start)
+            spring_length_transverse = ymid - y_start
             n_coils_transverse = 6
             coil_width_transverse = xspan / 100
             include_ending_transverse = True
@@ -423,10 +441,8 @@ class point(ABC):
             spring_height_rotational = abs(ymid - y_start)
             spring_radius_rotational = (ymid - y_start) / 2
             n_coils_rotational = 3
-            ending = 'side'
+            ending = "side"
             include_ending_rotational = True
-
-
 
         if self.has_transverse_spring():
             transverse_spring(x_start, self.transverse_spring_stiffness).draw(
@@ -634,19 +650,14 @@ class pin(point):
     # --------------------------------------------------------------------------------------
     def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
         length_base = xspan / 20
-        x = np.array([x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float)
+        x = np.array(
+            [x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float
+        )
         y1 = np.array([y_start, ymid, y_start], dtype=float)
         y2 = np.array([y_start, y_start, y_start], dtype=float)
         # Draw the triangle.
         length_bottom_line = xspan / 20
-        ax.fill_between(
-            x,
-            y2,
-            y1,
-            clip_on=False,
-            edgecolor="none",
-            facecolor="silver"
-        )
+        ax.fill_between(x, y2, y1, clip_on=False, edgecolor="none", facecolor="silver")
         ax.plot(
             x,
             y2,
@@ -663,6 +674,7 @@ class pin(point):
             clip_on=False,
             solid_capstyle="round",
         )
+
 
 # =================================================================================== roller
 class roller(point):
@@ -712,19 +724,14 @@ class roller(point):
         height_triangle = abs(ymid - y_start) * size_factor
         radius = (ymid - y_start) - height_triangle
         y_start_tri = y_start + (ymid - y_start) - height_triangle
-        x = np.array([x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float)
+        x = np.array(
+            [x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float
+        )
         y1 = np.array([y_start_tri, ymid, y_start_tri], dtype=float)
         y2 = np.array([y_start_tri, y_start_tri, y_start_tri], dtype=float)
         # Draw the triangle.
         length_bottom_line = xspan / 20
-        ax.fill_between(
-            x,
-            y2,
-            y1,
-            clip_on=False,
-            edgecolor="none",
-            facecolor="silver"
-        )
+        ax.fill_between(x, y2, y1, clip_on=False, edgecolor="none", facecolor="silver")
         ax.plot(
             x,
             y2,
@@ -742,12 +749,28 @@ class roller(point):
             solid_capstyle="round",
         )
         # Draw the wheels
-        y1_circle = y_start + radius/2
-        y2_circle = y_start + radius/2
+        y1_circle = y_start + radius / 2
+        y2_circle = y_start + radius / 2
         x1_circle = x_start - xspan / 100
         x2_circle = x_start + xspan / 100
-        ax.plot([x1_circle], [y1_circle], marker='o', markersize=6, color='black', markeredgewidth=0, clip_on=False)
-        ax.plot([x2_circle], [y2_circle], marker='o', markersize=6, color='black', markeredgewidth=0, clip_on=False)
+        ax.plot(
+            [x1_circle],
+            [y1_circle],
+            marker="o",
+            markersize=6,
+            color="black",
+            markeredgewidth=0,
+            clip_on=False,
+        )
+        ax.plot(
+            [x2_circle],
+            [y2_circle],
+            marker="o",
+            markersize=6,
+            color="black",
+            markeredgewidth=0,
+            clip_on=False,
+        )
 
 
 # =============================================================================== continuity
@@ -950,4 +973,6 @@ class hinge(point):
             markeredgewidth=1.5,
             markeredgecolor="black",
         )
+
+
 # ==========================================================================================

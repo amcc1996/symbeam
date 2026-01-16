@@ -8,9 +8,8 @@ Defines the transverse and rotational spring classes.
 ..moduleauthor:: A. M. Couto Carneiro <amcc@fe.up.pt>
 """
 
-import sympy as sym
-
 import numpy as np
+import sympy as sym
 
 from sympy.abc import x
 
@@ -24,7 +23,16 @@ class transverse_spring:
         self.stiffness = sym.sympify(stiffness)
 
     # --------------------------------------------------------------------------------- draw
-    def draw(self, ax, x_start, y_start, spring_length, n_coils, coil_width, include_end_length=True):
+    def draw(
+        self,
+        ax,
+        x_start,
+        y_start,
+        spring_length,
+        n_coils,
+        coil_width,
+        include_end_length=True,
+    ):
         """Draws a transverse spring in the axis.
 
         Parameters
@@ -63,7 +71,7 @@ class transverse_spring:
             if i % 2 == 0:
                 ax.plot(
                     [x_start, x_start + coil_width, x_start],
-                    [aux_y_start, aux_y_start + coil_length/2, aux_y_start + coil_length],
+                    [aux_y_start, aux_y_start + coil_length / 2, aux_y_start + coil_length],
                     color="black",
                     linewidth=1.5,
                     clip_on=False,
@@ -73,7 +81,7 @@ class transverse_spring:
             else:
                 ax.plot(
                     [x_start, x_start - coil_width, x_start],
-                    [aux_y_start, aux_y_start + coil_length/2, aux_y_start + coil_length],
+                    [aux_y_start, aux_y_start + coil_length / 2, aux_y_start + coil_length],
                     color="black",
                     linewidth=1.5,
                     clip_on=False,
@@ -101,7 +109,20 @@ class rotational_spring:
         self.stiffness = sym.sympify(stiffness)
 
     # --------------------------------------------------------------- draw_rotational_spring
-    def draw(self, ax, x_start, y_start, spring_radius, spring_height, n_coils, xspan, yspan, xmax, ending='center', include_end_length=True):
+    def draw(
+        self,
+        ax,
+        x_start,
+        y_start,
+        spring_radius,
+        spring_height,
+        n_coils,
+        xspan,
+        yspan,
+        xmax,
+        ending="center",
+        include_end_length=True,
+    ):
         """Draws a rotational spring in the axis.
 
         Parameters
@@ -145,12 +166,12 @@ class rotational_spring:
         theta_max = n_coils * 2 * np.pi
         spiral_parameter = spring_radius / theta_max
         n_points = 100
-        if ending == 'center':
+        if ending == "center":
             theta = np.linspace(0, theta_max, n_points, endpoint=True)
-        elif ending == 'side':
-            theta = np.linspace(0, theta_max - np.pi/4, n_points, endpoint=True)
-        elif ending == 'support':
-            theta = np.linspace(0, theta_max - np.pi/6, n_points, endpoint=True)
+        elif ending == "side":
+            theta = np.linspace(0, theta_max - np.pi / 4, n_points, endpoint=True)
+        elif ending == "support":
+            theta = np.linspace(0, theta_max - np.pi / 6, n_points, endpoint=True)
 
         r = theta * spiral_parameter
         x_spiral = x_start + r * np.sin(theta) * aspect_ratio
@@ -165,7 +186,7 @@ class rotational_spring:
         )
 
         # Draw the ending
-        if ending == 'center':
+        if ending == "center":
             ax.plot(
                 [x_start, x_start],
                 [y_start, y_start + end_length],
@@ -174,7 +195,7 @@ class rotational_spring:
                 clip_on=False,
                 solid_capstyle="round",
             )
-        elif ending == 'side':
+        elif ending == "side":
             ax.plot(
                 [x_spiral[-1], x_spiral[-1]],
                 [y_start, y_spiral[-1]],
@@ -183,5 +204,6 @@ class rotational_spring:
                 clip_on=False,
                 solid_capstyle="round",
             )
+
 
 # ==========================================================================================

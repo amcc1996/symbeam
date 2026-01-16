@@ -21,8 +21,8 @@ import sympy as sym
 from sympy.abc import E, I, x
 
 from symbeam.load import distributed_load, point_load, point_moment
-from symbeam.spring import rotational_spring, transverse_spring
 from symbeam.point import continuity, fixed, hinge, pin, roller
+from symbeam.spring import rotational_spring, transverse_spring
 
 
 # Set numerical tolerance
@@ -505,8 +505,12 @@ class beam:
             ]
             distributed_x_end_numeric = [item.x_end for item in self.distributed_load_list]
             if self.has_springs():
-                transverse_spring_x_numeric = [item.x_coord for item in self.transverse_spring_list]
-                rotational_spring_x_numeric = [item.x_coord for item in self.rotational_spring_list]
+                transverse_spring_x_numeric = [
+                    item.x_coord for item in self.transverse_spring_list
+                ]
+                rotational_spring_x_numeric = [
+                    item.x_coord for item in self.rotational_spring_list
+                ]
         else:
             length_numeric = self.length.subs({self.length_symbol: 1.0})
             x0_numeric = self.x0.subs({self.length_symbol: 1.0})
@@ -565,8 +569,12 @@ class beam:
         distributed_x_start_symbol = [item.x_start for item in self.distributed_load_list]
         distributed_x_end_symbol = [item.x_end for item in self.distributed_load_list]
         if self.has_springs():
-            transverse_spring_x_symbol = [item.x_coord for item in self.transverse_spring_list]
-            rotational_spring_x_symbol = [item.x_coord for item in self.rotational_spring_list]
+            transverse_spring_x_symbol = [
+                item.x_coord for item in self.transverse_spring_list
+            ]
+            rotational_spring_x_symbol = [
+                item.x_coord for item in self.rotational_spring_list
+            ]
 
         # Store all coordinates in a single list, sort by ascending order and remove
         # possible duplicate entries.
@@ -1024,7 +1032,9 @@ class beam:
         n_unknown_reactions = 0
         for i in range(len(self.points)):
             if self.points[i].has_reaction_force():
-                self.points[i].reaction_force = sym.symbols(REACTION_SYMBOL + "{0}".format(i))
+                self.points[i].reaction_force = sym.symbols(
+                    REACTION_SYMBOL + "{0}".format(i)
+                )
                 unknowns.append(self.points[i].reaction_force)
                 reaction_force_points.append(i)
                 n_unknown_reactions += 1
@@ -1032,7 +1042,9 @@ class beam:
         # Then reaction moments.
         for i in range(len(self.points)):
             if self.points[i].has_reaction_moment():
-                self.points[i].reaction_moment = sym.symbols(MOMENT_SYMBOL + "{0}".format(i))
+                self.points[i].reaction_moment = sym.symbols(
+                    MOMENT_SYMBOL + "{0}".format(i)
+                )
                 unknowns.append(self.points[i].reaction_moment)
                 reaction_moment_points.append(i)
                 n_unknown_reactions += 1
@@ -1058,14 +1070,22 @@ class beam:
         # Then deflections and rotations at each point.
         for i in range(len(self.points)):
             if i > 0:
-                self.points[i].deflection_left = sym.symbols(DEFLECTION_LEFT_SYMBOL + "{0}".format(i))
-                self.points[i].rotation_left = sym.symbols(ROTATION_LEFT_SYMBOL + "{0}".format(i))
+                self.points[i].deflection_left = sym.symbols(
+                    DEFLECTION_LEFT_SYMBOL + "{0}".format(i)
+                )
+                self.points[i].rotation_left = sym.symbols(
+                    ROTATION_LEFT_SYMBOL + "{0}".format(i)
+                )
                 unknowns.append(self.points[i].deflection_left)
                 unknowns.append(self.points[i].rotation_left)
 
             if i < len(self.points) - 1:
-                self.points[i].deflection_right = sym.symbols(DEFLECTION_RIGHT_SYMBOL + "{0}".format(i))
-                self.points[i].rotation_right = sym.symbols(ROTATION_RIGHT_SYMBOL + "{0}".format(i))
+                self.points[i].deflection_right = sym.symbols(
+                    DEFLECTION_RIGHT_SYMBOL + "{0}".format(i)
+                )
+                self.points[i].rotation_right = sym.symbols(
+                    ROTATION_RIGHT_SYMBOL + "{0}".format(i)
+                )
                 unknowns.append(self.points[i].deflection_right)
                 unknowns.append(self.points[i].rotation_right)
 
@@ -1083,11 +1103,17 @@ class beam:
         # Set spring loads.
         for i in range(len(self.points)):
             if self.points[i].has_transverse_spring():
-                self.points[i].transverse_spring_force = -self.points[i].transverse_spring_stiffness * self.points[i].deflection_right
+                self.points[i].transverse_spring_force = (
+                    -self.points[i].transverse_spring_stiffness
+                    * self.points[i].deflection_right
+                )
                 transverce_spring_force_points.append(i)
 
             if self.points[i].has_rotational_spring():
-                self.points[i].rotational_spring_moment = -self.points[i].rotational_spring_stiffness * self.points[i].rotation_right
+                self.points[i].rotational_spring_moment = (
+                    -self.points[i].rotational_spring_stiffness
+                    * self.points[i].rotation_right
+                )
                 rotational_spring_moment_points.append(i)
 
         # Set integration constants for each segment.
@@ -1109,7 +1135,13 @@ class beam:
             unknowns.append(self.segments[i].rotation_integration_constant)
             unknowns.append(self.segments[i].deflection_integration_constant)
 
-        return unknowns, reaction_force_points, reaction_moment_points, transverce_spring_force_points, rotational_spring_moment_points
+        return (
+            unknowns,
+            reaction_force_points,
+            reaction_moment_points,
+            transverce_spring_force_points,
+            rotational_spring_moment_points,
+        )
 
     # ------------------------------------------- _assemble_equilibrium_equations_monolithic
     def _assemble_equilibrium_equations_monolithic(self):
@@ -1124,7 +1156,12 @@ class beam:
         sum_forces_y = sym.sympify(0)
 
         for ipoint in self.points:
-            sum_forces_y = sum_forces_y + ipoint.external_force + ipoint.reaction_force + ipoint.transverse_spring_force
+            sum_forces_y = (
+                sum_forces_y
+                + ipoint.external_force
+                + ipoint.reaction_force
+                + ipoint.transverse_spring_force
+            )
 
         for isegment in self.segments:
             sum_forces_y = sum_forces_y + isegment.distributed_load.equivalent_force
@@ -1165,9 +1202,12 @@ class beam:
                     sum_moments_z_hinge = sum_moments_z_hinge + jpoint.external_force * (
                         jpoint.x_coord - ipoint.x_coord
                     )
-                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.rotational_spring_moment
-                    sum_moments_z_hinge = sum_moments_z_hinge + jpoint.transverse_spring_force * (
-                        jpoint.x_coord - ipoint.x_coord
+                    sum_moments_z_hinge = (
+                        sum_moments_z_hinge + jpoint.rotational_spring_moment
+                    )
+                    sum_moments_z_hinge = (
+                        sum_moments_z_hinge
+                        + jpoint.transverse_spring_force * (jpoint.x_coord - ipoint.x_coord)
                     )
 
                 for jsegment in self.segments[i:]:
@@ -1192,21 +1232,29 @@ class beam:
         """
         internal_load_equations = []
         # Initialise the internal loads at the starting boundary.
-        shear_force_left = -(self.points[0].external_force + self.points[0].reaction_force + self.points[0].transverse_spring_force)
+        shear_force_left = -(
+            self.points[0].external_force
+            + self.points[0].reaction_force
+            + self.points[0].transverse_spring_force
+        )
         bending_moment_left = -(
-            self.points[0].external_moment + self.points[0].reaction_moment + self.points[0].rotational_spring_moment
+            self.points[0].external_moment
+            + self.points[0].reaction_moment
+            + self.points[0].rotational_spring_moment
         )
         # Loop over the segments are find the shear force and bending moment distribution.
         for i in range(len(self.segments)):
             # Shear force
-            self.segments[i].shear_force = sym.integrate(
-                -self.segments[i].distributed_load.expression, x
-            ) + self.segments[i].shear_force_integration_constant
+            self.segments[i].shear_force = (
+                sym.integrate(-self.segments[i].distributed_load.expression, x)
+                + self.segments[i].shear_force_integration_constant
+            )
 
             # Bending moment
-            self.segments[i].bending_moment = sym.integrate(
-                -self.segments[i].shear_force, x
-            ) + self.segments[i].bending_moment_integration_constant
+            self.segments[i].bending_moment = (
+                sym.integrate(-self.segments[i].shear_force, x)
+                + self.segments[i].bending_moment_integration_constant
+            )
 
             # Append internal force transmission equations.
             internal_load_equations.append(
@@ -1255,7 +1303,8 @@ class beam:
                     self.segments[i].bending_moment
                     / (self.segments[i].young * self.segments[i].inertia),
                     x,
-                ) + self.segments[i].rotation_integration_constant
+                )
+                + self.segments[i].rotation_integration_constant
             )
 
             self.segments[i].deflection = (
@@ -1263,10 +1312,22 @@ class beam:
                 + self.segments[i].deflection_integration_constant
             )
 
-            deflection_assignment_equations.append(self.segments[i].rotation.subs({x: self.segments[i].x_start}) - self.points[i].rotation_right)
-            deflection_assignment_equations.append(self.segments[i].rotation.subs({x: self.segments[i].x_end}) - self.points[i + 1].rotation_left)
-            deflection_assignment_equations.append(self.segments[i].deflection.subs({x: self.segments[i].x_start}) - self.points[i].deflection_right)
-            deflection_assignment_equations.append(self.segments[i].deflection.subs({x: self.segments[i].x_end}) - self.points[i + 1].deflection_left)
+            deflection_assignment_equations.append(
+                self.segments[i].rotation.subs({x: self.segments[i].x_start})
+                - self.points[i].rotation_right
+            )
+            deflection_assignment_equations.append(
+                self.segments[i].rotation.subs({x: self.segments[i].x_end})
+                - self.points[i + 1].rotation_left
+            )
+            deflection_assignment_equations.append(
+                self.segments[i].deflection.subs({x: self.segments[i].x_start})
+                - self.points[i].deflection_right
+            )
+            deflection_assignment_equations.append(
+                self.segments[i].deflection.subs({x: self.segments[i].x_end})
+                - self.points[i + 1].deflection_left
+            )
 
         # Set up the system of equations with the geometri boundary conditions of the
         # beam and determine the integration coefficients.
@@ -1293,7 +1354,14 @@ class beam:
         return deflection_assignment_equations, deflection_boundary_condition_equations
 
     # ----------------------------------------------- _unpack_monolithic_solution
-    def _unpack_monolithic_solution(self, solution, reaction_force_points, reaction_moment_points, transverce_spring_force_points, rotational_spring_moment_points):
+    def _unpack_monolithic_solution(
+        self,
+        solution,
+        reaction_force_points,
+        reaction_moment_points,
+        transverce_spring_force_points,
+        rotational_spring_moment_points,
+    ):
         """Unpacks the solution of the monolithic system of equations into the beam properties.
 
         Parameters
@@ -1311,15 +1379,15 @@ class beam:
         """
         # Reaction forces
         for point_id in reaction_force_points:
-            self.points[point_id].reaction_force = self.points[point_id].reaction_force.subs(
-                solution
-            )
+            self.points[point_id].reaction_force = self.points[
+                point_id
+            ].reaction_force.subs(solution)
 
         # Reaction moments
         for point_id in reaction_moment_points:
-            self.points[point_id].reaction_moment = self.points[point_id].reaction_moment.subs(
-                solution
-            )
+            self.points[point_id].reaction_moment = self.points[
+                point_id
+            ].reaction_moment.subs(solution)
 
         # Deflections and rotations and points
         for i in range(len(self.points)):
@@ -1327,43 +1395,31 @@ class beam:
                 self.points[i].deflection_left = self.points[i].deflection_left.subs(
                     solution
                 )
-                self.points[i].rotation_left = self.points[i].rotation_left.subs(
-                    solution
-                )
+                self.points[i].rotation_left = self.points[i].rotation_left.subs(solution)
 
             if i < len(self.points) - 1:
                 self.points[i].deflection_right = self.points[i].deflection_right.subs(
                     solution
                 )
-                self.points[i].rotation_right = self.points[i].rotation_right.subs(
-                    solution
-                )
+                self.points[i].rotation_right = self.points[i].rotation_right.subs(solution)
 
         # Spring forces and moments
         for point_id in transverce_spring_force_points:
-            self.points[point_id].transverse_spring_force = self.points[point_id].transverse_spring_force.subs(
-                solution
-            )
+            self.points[point_id].transverse_spring_force = self.points[
+                point_id
+            ].transverse_spring_force.subs(solution)
 
         for point_id in rotational_spring_moment_points:
-            self.points[point_id].rotational_spring_moment = self.points[point_id].rotational_spring_moment.subs(
-                solution
-            )
+            self.points[point_id].rotational_spring_moment = self.points[
+                point_id
+            ].rotational_spring_moment.subs(solution)
 
         # Internal loads
         for i in range(len(self.segments)):
-            self.segments[i].shear_force = self.segments[i].shear_force.subs(
-                solution
-            )
-            self.segments[i].bending_moment = self.segments[i].bending_moment.subs(
-                solution
-            )
-            self.segments[i].rotation = self.segments[i].rotation.subs(
-                solution
-            )
-            self.segments[i].deflection = self.segments[i].deflection.subs(
-                solution
-            )
+            self.segments[i].shear_force = self.segments[i].shear_force.subs(solution)
+            self.segments[i].bending_moment = self.segments[i].bending_moment.subs(solution)
+            self.segments[i].rotation = self.segments[i].rotation.subs(solution)
+            self.segments[i].deflection = self.segments[i].deflection.subs(solution)
 
     # -------------------------------------------------------------------- _solve_monolithic
     def _solve_monolithic(self):
@@ -1388,7 +1444,12 @@ class beam:
             deflection_assignment_equations,
             deflection_boundary_condition_equations,
         ) = self._assemble_deflection_equations_monolithic()
-        all_equations = equilibirum_equations + internal_load_equations + deflection_assignment_equations + deflection_boundary_condition_equations
+        all_equations = (
+            equilibirum_equations
+            + internal_load_equations
+            + deflection_assignment_equations
+            + deflection_boundary_condition_equations
+        )
 
         # Solve the system of equations.
         if len(all_equations) != len(unknowns):
