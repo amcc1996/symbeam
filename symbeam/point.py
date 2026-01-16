@@ -25,6 +25,8 @@ from sympy.abc import x
 
 from symbeam.spring import transverse_spring, rotational_spring
 
+import numpy as np
+
 # Set numerical tolerance
 tol = 1e-6
 
@@ -47,7 +49,6 @@ class point(ABC):
         self.rotational_spring_stiffness = sym.sympify(0)
         self.transverse_spring_force = sym.sympify(0)
         self.rotational_spring_moment = sym.sympify(0)
-        self.support_type_for_plot = None
 
     # ----------------------------------------------------------------------------- get_name
     @staticmethod
@@ -133,13 +134,29 @@ class point(ABC):
 
     # --------------------------------------------------------------------------- draw_point
     @abstractmethod
-    def draw_point(self, ax):
+    def draw_point(self, ax, x_start, y_stat, xmin, xmid, xspan, ymin, ymid, yspan):
         """Draws the point in the given axis.
 
         Parameters
         ----------
         ax : Matplotlib axis object
           Axis where to draw the point
+        x_start : float
+          X-coordinate where to start drawing the point
+        y_stat : float
+          Y-coordinate where to draw the point
+        xmin : float
+            Minimum X value of the axis
+        xmid : float
+            Midpoint of the x-axis
+        xspan : float
+            Span of the x-axis
+        ymin : float
+            Minimum Y value of the axis
+        ymid : float
+            Midpoint of the y-axis
+        yspan : float
+            Span of the y-axis
         """
 
     # ------------------------------------------------------------- has_deflection_condition
@@ -266,103 +283,175 @@ class point(ABC):
         input_substitution : dictionary
           User-specified symbols substitution for the symbolic expressions
         """
-        x_coord_plot = self.get_numeric_coordinate(input_substitution=input_substitution)
-        if self.has_transverse_spring() or self.has_rotational_spring():
-            if type(self) is flexible_pin or type(self) is flexible_roller:
-                self.draw_springs(ax, x_coord_plot, include_base=False, input_substitution=input_substitution)
-            else:
-                self.draw_springs(ax, x_coord_plot, include_base=True, input_substitution=input_substitution)
+        # Get the limits of the x- and y-axis
+        xlim = ax.get_xlim()
+        xmin = xlim[0]
+        xmax = xlim[1]
+        xspan = xmax - xmin
+        xmid = (xmax + xmin) / 2
 
-        self.draw_point(x_coord_plot, ax)
+        ylim = ax.get_ylim()
+        ymin = ylim[0]
+        ymax = ylim[1]
+        yspan = ymax - ymin
+        ymid = (ymax + ymin) / 2
+
+        # Set ground drawing parameters
+        y_ground = ymid - yspan / 5.5
+        y_below_ground = ymid - yspan / 5
+        ground_length = xspan / 20
+
+        # Get the numeric coordinate for plotting
+        x_coord_plot = self.get_numeric_coordinate(input_substitution=input_substitution)
+
+        # Draw the springs if any
+        has_springs = self.has_transverse_spring() or self.has_rotational_spring()
+        if has_springs:
+            self.draw_springs(ax, x_coord_plot, y_ground, xspan, yspan, xmax, ymid)
+
+        # Draw the support point
+        self.draw_point(ax, x_coord_plot, y_ground, xmin, xmid, xspan, ymin, ymid, yspan)
+
+        # Draw the ground lines if needed
+        needs_ground = False
+        if type(self) in [pin, roller]:
+            needs_ground = True
+        elif has_springs:
+            needs_ground = True
+
+        if needs_ground:
+            self.draw_ground(ax, x_coord_plot, y_ground=y_ground, y_below_ground=y_below_ground, ground_length=ground_length)
+
+    #--------------------------------------------------------------------------- draw_ground
+    def draw_ground(self, ax, x_coord_plot, y_ground, y_below_ground, ground_length, x_offset=0, xspan=None, yspan=None, xmid=None, ymid=None):
+        """Draws the ground lines.
+
+        Parameters
+        ----------
+        ax : Matplotlib axis object
+          Axis where to draw the ground line
+        x_coord_plot : float
+          X-coordinate where to draw the ground line
+        y_ground : float
+            Y-coordinate of the ground line
+        y_below_ground : float
+            Y-coordinate below the ground line
+        ground_length : float
+            Length of the ground line
+        x_offset : float
+            X-offset of the ground line
+        xspan : float
+            Span of the x-axis
+        yspan : float
+            Span of the y-axis
+        xmid : float
+            Midpoint of the x-axis
+        ymid : float
+            Midpoint of the y-axis
+        """
+        ax.plot(
+            [
+                x_coord_plot - ground_length / 2 + x_offset,
+                x_coord_plot + ground_length / 2 + x_offset,
+            ],
+            [y_below_ground, y_below_ground],
+            color="silver",
+            linewidth=5,
+            clip_on=False,
+            solid_capstyle="butt",
+        )
+        ax.plot(
+            [
+                x_coord_plot - ground_length / 2 + x_offset,
+                x_coord_plot + ground_length / 2 + x_offset,
+            ],
+            [y_ground, y_ground],
+            color="black",
+            linewidth=1.5,
+            clip_on=False,
+            solid_capstyle="butt",
+        )
 
     # ------------------------------------------------------------------------- draw_springs
-    def draw_springs(self, ax, x_coord_plot, include_base=True, input_substitution={}):
+    def draw_springs(self, ax, x_start, y_start, xspan, yspan, xmax, ymid):
         """Draws the springs at a point.
 
         Parameters
         ----------
         ax : Matplotlib axis object
           Axis where to draw the point
-        x_coord_plot : float
-          X-coordinate where to draw the springs
-        include_base : bool
-          Flags if the base line shall be drawn
-        input_substitution : dictionary
-          User-specified symbols substitution for the symbolic expressions
+        x_start : float
+            X-coordinate where to start drawing the springs
+        y_start : float
+            Y-coordinate where to start drawing the springs
+        xspan : float
+            X-axis span of the axis
+        yspan : float
+            Y-axis span of the axis
+        xmax : float
+            Maximum X value of the axis
+        ymid : float
+            Midpoint of the y-axis
         """
-        # Get the limits of the x- and y-axis
-        xlim = ax.get_xlim()
-        xmin = xlim[0]
-        xmax = xlim[1]
-        xspan = xmax - xmin
-
-        ylim = ax.get_ylim()
-        ymin = ylim[0]
-        ymax = ylim[1]
-        yspan = ymax - ymin
-
         if self.has_transverse_spring() and not (self.has_rotational_spring()):
-            ystart_transverse = -yspan / 5
-            spring_length_transverse = yspan / 5
+            ystart_transverse = y_start
+            spring_length_transverse = ymid - y_start
             n_coils_transverse = 6
             coil_width_transverse = xspan / 100
-            if include_base:
-                length_bottom_line_transverse = xspan / 25
-            else:
-                length_bottom_line_transverse = 0
+            include_ending_transverse = True
 
         elif not (self.has_transverse_spring()) and self.has_rotational_spring():
-            ystart_rotational = -yspan / 5
-            spring_radius_rotational = yspan / 10
+            ystart_rotational = y_start
+            spring_height_rotational = abs(ymid - y_start)
+            spring_radius_rotational = (ymid - y_start) / 2
             n_coils_rotational = 3
-            include_end_length = True
-            if include_base:
-                length_bottom_line_rotational = xspan / 25
+            include_ending_rotational = True
+            if type(self) in [pin, roller]:
+                include_ending_rotational = False
+                ending = 'support'
             else:
-                length_bottom_line_rotational = 0
+                ending = 'center'
 
         elif self.has_transverse_spring() and self.has_rotational_spring():
-            ystart_rotational = -yspan / 5
-            spring_radius_rotational = yspan / 10
-            n_coils_rotational = 3
-            length_bottom_line_rotational = 0
-            include_end_length = False
-            end_length = 0
-
-            ystart_transverse = -yspan / 5 - spring_radius_rotational
-            spring_length_transverse = yspan / 5
+            ystart_transverse = y_start
+            spring_length_transverse = (ymid - y_start)
             n_coils_transverse = 6
             coil_width_transverse = xspan / 100
-            if include_base:
-                length_bottom_line_transverse = xspan / 25
-            else:
-                length_bottom_line_transverse = 0
+            include_ending_transverse = True
+
+            ystart_rotational = y_start
+            spring_height_rotational = abs(ymid - y_start)
+            spring_radius_rotational = (ymid - y_start) / 2
+            n_coils_rotational = 3
+            ending = 'side'
+            include_ending_rotational = True
+
 
 
         if self.has_transverse_spring():
-            transverse_spring(x_coord_plot, self.transverse_spring_stiffness).draw(
+            transverse_spring(x_start, self.transverse_spring_stiffness).draw(
                 ax,
-                x_coord_plot,
+                x_start,
                 ystart_transverse,
                 spring_length=spring_length_transverse,
                 n_coils=n_coils_transverse,
                 coil_width=coil_width_transverse,
-                length_bottom_line=length_bottom_line_transverse,
-                xspan=xspan,
-                yspan=yspan,
+                include_end_length=include_ending_transverse,
             )
 
         if self.has_rotational_spring():
-            rotational_spring(x_coord_plot, self.rotational_spring_stiffness).draw(
+            rotational_spring(x_start, self.rotational_spring_stiffness).draw(
                 ax,
-                x_coord_plot,
+                x_start,
                 ystart_rotational,
                 spring_radius=spring_radius_rotational,
+                spring_height=spring_height_rotational,
                 n_coils=n_coils_rotational,
-                length_bottom_line=length_bottom_line_rotational,
                 xspan=xspan,
                 yspan=yspan,
-                include_end_length=include_end_length,
+                xmax=xmax,
+                ending=ending,
+                include_end_length=include_ending_rotational,
             )
 
     # --------------------------------------------------------------------------- draw_force
@@ -543,54 +632,36 @@ class pin(point):
         return equations
 
     # --------------------------------------------------------------------------------------
-    def draw_point(self, x_coord_plot, ax):
-        # Get the limits of the x- and y-axis
-        xlim = ax.get_xlim()
-        xmin = xlim[0]
-        xmax = xlim[1]
-        xspan = xmax - xmin
-
-        ylim = ax.get_ylim()
-        ymin = ylim[0]
-        ymax = ylim[1]
-        yspan = ymax - ymin
-        ymid = (ymax + ymin) / 2
-
+    def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
+        length_base = xspan / 20
+        x = np.array([x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float)
+        y1 = np.array([y_start, ymid, y_start], dtype=float)
+        y2 = np.array([y_start, y_start, y_start], dtype=float)
         # Draw the triangle.
         length_bottom_line = xspan / 20
-        ax.plot(
-            x_coord_plot,
-            ymid - yspan / 11,
-            marker="^",
+        ax.fill_between(
+            x,
+            y2,
+            y1,
             clip_on=False,
-            markersize=20,
-            markerfacecolor="silver",
-            markeredgewidth=1,
-            markeredgecolor="black",
-        )
-
-        # Draw the final line.
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [ymid - yspan / 5, ymid - yspan / 5],
-            color="silver",
-            linewidth=5,
-            clip_on=False,
-            solid_capstyle="butt",
+            edgecolor="none",
+            facecolor="silver"
         )
         ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [ymid - yspan / 5.5, ymid - yspan / 5.5],
+            x,
+            y2,
             color="black",
-            linewidth=1.5,
+            linewidth=1.0,
             clip_on=False,
-            solid_capstyle="butt",
+            solid_capstyle="round",
+        )
+        ax.plot(
+            x,
+            y1,
+            color="black",
+            linewidth=1.0,
+            clip_on=False,
+            solid_capstyle="round",
         )
 
 # =================================================================================== roller
@@ -635,76 +706,48 @@ class roller(point):
 
         return equations
 
-    def draw_point(self, x_coord_plot, ax):
-        # Get the limits of the x- and y-axis
-        xlim = ax.get_xlim()
-        xmin = xlim[0]
-        xmax = xlim[1]
-        xspan = xmax - xmin
-
-        ylim = ax.get_ylim()
-        ymin = ylim[0]
-        ymax = ylim[1]
-        yspan = ymax - ymin
-
+    def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
+        size_factor = 0.7
+        length_base = xspan / 20 * size_factor
+        height_triangle = abs(ymid - y_start) * size_factor
+        radius = (ymid - y_start) - height_triangle
+        y_start_tri = y_start + (ymid - y_start) - height_triangle
+        x = np.array([x_start - length_base / 2, x_start, x_start + length_base / 2], dtype=float)
+        y1 = np.array([y_start_tri, ymid, y_start_tri], dtype=float)
+        y2 = np.array([y_start_tri, y_start_tri, y_start_tri], dtype=float)
         # Draw the triangle.
         length_bottom_line = xspan / 20
-        ax.plot(
-            x_coord_plot,
-            -yspan / 15.5,
-            marker="^",
+        ax.fill_between(
+            x,
+            y2,
+            y1,
             clip_on=False,
-            markersize=15,
-            markerfacecolor="silver",
-            markeredgewidth=1,
-            markeredgecolor="black",
-        )
-
-        # Draw the circles.
-        ax.plot(
-            x_coord_plot + xspan / 100,
-            -yspan / 6.8,
-            marker="o",
-            clip_on=False,
-            markersize=6,
-            markerfacecolor="black",
-            markeredgewidth=0,
-            markeredgecolor="black",
+            edgecolor="none",
+            facecolor="silver"
         )
         ax.plot(
-            x_coord_plot - xspan / 100,
-            -yspan / 6.8,
-            marker="o",
-            clip_on=False,
-            markersize=6,
-            markerfacecolor="black",
-            markeredgewidth=0,
-            markeredgecolor="black",
-        )
-
-        # Draw the final line.
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [-yspan / 5, -yspan / 5],
-            color="silver",
-            linewidth=5,
-            clip_on=False,
-            solid_capstyle="butt",
-        )
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [-yspan / 5.5, -yspan / 5.5],
+            x,
+            y2,
             color="black",
-            linewidth=1.5,
+            linewidth=1.0,
             clip_on=False,
-            solid_capstyle="butt",
+            solid_capstyle="round",
         )
+        ax.plot(
+            x,
+            y1,
+            color="black",
+            linewidth=1.0,
+            clip_on=False,
+            solid_capstyle="round",
+        )
+        # Draw the wheels
+        y1_circle = y_start + radius/2
+        y2_circle = y_start + radius/2
+        x1_circle = x_start - xspan / 100
+        x2_circle = x_start + xspan / 100
+        ax.plot([x1_circle], [y1_circle], marker='o', markersize=6, color='black', markeredgewidth=0, clip_on=False)
+        ax.plot([x2_circle], [y2_circle], marker='o', markersize=6, color='black', markeredgewidth=0, clip_on=False)
 
 
 # =============================================================================== continuity
@@ -746,7 +789,7 @@ class continuity(point):
 
         return equations
 
-    def draw_point(self, x_coord_plot, ax):
+    def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
         pass
 
 
@@ -791,7 +834,7 @@ class fixed(point):
 
         return equations
 
-    def draw_point(self, x_coord_plot, ax):
+    def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
         # Get the limits of the x- and y-axis
         xlim = ax.get_xlim()
         xmin = xlim[0]
@@ -804,9 +847,9 @@ class fixed(point):
         yspan = ymax - ymin
 
         # Draw the triangle.
-        if abs(x_coord_plot - xmin) < tol:
+        if abs(x_start - xmin) < tol:
             ax.plot(
-                [x_coord_plot - xspan / 150, x_coord_plot - xspan / 150],
+                [x_start - xspan / 150, x_start - xspan / 150],
                 [-yspan / 15.5, yspan / 15.5],
                 color="silver",
                 linewidth=5,
@@ -814,16 +857,16 @@ class fixed(point):
                 solid_capstyle="butt",
             )
             ax.plot(
-                [x_coord_plot, x_coord_plot],
+                [x_start, x_start],
                 [-yspan / 15.5, yspan / 15.5],
                 color="black",
                 linewidth=1.5,
                 clip_on=False,
                 solid_capstyle="butt",
             )
-        elif abs(x_coord_plot - xmin) > tol:
+        elif abs(x_start - xmin) > tol:
             ax.plot(
-                [x_coord_plot + xspan / 150, x_coord_plot + xspan / 150],
+                [x_start + xspan / 150, x_start + xspan / 150],
                 [-yspan / 15.5, yspan / 15.5],
                 color="silver",
                 linewidth=5,
@@ -831,7 +874,7 @@ class fixed(point):
                 solid_capstyle="butt",
             )
             ax.plot(
-                [x_coord_plot, x_coord_plot],
+                [x_start, x_start],
                 [-yspan / 15.5, yspan / 15.5],
                 color="black",
                 linewidth=1.5,
@@ -840,7 +883,7 @@ class fixed(point):
             )
         else:
             ax.plot(
-                [x_coord_plot, x_coord_plot],
+                [x_start, x_start],
                 [-yspan / 15.5, yspan / 15.5],
                 color="silver",
                 linewidth=5,
@@ -848,7 +891,7 @@ class fixed(point):
                 solid_capstyle="butt",
             )
             ax.plot(
-                [x_coord_plot - xspan / 150, x_coord_plot - xspan / 150],
+                [x_start - xspan / 150, x_start - xspan / 150],
                 [-yspan / 15.5, yspan / 15.5],
                 color="black",
                 linewidth=1.5,
@@ -856,7 +899,7 @@ class fixed(point):
                 solid_capstyle="butt",
             )
             ax.plot(
-                [x_coord_plot + xspan / 150, x_coord_plot + xspan / 150],
+                [x_start + xspan / 150, x_start + xspan / 150],
                 [-yspan / 15.5, yspan / 15.5],
                 color="black",
                 linewidth=1.5,
@@ -896,9 +939,9 @@ class hinge(point):
     def get_rotation_boundary_condition(self, list_rotation):
         pass
 
-    def draw_point(self, x_coord_plot, ax):
+    def draw_point(self, ax, x_start, y_start, xmin, xmid, xspan, ymin, ymid, yspan):
         ax.plot(
-            x_coord_plot,
+            x_start,
             0,
             marker="o",
             clip_on=False,
@@ -906,146 +949,5 @@ class hinge(point):
             markerfacecolor="white",
             markeredgewidth=1.5,
             markeredgecolor="black",
-        )
-
-# ============================================================================== flexible_pin
-class flexible_pin(continuity):
-    """Concrete implementation of a flexible pin point in a beam."""
-
-    @staticmethod
-    def get_name():
-        return "Flexible Pin"
-
-    def draw_point(self, x_coord_plot, ax):
-        # Get the limits of the x- and y-axis
-        xlim = ax.get_xlim()
-        xmin = xlim[0]
-        xmax = xlim[1]
-        xspan = xmax - xmin
-
-        ylim = ax.get_ylim()
-        ymin = ylim[0]
-        ymax = ylim[1]
-        yspan = ymax - ymin
-        ymid = (ymax + ymin) / 2
-
-        yoffset = yspan / 20
-
-        # Draw the triangle.
-        length_bottom_line = xspan / 20
-        ax.plot(
-            x_coord_plot,
-            ymid - yspan / 11 - yoffset,
-            marker="^",
-            clip_on=False,
-            markersize=20,
-            markerfacecolor="silver",
-            markeredgewidth=1,
-            markeredgecolor="black",
-        )
-
-        # Draw the final line.
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [ymid - yspan / 5 - yoffset, ymid - yspan / 5 - yoffset],
-            color="silver",
-            linewidth=5,
-            clip_on=False,
-            solid_capstyle="butt",
-        )
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [ymid - yspan / 5.5 - yoffset, ymid - yspan / 5.5 - yoffset],
-            color="black",
-            linewidth=1.5,
-            clip_on=False,
-            solid_capstyle="butt",
-        )
-
-# ========================================================================== flexible_roller
-class flexible_roller(continuity):
-    """Concrete implementation of a continuity point in a beam."""
-
-    @staticmethod
-    def get_name():
-        return "Flexible Roller"
-
-    def draw_point(self, x_coord_plot, ax):
-       # Get the limits of the x- and y-axis
-        xlim = ax.get_xlim()
-        xmin = xlim[0]
-        xmax = xlim[1]
-        xspan = xmax - xmin
-
-        ylim = ax.get_ylim()
-        ymin = ylim[0]
-        ymax = ylim[1]
-        yspan = ymax - ymin
-
-        yoffset = yspan / 20
-
-        # Draw the triangle.
-        length_bottom_line = xspan / 20
-        ax.plot(
-            x_coord_plot,
-            -yspan / 15.5 - yoffset,
-            marker="^",
-            clip_on=False,
-            markersize=15,
-            markerfacecolor="silver",
-            markeredgewidth=1,
-            markeredgecolor="black",
-        )
-
-        # Draw the circles.
-        ax.plot(
-            x_coord_plot + xspan / 100,
-            -yspan / 6.8 - yoffset,
-            marker="o",
-            clip_on=False,
-            markersize=6,
-            markerfacecolor="black",
-            markeredgewidth=0,
-            markeredgecolor="black",
-        )
-        ax.plot(
-            x_coord_plot - xspan / 100,
-            -yspan / 6.8 - yoffset,
-            marker="o",
-            clip_on=False,
-            markersize=6,
-            markerfacecolor="black",
-            markeredgewidth=0,
-            markeredgecolor="black",
-        )
-
-        # Draw the final line.
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [-yspan / 5 - yoffset, -yspan / 5 - yoffset],
-            color="silver",
-            linewidth=5,
-            clip_on=False,
-            solid_capstyle="butt",
-        )
-        ax.plot(
-            [
-                x_coord_plot - length_bottom_line / 2,
-                x_coord_plot + length_bottom_line / 2,
-            ],
-            [-yspan / 5.5 - yoffset, -yspan / 5.5 - yoffset],
-            color="black",
-            linewidth=1.5,
-            clip_on=False,
-            solid_capstyle="butt",
         )
 # ==========================================================================================

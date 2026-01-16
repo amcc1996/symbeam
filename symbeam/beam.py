@@ -22,7 +22,7 @@ from sympy.abc import E, I, x
 
 from symbeam.load import distributed_load, point_load, point_moment
 from symbeam.spring import rotational_spring, transverse_spring
-from symbeam.point import continuity, fixed, hinge, pin, roller, flexible_pin, flexible_roller
+from symbeam.point import continuity, fixed, hinge, pin, roller
 
 
 # Set numerical tolerance
@@ -53,9 +53,9 @@ class beam:
 
         Parameters
         ----------
-        length : sympifiable type (int, float, string, SympP symbol, etc)
+        length : sympifiable type (int, float, string, SymPy symbol, etc)
           Length of the beam
-        x0 : sympifiable type (int, float, string, SympP symbol, etc)
+        x0 : sympifiable type (int, float, string, SymPy symbol, etc)
           Initial point of the beam
 
         Notes
@@ -125,13 +125,13 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordiante of the support
         support_type : str
           Type of support
-        k_v : sympifiable type (int, float, string, SympP symbol, etc), optional
+        k_v : sympifiable type (int, float, string, SymPy symbol, etc), optional
           Transverse spring stiffness (only used for elastic supports)
-        k_theta : sympifiable type (int, float, string, SympP symbol, etc), optional
+        k_theta : sympifiable type (int, float, string, SymPy symbol, etc), optional
           Rotational spring stiffness (only used for elastic supports)
         """
         # First check if the coordinate inside the beam.
@@ -149,30 +149,6 @@ class beam:
 
         elif support_type.lower() == "fixed":
             new_point = fixed(x_coord)
-
-        elif support_type.lower() in ["flexible pin", "flexible_pin"]:
-            if k_v is None and k_theta is None:
-                raise RuntimeError(
-                    "For a flexible pin support, at least one of k_v or "
-                    + "k_theta must be specified."
-                )
-            new_point = flexible_pin(x_coord)
-            if k_v is not None:
-                self.add_transverse_spring(x_coord, k_v)
-            if k_theta is not None:
-                self.add_rotational_spring(x_coord, k_theta)
-
-        elif support_type.lower() in ["flexible roller", "flexible_roller"]:
-            if k_v is None and k_theta is None:
-                raise RuntimeError(
-                    "For a flexible roller support, at least one of k_v or "
-                    + "k_theta must be specified."
-                )
-            new_point = flexible_roller(x_coord)
-            if k_v is not None:
-                self.add_transverse_spring(x_coord, k_v)
-            if k_theta is not None:
-                self.add_rotational_spring(x_coord, k_theta)
 
         else:
             raise RuntimeError("Unknown support type: {0}.".format(type))
@@ -192,11 +168,11 @@ class beam:
 
         Parameters
         ----------
-        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+        x_start : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
-        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+        x_end : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
-        expression  : sympifiable type (int, float, string, SympP symbol, etc)
+        expression  : sympifiable type (int, float, string, SymPy symbol, etc)
           Distributed loading expression
         """
         self._check_coordinates(x_start, x_end)
@@ -209,9 +185,9 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordinate of the applied load
-        value : sympifiable type (int, float, string, SympP symbol, etc)
+        value : sympifiable type (int, float, string, SymPy symbol, etc)
           Load value
         """
         self._check_inside_beam(x_coord)
@@ -224,9 +200,9 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordinate of the applied moment
-        value : sympifiable type (int, float, string, SympP symbol, etc)
+        value : sympifiable type (int, float, string, SymPy symbol, etc)
           Moment value
         """
         self._check_inside_beam(x_coord)
@@ -239,9 +215,9 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordinate of the spring
-        stiffness : sympifiable type (int, float, string, SympP symbol, etc)
+        stiffness : sympifiable type (int, float, string, SymPy symbol, etc)
           Spring stiffness
         """
         self._check_inside_beam(x_coord)
@@ -254,9 +230,9 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordinate of the spring
-        stiffness : sympifiable type (int, float, string, SympP symbol, etc)
+        stiffness : sympifiable type (int, float, string, SymPy symbol, etc)
           Spring stiffness
         """
         self._check_inside_beam(x_coord)
@@ -280,11 +256,11 @@ class beam:
 
         Parameters
         ----------
-        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+        x_start : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
-        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+        x_end : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
-        expression  : sympifiable type (int, float, string, SympP symbol, etc)
+        expression  : sympifiable type (int, float, string, SymPy symbol, etc)
           Young modulus value
         """
         # First check if the coordinate inside the beam.
@@ -429,9 +405,9 @@ class beam:
 
         Parameters
         ----------
-        x_start : sympifiable type (int, float, string, SympP symbol, etc)
+        x_start : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
-        x_end : sympifiable type (int, float, string, SympP symbol, etc)
+        x_end : sympifiable type (int, float, string, SymPy symbol, etc)
           Starting coordinate of the distributed load
         """
         x_start_symbol = sym.sympify(x_start)
@@ -480,7 +456,7 @@ class beam:
 
         Parameters
         ----------
-        x_coord : sympifiable type (int, float, string, SympP symbol, etc)
+        x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
           Coordinate of the point
         """
         x_coord_symbol = sym.sympify(x_coord)
@@ -704,9 +680,6 @@ class beam:
                             raise RuntimeError(
                                 "A transverse spring cannot be placed at a fixed, pin "
                                 + "or roller location (x = {0}).".format(this_point.x_coord)
-                                + "If you want to model an elastic support, please use "
-                                + "the flexible pin or flexible roller support types."
-                                + "e.g. beam.add_support(x_coord, 'flexible pin', kv=stiffness_v, ktheta=stiffness_theta)."
                             )
                         this_point.transverse_spring_stiffness += spring.stiffness
 
@@ -717,13 +690,10 @@ class beam:
                                 "A rotational spring cannot be placed at a hinge "
                                 + "location (x = {0}).".format(this_point.x_coord)
                             )
-                        elif type(this_point) in [pin, roller, fixed]:
+                        elif type(this_point) in [fixed]:
                             raise RuntimeError(
-                                "A rotational spring cannot be placed at a fixed, pin "
-                                + "or roller location (x = {0}).".format(this_point.x_coord)
-                                + "If you want to model an elastic support, please use "
-                                + "the flexible pin or flexible roller support types."
-                                + "e.g. beam.add_support(x_coord, 'flexible pin', kv=stiffness_v, ktheta=stiffness_theta)."
+                                "A rotational spring cannot be placed at a fixed "
+                                + "location (x = {0}).".format(this_point.x_coord)
                             )
                         this_point.rotational_spring_stiffness += spring.stiffness
 
@@ -1423,7 +1393,7 @@ class beam:
         # Solve the system of equations.
         if len(all_equations) != len(unknowns):
             raise RuntimeError(
-                "Internal error: the number of equilibirum equations is different "
+                "Internal error: the number of equations is different "
                 + "from the number of unknowns."
             )
         solution = sym.solve(all_equations, unknowns, dict=True)

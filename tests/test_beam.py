@@ -919,6 +919,49 @@ def test_rotational_spring_on_hinge():
         a.add_rotational_spring("l/2", "k_theta")
         a.solve(output=False)
 
+def test_rotational_spring_on_fixed():
+    """Test that a rotational spring cannot be added on a fixed support."""
+    with pytest.raises(RuntimeError):
+        a = beam("l", x0=0)
+        a.add_support(0, "fixed")
+        a.add_support("l", "roller")
+        a.add_support("l/2", "hinge")
+        a.add_point_load("l/2", "P")
+        a.add_rotational_spring(0, "k_theta")
+        a.solve(output=False)
+
+def test_transverse_spring_on_pin():
+    """Test that a transverse spring cannot be added on a pin support."""
+    with pytest.raises(RuntimeError):
+        a = beam("l", x0=0)
+        a.add_support(0, "pin")
+        a.add_support("l", "roller")
+        a.add_point_load("l/2", "P")
+        a.add_transverse_spring(0, "k_v")
+        a.solve(output=False)
+
+def test_transverse_spring_on_roller():
+    """Test that a transverse spring cannot be added on a roller support."""
+    with pytest.raises(RuntimeError):
+        a = beam("l", x0=0)
+        a.add_support(0, "fixed")
+        a.add_support("l", "roller")
+        a.add_support("l/2", "hinge")
+        a.add_point_load("l/2", "P")
+        a.add_transverse_spring("l", "k_v")
+        a.solve(output=False)
+
+def test_rotational_spring_on_fixed():
+    """Test that a spring cannot be added on fixed support"""
+    with pytest.raises(RuntimeError):
+        a = beam("l", x0=0)
+        a.add_support(0, "fixed")
+        a.add_support("l", "roller")
+        a.add_support("l/2", "hinge")
+        a.add_point_load("l/2", "P")
+        a.add_transverse_spring(0, "k_v")
+        a.solve(output=False)
+
 def test_monolithic_not_unique_solution():
     """Test that an error is raised when a beam with springs (monolithic solver) has not a unique solution."""
     with pytest.raises(RuntimeError):
@@ -980,4 +1023,35 @@ def test_plot_distributed_loads_fixed_right():
     a.add_distributed_load(L / 2, L, "q * (L - x)")
     a.solve()
     fig, ax = a.plot(subs={"q": 1000})
+    return fig
+
+@pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
+def test_beam_with_springs():
+    L = 1.0
+    M = 1.0
+    P = 1.0
+    I = 1.0
+    E = 1.0
+    kv = 100.0
+    ktheta = 100.0
+    a = beam(L, x0=0)
+    a.set_inertia(0, L, I)
+    a.set_young(0, L, E)
+    a.add_support(0, "pin")
+    a.add_support(0.25*L, "hinge")
+    a.add_support(0.5*L, "roller")
+    a.add_support(L, "roller")
+    a.add_transverse_spring(0.125*L, kv)
+    a.add_rotational_spring(0, ktheta)
+    a.add_rotational_spring(0.5*L, ktheta)
+    a.add_transverse_spring(0.25*L, kv)
+    a.add_transverse_spring(0.75*L, kv)
+    a.add_rotational_spring(0.75*L, ktheta)
+    a.add_rotational_spring(0.875*L, ktheta)
+    a.add_point_moment(L, M)
+    a.add_point_load(L/3, -P)
+    a.add_distributed_load(L/7, 5*L/7, "-(2 - 2*x**2)")
+    a.solve(output=True)
+    fig, ax = a.plot()
+
     return fig
