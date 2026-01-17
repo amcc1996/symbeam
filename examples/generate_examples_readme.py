@@ -6,7 +6,7 @@
 import glob
 import os
 import re
-
+import shutil
 
 # Human sorting: from https://stackoverflow.com/questions/5967500/
 # how-to-correctly-sort-a-string-with-a-number-inside
@@ -24,12 +24,13 @@ def natural_keys(text):
 
 
 # Get list of examples and remove the current script
-list_examples = glob.glob("./*.py")
-list_examples.remove("./" + __file__)
+list_examples = glob.glob("*.py")
+current_script = os.path.relpath(__file__, ".")
+list_examples.remove(current_script)
 list_examples.sort(key=natural_keys)
 
 # Create the directory for SVG files
-svg_dir = "./svg"
+svg_dir = "svg"
 if not os.path.exists(svg_dir):
     os.makedirs(svg_dir)
 
@@ -50,20 +51,25 @@ with open("README.md", "w") as file:
         print("\nRunning {0}".format(example))
 
         # Create an emtpy temporary file
-        tmp_file = "./tmp_symbeam"
+        tmp_file = "tmp_symbeam"
         open(tmp_file, "w").close()
 
         # Run the script and capture the terminal output
-        os.system("python3 " + example + " >> " + tmp_file)
+        try:
+            os.environ['UV']
+            os.system("uv run --script " + example + " >> " + tmp_file)
+        except KeyError:
+            os.system("python3 " + example + " >> " + tmp_file)
 
         # Check if a .svg file has been produced and move it into the svg/ directory
         has_svg = False
-        svg_path = os.path.splitext(example)[0] + ".svg"
+        svg_path = os.path.splitext(name)[0] + ".svg"
         if os.path.exists(svg_path):
-            found = True
-            print("Found {0}".format(svg_path))
-            new_svg_path = os.path.join(svg_dir, svg_path)
-            os.rename(svg_path, new_svg_path)
+            print("Copying SVG file to {0}/".format(svg_dir))
+            new_svg_path = shutil.copy(svg_path, svg_dir)
+            os.remove(svg_path)
+        else:
+            raise RuntimeError("Example {0} did not produce an SVG file.".format(name))
 
         # Read the Markdown content in each script
         with open(example, "r") as example_file:

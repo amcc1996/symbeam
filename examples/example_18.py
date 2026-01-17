@@ -28,5 +28,4 @@ test_beam.add_transverse_spring(3*L/4, k_v)
 test_beam.solve()
 fig, ax = test_beam.plot()
 
-plt.show()
 plt.savefig(__file__.split(".py")[0] + ".svg")

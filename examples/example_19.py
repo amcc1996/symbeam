@@ -24,5 +24,4 @@ test_beam.add_distributed_load(0, L, sympy.sympify("q*x*(x-L)-q"))
 test_beam.solve()
 fig, ax = test_beam.plot()
 
-plt.show()
 plt.savefig(__file__.split(".py")[0] + ".svg")

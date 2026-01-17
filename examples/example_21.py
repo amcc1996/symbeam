@@ -41,10 +41,7 @@ test_beam.add_point_moment(L, M)
 test_beam.add_point_load(3*L/8, P)
 test_beam.add_distributed_load(L/16, 15*L/16, "-2*(x + x**2)")
 
-# test_beam.add_rotational_spring(L, k_theta)
-# test_beam.add_distributed_load(0, L, sympy.sympify("q*exp(x/L)").subs({"L": L, "q": q}))
 test_beam.solve()
 fig, ax = test_beam.plot()
 
-plt.show()
 plt.savefig(__file__.split(".py")[0] + ".svg")
