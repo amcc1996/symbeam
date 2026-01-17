@@ -51,7 +51,7 @@ with open("README.md", "w") as file:
         file.write("\n## [{0}](./{1})".format(name, name))
         print("\nRunning {0}".format(example))
 
-        # Create an emtpy temporary file
+        # Create an empty temporary file
         tmp_file = "tmp_symbeam"
         open(tmp_file, "w").close()
 
@@ -107,7 +107,7 @@ with open("README.md", "w") as file:
         file.write("\n```python\n")
         found_blank = 0
         for line in example_lines[source_start + 2 : source_end + 1]:
-            # Stop when an emtpy line is found
+            # Stop when an empty line is found
             if len(line.split()) == 0:
                 found_blank = found_blank + 1
 
@@ -125,7 +125,7 @@ with open("README.md", "w") as file:
             )
         )
 
-        # Wite terminal output
+        # Write terminal output
         file.write("\n```")
         for line in output_lines:
             file.write(line)

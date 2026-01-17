@@ -248,7 +248,7 @@ fig, ax = test_beam.plot()
 2. Fixed
 3. Hinge
 4. Numeric distributed linear load
-5. Numeric distributed contstant load
+5. Numeric distributed constant load
 6. Numeric point moment
 
 ```python
@@ -792,8 +792,8 @@ fig, ax = test_beam.plot()
 1. Numeric length
 2. Roller
 3. Pin
-4. Numeric distriuted linear load
-5. Numeric distriuted quadratic load
+4. Numeric distributed linear load
+5. Numeric distributed quadratic load
 6. Two numeric distributed linear loads
 
 ```python
@@ -1424,13 +1424,14 @@ plt.savefig(__file__.split(".py")[0] + ".svg")
 
 ```
 ## [example_18.py](./example_18.py)
-1. Isolated tranverse spring
+1. Isolated transverse spring
 2. Isolated rotational spring
 3. Combined transverse and rotational springs
 4. Numerical calculation
 
 ```python
 from symbeam import beam
+
 
 L = 1.0
 E = 1.0
@@ -1443,14 +1444,12 @@ test_beam.set_young(0, L, E)
 test_beam.set_inertia(0, L, I)
 test_beam.add_support(0, "fixed")
 test_beam.add_point_load(L, P)
-test_beam.add_rotational_spring(L/4, k_theta)
-test_beam.add_transverse_spring(L/2, k_v)
-test_beam.add_rotational_spring(3*L/4, k_theta)
-test_beam.add_transverse_spring(3*L/4, k_v)
+test_beam.add_rotational_spring(L / 4, k_theta)
+test_beam.add_transverse_spring(L / 2, k_v)
+test_beam.add_rotational_spring(3 * L / 4, k_theta)
+test_beam.add_transverse_spring(3 * L / 4, k_v)
 test_beam.solve()
 fig, ax = test_beam.plot()
-
-plt.savefig(__file__.split(".py")[0] + ".svg")
 ```
 <p align="center">
   <img src="svg/example_18.svg" width="70%">
@@ -1543,11 +1542,10 @@ plt.savefig(__file__.split(".py")[0] + ".svg")
 3. Symbolic calculation
 
 ```python
+
+from sympy.abc import E, I, L, k
+
 from symbeam import beam
-
-import sympy
-
-from sympy.abc import L, E, I, q, k
 ```
 <p align="center">
   <img src="svg/example_19.svg" width="70%">
@@ -1613,11 +1611,10 @@ from sympy.abc import L, E, I, q, k
 3. Symbolic calculation
 
 ```python
+
+from sympy.abc import E, I, L, k
+
 from symbeam import beam
-
-import sympy
-
-from sympy.abc import L, E, I, q, k
 ```
 <p align="center">
   <img src="svg/example_20.svg" width="70%">
@@ -1679,7 +1676,7 @@ from sympy.abc import L, E, I, q, k
 
 ```
 ## [example_21.py](./example_21.py)
-1. Isolated tranverse spring
+1. Isolated transverse spring
 2. Isolated rotational spring
 3. Combined transverse and rotational springs
 4. Pin combined with rotational spring
@@ -1690,7 +1687,6 @@ from sympy.abc import L, E, I, q, k
 ```python
 from symbeam import beam
 
-import sympy
 
 L = 1.0
 E = 1.0
@@ -1704,19 +1700,19 @@ test_beam = beam(L, x0=0)
 test_beam.set_young(0, L, E)
 test_beam.set_inertia(0, L, I)
 test_beam.add_support(0, "pin")
-test_beam.add_support(L/4, "hinge")
-test_beam.add_support(L/2, "roller")
-test_beam.add_support(3*L/4, "hinge")
+test_beam.add_support(L / 4, "hinge")
+test_beam.add_support(L / 2, "roller")
+test_beam.add_support(3 * L / 4, "hinge")
 test_beam.add_rotational_spring(0, k_theta)
-test_beam.add_rotational_spring(L/2, k_theta)
-test_beam.add_transverse_spring(3*L/4, k_v)
-test_beam.add_transverse_spring(L/8, k_v)
-test_beam.add_rotational_spring(7*L/8, k_theta)
-test_beam.add_transverse_spring(5*L/8, k_v)
-test_beam.add_rotational_spring(5*L/8, k_theta)
+test_beam.add_rotational_spring(L / 2, k_theta)
+test_beam.add_transverse_spring(3 * L / 4, k_v)
+test_beam.add_transverse_spring(L / 8, k_v)
+test_beam.add_rotational_spring(7 * L / 8, k_theta)
+test_beam.add_transverse_spring(5 * L / 8, k_v)
+test_beam.add_rotational_spring(5 * L / 8, k_theta)
 test_beam.add_point_moment(L, M)
-test_beam.add_point_load(3*L/8, P)
-test_beam.add_distributed_load(L/16, 15*L/16, "-2*(x + x**2)")
+test_beam.add_point_load(3 * L / 8, P)
+test_beam.add_distributed_load(L / 16, 15 * L / 16, "-2*(x + x**2)")
 ```
 <p align="center">
   <img src="svg/example_21.svg" width="70%">

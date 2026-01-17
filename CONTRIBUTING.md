@@ -17,7 +17,7 @@ before submitting the pull-request. Additionally, SymBeam adheres to several gui
 ```
 make lint
 ```
-in SymBeam root directory. This will check if the current code is compliant with black, isort and flake8. If flake8 fails, a list of issues is printed in the terminal. Please, go through these code style issues and fixe them in your code before submitting the Pull Request.
+in SymBeam root directory. This will check if the current code is compliant with black, isort and flake8. If flake8 fails, a list of issues is printed in the terminal. Please, go through these code style issues and fix them in your code before submitting the Pull Request.
 
 3. Make sure your code did not break anything in earlier releases. For that, you will need [pytest](https://docs.pytest.org/en/stable/contents.html) and [pytest-mpl](https://pypi.org/project/pytest-mpl/) to run
 ```

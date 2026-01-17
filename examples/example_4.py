@@ -5,7 +5,7 @@
 #           2. Fixed
 #           3. Hinge
 #           4. Numeric distributed linear load
-#           5. Numeric distributed contstant load
+#           5. Numeric distributed constant load
 #           6. Numeric point moment
 
 import matplotlib.pyplot as plt

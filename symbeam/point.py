@@ -1,13 +1,13 @@
 """Point module.
 
-Provides the point class, reponsible for handling point forces and moments,
+Provides the point class, responsible for handling point forces and moments,
 reactions and supports. A point is defined by an abstract class with all attributes and
 methods associated with point features. Concrete implementations, for instance, for
 distinct supports types, are realised by concrete class implementations.
 
 These classes are used internally by SymBeam thus, they shall not be used directly by the
-user, in a general scenario. In fact, SymBeam instanciates the points on the beam by
-the data coming from the user, accounting for the existance of supports, point forces and
+user, in a general scenario. In fact, SymBeam instantiates the points on the beam by
+the data coming from the user, accounting for the existence of supports, point forces and
 moments and changes of beam properties.
 
 ..module:: point
@@ -126,7 +126,7 @@ class point(ABC):
     def get_fixed_degree_of_freedom(self):
         """Returns the number of fixed degrees of freedom in a support.
 
-        Retunrs
+        Returns
         -------
         number_fixed : int
           Number of fixed degrees of freedom at the point

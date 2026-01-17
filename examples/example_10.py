@@ -4,8 +4,8 @@
 # Features: 1. Numeric length
 #           2. Roller
 #           3. Pin
-#           4. Numeric distriuted linear load
-#           5. Numeric distriuted quadratic load
+#           4. Numeric distributed linear load
+#           5. Numeric distributed quadratic load
 #           6. Two numeric distributed linear loads
 
 import matplotlib.pyplot as plt

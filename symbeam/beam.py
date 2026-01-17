@@ -61,7 +61,7 @@ class beam:
         Notes
         -----
         The beam can be instantiated either with numeric our symbolic input. For instance,
-        the length o the beam can be 1 or 'L'. Whenver a symbols is used for the length,
+        the length o the beam can be 1 or 'L'. Whenever a symbol is used for the length,
         SymBeam only accepts coordinates expressed as a definite fraction of 'L', such as
         'L/4'. If more symbols are introduce in the geometry definition, e.g., 'a*L', the
         program cannot complete, as several solutions could arise to the problem.
@@ -70,7 +70,7 @@ class beam:
         self.length = sym.sympify(length)
         self.x0 = sym.sympify(x0)
 
-        # Check the consitency of the input. Only one symbol is permitted for the geometry
+        # Check the consistency of the input. Only one symbol is permitted for the geometry
         # definition, in order to facilitate the creation of the segments.
         # If the beam starts at zero it's fine.
         starts_at_zero = self.x0 == sym.sympify(0)
@@ -126,7 +126,7 @@ class beam:
         Parameters
         ----------
         x_coord : sympifiable type (int, float, string, SymPy symbol, etc)
-          Coordiante of the support
+          Coordinate of the support
         support_type : str
           Type of support
         k_v : sympifiable type (int, float, string, SymPy symbol, etc), optional
@@ -266,7 +266,7 @@ class beam:
         # First check if the coordinate inside the beam.
         self._check_coordinates(x_start, x_end)
 
-        # If the user specifies the property explicitely, reset the default values
+        # If the user specifies the property explicitly, reset the default values
         if self.young_default:
             self.young_default = False
             self.young_segment_list = []
@@ -279,7 +279,7 @@ class beam:
         # First check if the coordinate inside the beam.
         self._check_coordinates(x_start, x_end)
 
-        # If the user specifies the property explicitely, reset the default values
+        # If the user specifies the property explicitly, reset the default values
         if self.inertia_default:
             self.inertia_default = False
             self.inertia_segment_list = []
@@ -322,12 +322,12 @@ class beam:
         length_young = 0.0
         length_inertia = 0.0
 
-        # Quick check Young modulus specification (check if the proprty segments sum up
+        # Quick check Young modulus specification (check if the property segments sum up
         # to the length of the beam).
         for i in range(len(self.young_segment_list)):
             if young_x_start_numeric[i] < x0_numeric:
                 raise RuntimeError(
-                    "Yound modulus specified for segment starting outside " + "the beam."
+                    "Young modulus specified for segment starting outside " + "the beam."
                 )
 
             if young_x_end_numeric[i] > length_numeric + x0_numeric:
@@ -358,8 +358,8 @@ class beam:
                             + "segments of the beam."
                         )
 
-        # Quick check second moment of area specification (check if the proprty segments sum
-        # up to the length of the beam).
+        # Quick check second moment of area specification (check if the property segments
+        # add up to the length of the beam).
         for i in range(len(self.inertia_segment_list)):
             if inertia_x_start_numeric[i] < x0_numeric:
                 raise RuntimeError(
@@ -442,17 +442,17 @@ class beam:
 
         if abs(x_start_numeric - x_end_numeric) < tol:
             raise RuntimeError(
-                "The specified beam segment is too short. The poits are " + "overlapping."
+                "The specified beam segment is too short. The points are " + "overlapping."
             )
 
         if x_start_numeric > x_end_numeric:
             raise RuntimeError(
-                "The starting coordinate is greater than the ending " + "coordinte."
+                "The starting coordinate is greater than the ending " + "coordinate."
             )
 
     # -------------------------------------------------------------------- check_inside_beam
     def _check_inside_beam(self, x_coord):
-        """Chekcs if a given coordinate is valid and lies inside the beam domain.
+        """Checks if a given coordinate is valid and lies inside the beam domain.
 
         Parameters
         ----------
@@ -867,8 +867,8 @@ class beam:
         # Solve the system of equations.
         if len(equilibirum_equations) != len(unknown_reactions):
             raise RuntimeError(
-                "Internal error: the number of equilibirum equations "
-                + "and unknwown reactions does nto match. Check the implementation of "
+                "Internal error: the number of equilibrium equations "
+                + "and unknown reactions does not match. Check the implementation of "
                 + "the supports."
             )
         solution = sym.solve(equilibirum_equations, unknown_reactions, dict=True)
@@ -1090,8 +1090,8 @@ class beam:
                 unknowns.append(self.points[i].rotation_right)
 
             # For the edge points, left and right rotations are the same.
-            # This simplies the computation of spring forces on the edges, as we do not
-            # need to descriminate them.
+            # This simplifies the computation of spring forces on the edges, as we do not
+            # need to discriminate them.
             if i == 0:
                 self.points[i].rotation_left = self.points[i].rotation_right
                 self.points[i].deflection_left = self.points[i].deflection_right
@@ -1966,7 +1966,7 @@ class _segment:
         self.young = sym.sympify(young)
         self.inertia = sym.sympify(inertia)
 
-        # Iniitialise the expressions of the bending moment and shear force diagrams.
+        # Initialise the expressions of the bending moment and shear force diagrams.
         self.shear_force = sym.sympify(0)
         self.bending_moment = sym.sympify(0)
         self.rotation = sym.sympify(0)

@@ -22,7 +22,7 @@ from symbeam.utils import (
 
 
 def test_beam_two_symbols():
-    """Test if an error is reaised if more than one symbols is used to initialise
+    """Test if an error is raised if more than one symbols is used to initialise
     the beam.
     """
     with pytest.raises(RuntimeError):
@@ -30,7 +30,7 @@ def test_beam_two_symbols():
 
 
 def test_beam_distinct_symbols():
-    """Test if an error is reaised if the symbols used for the inital position and length
+    """Test if an error is raised if the symbols used for the initial position and length
     are distinct.
     """
     with pytest.raises(RuntimeError):
@@ -202,7 +202,7 @@ def test_cantilever_point():
         errors.append("Error in rotation.")
 
     # An empty list is False for Python
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_cantilever_moment():
@@ -261,7 +261,7 @@ def test_cantilever_moment():
         errors.append("Error in rotation.")
 
     # An empty list is False for Python
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_half_span_force():
@@ -347,7 +347,7 @@ def test_half_span_force():
         errors.append("Error in rotation.")
 
     # An empty list is False for Python
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_complex_beam_hinge():
@@ -478,7 +478,7 @@ def test_complex_beam_hinge():
         errors.append("Error in rotation.")
 
     # An empty list is False for Python
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_discontinuous_properties():
@@ -640,7 +640,7 @@ def test_discontinuous_properties():
         errors.append("Error in rotation.")
 
     # An empty list is False for Python
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_output_symbolic(capsys):
@@ -747,7 +747,7 @@ def test_cantilever_beam_with_endpoint_springs():
     if not (shear_comp):
         errors.append("Error in the shear force.")
 
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_cantilever_beam_with_midpoint_springs():
@@ -838,7 +838,7 @@ def test_cantilever_beam_with_midpoint_springs():
     if not (shear_comp):
         errors.append("Error in the shear force.")
 
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_complex_beam_with_springs_and_hinge():
@@ -1006,7 +1006,7 @@ def test_complex_beam_with_springs_and_hinge():
     if not (shear_comp):
         errors.append("Error in the shear force.")
 
-    assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+    assert not errors, "The following errors occurred:\n{}".format("\n".join(errors))
 
 
 def test_rotational_spring_on_hinge():

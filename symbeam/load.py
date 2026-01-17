@@ -1,7 +1,7 @@
 """Load module.
 
 Defines the point force and moment classes, which can fundamentally be interpreted as
-strucutred variables with additional data verifications.
+structured variables with additional data verifications.
 
 Also, it provides the distributed_load class. In contrast to the point counterpart,
 distributed loads have a slightly more intricate structure, as they require the

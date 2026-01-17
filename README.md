@@ -48,7 +48,7 @@ import symbeam
 ```
 
 ## Theory
-SymBeam is based on classical Solid Mechanics and Strenght of Materials results to solve the beam equilibirum problem. A simple outline follows in the present section, without entering in any mathematical derivations.
+SymBeam is based on classical Solid Mechanics and Strength of Materials results to solve the beam equilibirum problem. A simple outline follows in the present section, without entering in any mathematical derivations.
 
 * **Reaction computation** - SymBeam does not allow for axial loads, currently. Therefore, depending on the support type, one shall need to compute a either a transverse reaction force or a reaction moment. These are computed by solving the algebraic system of linear equations arising from the equilibirum of forces and moments of the structure, accounting simultaneously for point loads and moments and distributed forces.
 
@@ -320,7 +320,7 @@ To add springs to your beam, you just have to add one of these lines to your scr
 new_beam.add_transverse_spring(x_coord, k_v)     # k_v in N/m
 new_beam.add_rotational_spring(x_coord, k_theta) # k_theta in Nm/rad
 ```
-Notice that `transverse_spring`referes to linear springs transverse to the beam and `rotational_spring` refers to angular/rotation springs. Currently, only a linear spring model has been implemented, where the force is proportional to the deflection and rotation at point `x_coord` and the coefficients are the sitffness values `k_v` and `k_theta`.
+Notice that `transverse_spring`refers to linear springs transverse to the beam and `rotational_spring` refers to angular/rotation springs. Currently, only a linear spring model has been implemented, where the force is proportional to the deflection and rotation at point `x_coord` and the coefficients are the sitffness values `k_v` and `k_theta`.
 
 Here follows an example with different combinations of springs. For more examples, new problems were added to the [examples](examples) folder, particularly examples 18 to 21.
 ```python
@@ -379,9 +379,9 @@ Running this script should produce the figure below.
 
 You can place prings anywhere along the beam, with the following exceptions:
   1. Rotational springs on hinges and fixed supports are not accepted.
-  2. Tranverse springs on rollers, pins and fixed supports are not accepted.
+  2. Transverse springs on rollers, pins and fixed supports are not accepted.
 
-Notice, however, that you can add rotational springs to pins and rollers to enforce full constraints on the transverse displacement, but still alow for some rotational flexibility.
+Notice, however, that you can add rotational springs to pins and rollers to enforce full constraints on the transverse displacement, but still allow for some rotational flexibility.
 
 In the limit of infinite spring stiffness, the springs mimic rigid supports.
 Considering for example a cantilever beam fixed at `x=0` and subjected to a for `P` at `x=L`, which is setup ins SymBeam as

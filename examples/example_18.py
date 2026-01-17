@@ -1,7 +1,7 @@
 # SymBeam examples suit
 # ==========================================================================================
 #                                                      António Carneiro <amcc@fe.up.pt> 2025
-# Features: 1. Isolated tranverse spring
+# Features: 1. Isolated transverse spring
 #           2. Isolated rotational spring
 #           3. Combined transverse and rotational springs
 #           4. Numerical calculation
