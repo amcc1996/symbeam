@@ -13,6 +13,7 @@ lint:
 	uv tool run isort --check .
 	uv tool run black --check .
 	uv tool run flake8 .
+	uv tool run codespell .
 
 format:
 	uv tool run isort .

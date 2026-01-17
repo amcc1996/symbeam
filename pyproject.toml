@@ -92,3 +92,9 @@ lines_between_types=1
 verbose="True"
 case_sensitive="True"
 balanced_wrapping="True"
+
+[tool.codespell]
+skip = 'symbeam.egg*'
+count = true
+quiet-level = 3
+ignore-words-list = "statics, Statics"
