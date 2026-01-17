@@ -10,12 +10,12 @@ URL=https://api.github.com/repos/amcc1996/symbeam/releases
 .PHONY: format coverage clean img tests deploy
 
 lint:
-	uv tool run isort --check --skip .venv --skip .pytest_cache .
+	uv tool run isort --check .
 	uv tool run black --check .
-	uv tool run flake8 --exclude .venv,.pytest_cache .
+	uv tool run flake8 .
 
 format:
-	uv tool run isort --skip .venv --skip .pytest_cache .
+	uv tool run isort .
 	uv tool run black .
 
 coverage:

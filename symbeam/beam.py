@@ -14,7 +14,6 @@ SymBeam furnishes to the outside world.
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 import numpy as np
 import sympy as sym
 
@@ -1362,7 +1361,8 @@ class beam:
         transverce_spring_force_points,
         rotational_spring_moment_points,
     ):
-        """Unpacks the solution of the monolithic system of equations into the beam properties.
+        """Unpacks the solution of the monolithic system of equations into the beam
+        properties.
 
         Parameters
         ----------
@@ -1423,11 +1423,11 @@ class beam:
 
     # -------------------------------------------------------------------- _solve_monolithic
     def _solve_monolithic(self):
-        """Solves the beam equilibirum problem in a monolithic way, determining the reactions,
-        diagrams of internal loads and deflections. This is specially useful for beams with
-        springs, where the standard approach of first solving for the reactions and then
-        for the internal loads and deflections is not feasible---loads and deflections are
-        coupled through the spring deformations.
+        """Solves the beam equilibirum problem in a monolithic way, determining the,
+        reactions diagrams of internal loads and deflections. This is specially useful for
+        beams with springs, where the standard approach of first solving for the reactions
+        and then for the internal loads and deflections is not feasible---loads and
+        deflections are coupled through the spring deformations.
         """
         # Setup all variables.
         (

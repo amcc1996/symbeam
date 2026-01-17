@@ -18,7 +18,7 @@ def test_beam_two_symbols():
     the beam.
     """
     with pytest.raises(RuntimeError):
-        a = beam("L * a", x0=0)
+        a = beam("L * a", x0=0)  # noqa: F841
 
 
 def test_beam_distinct_symbols():
@@ -26,7 +26,7 @@ def test_beam_distinct_symbols():
     are distinct.
     """
     with pytest.raises(RuntimeError):
-        a = beam("L * a", x0="b")
+        a = beam("L * a", x0="b")  # noqa: F841
 
 
 def test_beam_numeric_length():
@@ -1004,8 +1004,8 @@ def test_transverse_spring_on_roller():
         a.solve(output=False)
 
 
-def test_rotational_spring_on_fixed():
-    """Test that a spring cannot be added on fixed support"""
+def test_transverse_spring_on_fixed():
+    """Test that a transverse spring cannot be added on fixed support"""
     with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.add_support(0, "fixed")
@@ -1017,7 +1017,8 @@ def test_rotational_spring_on_fixed():
 
 
 def test_monolithic_not_unique_solution():
-    """Test that an error is raised when a beam with springs (monolithic solver) has not a unique solution."""
+    """Test that an error is raised when a beam with springs (monolithic solver) has not a
+    unique solution."""
     with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.add_transverse_spring(0, "k_v")
@@ -1026,7 +1027,8 @@ def test_monolithic_not_unique_solution():
 
 
 def test_monolithic_hyperstatic():
-    """Test that an error is raised when a beam with springs (monolithic solver) is hyperstatic."""
+    """Test that an error is raised when a beam with springs (monolithic solver) is
+    hyperstatic."""
     with pytest.raises(RuntimeError):
         a = beam("l", x0=0)
         a.add_support(0, "fixed")

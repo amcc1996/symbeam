@@ -328,7 +328,7 @@ class point(ABC):
                 ground_length=ground_length,
             )
 
-    # --------------------------------------------------------------------------- draw_ground
+    # -------------------------------------------------------------------------- draw_ground
     def draw_ground(
         self,
         ax,
@@ -656,7 +656,6 @@ class pin(point):
         y1 = np.array([y_start, ymid, y_start], dtype=float)
         y2 = np.array([y_start, y_start, y_start], dtype=float)
         # Draw the triangle.
-        length_bottom_line = xspan / 20
         ax.fill_between(x, y2, y1, clip_on=False, edgecolor="none", facecolor="silver")
         ax.plot(
             x,
@@ -730,7 +729,6 @@ class roller(point):
         y1 = np.array([y_start_tri, ymid, y_start_tri], dtype=float)
         y2 = np.array([y_start_tri, y_start_tri, y_start_tri], dtype=float)
         # Draw the triangle.
-        length_bottom_line = xspan / 20
         ax.fill_between(x, y2, y1, clip_on=False, edgecolor="none", facecolor="silver")
         ax.plot(
             x,

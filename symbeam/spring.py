@@ -11,8 +11,6 @@ Defines the transverse and rotational spring classes.
 import numpy as np
 import sympy as sym
 
-from sympy.abc import x
-
 
 # ======================================================================== transverse_spring
 class transverse_spring:
