@@ -172,7 +172,11 @@ class rotational_spring:
             theta = np.linspace(0, theta_max - np.pi / 6, n_points, endpoint=True)
 
         r = theta * spiral_parameter
-        x_spiral = x_start + r * np.sin(theta) * aspect_ratio
+        x_aux = r * np.sin(theta) * aspect_ratio
+        if x_start > xmax - xspan/2000:
+            x_spiral = x_start - x_aux
+        else:
+            x_spiral = x_start + x_aux
         y_spiral = y_start + spring_height - r * np.cos(theta)
         ax.plot(
             x_spiral,

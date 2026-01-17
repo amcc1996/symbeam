@@ -1,22 +1,30 @@
 # SymBeam examples suit
 # ==========================================================================================
-#                                                      António Carneiro <amcc@fe.up.pt> 2020
-# Features: 1. Symbolic length
-#           2. Fixed
-#           3. Symbolic point force
-#           4. Classical clamped beam problem
+#                                                      António Carneiro <amcc@fe.up.pt> 2025
+# Features: 1. Isolated tranverse spring
+#           2. Isolated rotational spring
+#           3. Combined transverse and rotational springs
+#           4. Numerical calculation
 
 import matplotlib.pyplot as plt
 
 from symbeam import beam
 
-
-test_beam = beam("L", x0=0)
+L = 1.0
+E = 1.0
+I = 1.0
+P = -1.0
+k_theta = 100.0
+k_v = 100.0
+test_beam = beam(L, x0=0)
+test_beam.set_young(0, L, E)
+test_beam.set_inertia(0, L, I)
 test_beam.add_support(0, "fixed")
-test_beam.add_point_load("L", "P")
-test_beam.add_point_moment("L", "M")
-test_beam.add_rotational_spring("L", "k_theta")
-test_beam.add_transverse_spring("L", "k_v")
+test_beam.add_point_load(L, P)
+test_beam.add_rotational_spring(L/4, k_theta)
+test_beam.add_transverse_spring(L/2, k_v)
+test_beam.add_rotational_spring(3*L/4, k_theta)
+test_beam.add_transverse_spring(3*L/4, k_v)
 test_beam.solve()
 fig, ax = test_beam.plot()
 
