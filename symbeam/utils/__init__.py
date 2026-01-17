@@ -6,6 +6,13 @@ from .utils import (
     hermite_polynomials,
 )
 
+from .generate_output_baseline import (
+    baseline_output_numeric,
+    baseline_output_springs_numeric,
+    baseline_output_springs_symbolic,
+    baseline_output_symbolic,
+)
+
 
 __all__ = [
     "hermite_polynomials",
@@ -13,4 +20,8 @@ __all__ = [
     "compute_rotation",
     "compute_bending_moment",
     "computes_shear_force",
+    "baseline_output_numeric",
+    "baseline_output_springs_numeric",
+    "baseline_output_springs_symbolic",
+    "baseline_output_symbolic",
 ]

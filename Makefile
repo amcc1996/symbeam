@@ -29,8 +29,9 @@ clean:
 	@find . -name *__pycache__ -exec rm -rf {} +
 	@rm -rf tests/results
 
-img:
+baseline:
 	uv run pytest --mpl-generate-path=tests/baseline
+	uv run --script symbeam/utils/generate_output_baseline.py
 
 tests:
 	uv run 	pytest --mpl --mpl-results-path=tests/results

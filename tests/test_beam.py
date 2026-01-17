@@ -10,7 +10,14 @@ from symbeam.utils import (
     computes_shear_force,
     euler_bernoulli_stiff_matrix,
     hermite_polynomials,
+    baseline_output_numeric,
+    baseline_output_springs_numeric,
+    baseline_output_springs_symbolic,
+    baseline_output_symbolic,
 )
+
+from contextlib import redirect_stdout
+import io
 
 
 def test_beam_two_symbols():
@@ -633,6 +640,38 @@ def test_discontinuous_properties():
 
     # An empty list is False for Python
     assert not errors, "The following errors ocurred:\n{}".format("\n".join(errors))
+
+def test_output_symbolic(capsys):
+    """Test if the output with symbolic variables works."""
+    with capsys.disabled():
+        with io.StringIO() as buf, redirect_stdout(buf):
+            output_baseline = open("tests/output_baseline/baseline_output_symbolic.txt").read()
+            baseline_output_symbolic()
+            assert output_baseline == buf.getvalue()
+
+def test_output_numeric(capsys):
+    """Test if the output with numeric variables works."""
+    with capsys.disabled():
+        with io.StringIO() as buf, redirect_stdout(buf):
+            output_baseline = open("tests/output_baseline/baseline_output_numeric.txt").read()
+            baseline_output_numeric()
+            assert output_baseline == buf.getvalue()
+
+def test_output_springs_numeric(capsys):
+    """Test if the output with springs and numeric variables works."""
+    with capsys.disabled():
+        with io.StringIO() as buf, redirect_stdout(buf):
+            output_baseline = open("tests/output_baseline/baseline_output_springs_numeric.txt").read()
+            baseline_output_springs_numeric()
+            assert output_baseline == buf.getvalue()
+
+def test_output_springs_symbolic(capsys):
+    """Test if the output with springs and symbolic variables works."""
+    with capsys.disabled():
+        with io.StringIO() as buf, redirect_stdout(buf):
+            output_baseline = open("tests/output_baseline/baseline_output_springs_symbolic.txt").read()
+            baseline_output_springs_symbolic()
+            assert output_baseline == buf.getvalue()
 
 
 def test_cantilever_beam_with_endpoint_springs():
