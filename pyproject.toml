@@ -1,6 +1,6 @@
 [project]
 name = "symbeam"
-version="2.1.0"
+version="2.1.1"
 authors = [{name = "António Manuel Couto Carneiro @FEUP", email = "amcc@fe.up.pt"}]
 description = "A pedagogical package for bending diagrams"
 keywords = [

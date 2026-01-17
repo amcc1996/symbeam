@@ -374,7 +374,7 @@ plt.savefig("beam_with_springs.pdf")
 Running this script should produce the figure below.
 
 <p align="center">
-  <img src="img/example_readme_springs.svg" width="70%">
+  <img src="https://gist.githubusercontent.com/amcc1996/8428dad954db711c24c05faeb9b7321a/raw/60bb0ddc466f5f8ef5dad08bc4e2a405b2ec42dc/example_readme_springs.svg" width="70%">
 </p>
 
 You can place prings anywhere along the beam, with the following exceptions:
@@ -404,7 +404,7 @@ new_beam.add_rotational_spring(0, a * E * I / L)
 If we compute the analytical solution with and without the springs for different values of `a` we get the figure below (check [this script](img/springs_convergence_rigid_support.py)). The delfection with the spring converges to the the rigid support solution as the stiffness grows to infinity.
 
 <p align="center">
-  <img src="img/springs_convergence_rigid_support.svg" width="50%">
+  <img src="https://gist.githubusercontent.com/amcc1996/8a3ef7f4485db87f7a31b4a386154e0e/raw/ec67dfec341c4580a8fe50ebe5e21ce9ed4f5659/springs_convergence_rigid_support.svg" width="50%">
 </p>
 
 > :warning: Adding springs to your beam can render the symbolic solution to your problem extremely complicated. SymBeam supports symbolic springs, as shown in [example 17](examples/example_17.py). However, you should prepare your self for true symbolic monstruosities if your beam is complex and has springs.
