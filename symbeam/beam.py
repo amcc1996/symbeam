@@ -23,6 +23,8 @@ from symbeam.load import distributed_load, point_load, point_moment
 from symbeam.point import continuity, fixed, hinge, pin, roller
 from symbeam.spring import rotational_spring, transverse_spring
 
+from matplotlib import ticker
+
 
 # Set numerical tolerance
 tol = 1e-6
@@ -1755,12 +1757,12 @@ class beam:
         ax[3].set_xlabel(r"Coordinate, $x$")
 
         # Axis ticks format.
-        # ax[1].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
-        # ax[1].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
-        # ax[2].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
-        # ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
-        # ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
-        # ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[1].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[1].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[2].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[2].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[3].yaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
+        ax[3].xaxis.set_major_formatter(ticker.FormatStrFormatter("%0.0e"))
 
         # Set the x-axis settings
         ax[1].set_xlim(xmin, xmax)

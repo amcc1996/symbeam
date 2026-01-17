@@ -383,6 +383,30 @@ You can place prings anywhere along the beam, with the following exceptions:
 
 Notice, however, that you can add rotational springs to pins and rollers to enforce full constraints on the transverse displacement, but still alow for some rotational flexibility.
 
+In the limit of infinite spring stiffness, the springs mimic rigid supports.
+Considering for example a cantilever beam fixed at `x=0` and subjected to a for `P` at `x=L`, which is setup ins SymBeam as
+```python
+new_beam = beam(L)
+new_beam.set_young(0, L, E)
+new_beam.set_inertia(0, L, I)
+new_beam.add_point_load(L, P)
+new_beam.add_support(0, 'fixed')
+```
+The `fixed` support can be replaced by two springs, whose stiffness is parameterised by `a`, as
+```python
+new_beam = beam(L)
+new_beam.set_young(0, L, E)
+new_beam.set_inertia(0, L, I)
+new_beam.add_point_load(L, P)
+new_beam.add_transverse_spring(0, a * E * I / L**3)
+new_beam.add_rotational_spring(0, a * E * I / L)
+```
+If we compute the analytical solution with and without the springs for different values of `a` we get the figure below (check [this script](img/springs_convergence_rigid_support.py)). The delfection with the spring converges to the the rigid support solution as the stiffness grows to infinity.
+
+<p align="center">
+  <img src="img/springs_convergence_rigid_support.svg" width="50%">
+</p>
+
 > :warning: Adding springs to your beam can render the symbolic solution to your problem extremely complicated. SymBeam supports symbolic springs, as shown in [example 17](examples/example_17.py). However, you should prepare your self for true symbolic monstruosities if your beam is complex and has springs.
 
 ## Running the tests
