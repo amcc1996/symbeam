@@ -11,7 +11,6 @@ def baseline_output_symbolic():
     test_beam.add_distributed_load(0, "l/2", "-2 * q / l * x")
     test_beam.add_distributed_load("l/2", "l", "-q")
     test_beam.solve()
-    fig, ax = test_beam.plot()
 
 def baseline_output_numeric():
     """Generate baseline output for numeric beam example."""
@@ -23,7 +22,6 @@ def baseline_output_numeric():
     test_beam.add_distributed_load(4, 6, -5)
     test_beam.add_point_moment(4, 20)
     test_beam.solve()
-    fig, ax = test_beam.plot()
 
 def baseline_output_springs_numeric():
     """Generate baseline output for beam with springs numeric example."""
@@ -55,7 +53,6 @@ def baseline_output_springs_symbolic():
     test_beam.add_rotational_spring(L, k)
     test_beam.add_distributed_load(0, L, sympy.sympify("q*x*(x-L)-q"))
     test_beam.solve()
-    fig, ax = test_beam.plot()
 
 if __name__ == "__main__":
     func_list = [

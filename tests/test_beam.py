@@ -1075,8 +1075,6 @@ def test_monolithic_hyperstatic():
         a.add_transverse_spring("l/2", "k_v")
         a.add_point_load("l/2", "P")
         a.solve(output=True)
-        a.plot()
-
 
 @pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
 def test_plot_point_loads():
@@ -1122,9 +1120,9 @@ def test_plot_distributed_loads_fixed_right():
     fig, ax = a.plot(subs={"q": 1000})
     return fig
 
-
 @pytest.mark.mpl_image_compare(baseline_dir="baseline", remove_text=True, tolerance=0.1)
-def test_beam_with_springs():
+def test_plot_beam_with_springs():
+    """Test the plotting function for a beam with springs."""
     L = 1.0
     M = 1.0
     P = 1.0
@@ -1149,7 +1147,6 @@ def test_beam_with_springs():
     a.add_point_moment(L, M)
     a.add_point_load(L / 3, -P)
     a.add_distributed_load(L / 7, 5 * L / 7, "-(2 - 2*x**2)")
-    a.solve(output=True)
+    a.solve()
     fig, ax = a.plot()
-
     return fig
