@@ -17,13 +17,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sympy as sym
 
+from matplotlib import ticker
 from sympy.abc import E, I, x
 
 from symbeam.load import distributed_load, point_load, point_moment
 from symbeam.point import continuity, fixed, hinge, pin, roller
 from symbeam.spring import rotational_spring, transverse_spring
-
-from matplotlib import ticker
 
 
 # Set numerical tolerance

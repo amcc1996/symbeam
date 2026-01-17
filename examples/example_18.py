@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 from symbeam import beam
 
+
 L = 1.0
 E = 1.0
 I = 1.0
@@ -21,10 +22,10 @@ test_beam.set_young(0, L, E)
 test_beam.set_inertia(0, L, I)
 test_beam.add_support(0, "fixed")
 test_beam.add_point_load(L, P)
-test_beam.add_rotational_spring(L/4, k_theta)
-test_beam.add_transverse_spring(L/2, k_v)
-test_beam.add_rotational_spring(3*L/4, k_theta)
-test_beam.add_transverse_spring(3*L/4, k_v)
+test_beam.add_rotational_spring(L / 4, k_theta)
+test_beam.add_transverse_spring(L / 2, k_v)
+test_beam.add_rotational_spring(3 * L / 4, k_theta)
+test_beam.add_transverse_spring(3 * L / 4, k_v)
 test_beam.solve()
 fig, ax = test_beam.plot()
 

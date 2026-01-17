@@ -1,7 +1,11 @@
-from symbeam import beam
-from sympy.abc import L, E, I, q, k
 from contextlib import redirect_stdout
+
 import sympy
+
+from sympy.abc import E, I, L, k
+
+from symbeam import beam
+
 
 def baseline_output_symbolic():
     """Generate baseline output for symbolic beam example."""
@@ -11,6 +15,7 @@ def baseline_output_symbolic():
     test_beam.add_distributed_load(0, "l/2", "-2 * q / l * x")
     test_beam.add_distributed_load("l/2", "l", "-q")
     test_beam.solve()
+
 
 def baseline_output_numeric():
     """Generate baseline output for numeric beam example."""
@@ -22,6 +27,7 @@ def baseline_output_numeric():
     test_beam.add_distributed_load(4, 6, -5)
     test_beam.add_point_moment(4, 20)
     test_beam.solve()
+
 
 def baseline_output_springs_numeric():
     """Generate baseline output for beam with springs numeric example."""
@@ -36,11 +42,12 @@ def baseline_output_springs_numeric():
     test_beam.set_inertia(0, L, I)
     test_beam.add_support(0, "fixed")
     test_beam.add_point_load(L, P)
-    test_beam.add_rotational_spring(L/4, k_theta)
-    test_beam.add_transverse_spring(L/2, k_v)
-    test_beam.add_rotational_spring(3*L/4, k_theta)
-    test_beam.add_transverse_spring(3*L/4, k_v)
+    test_beam.add_rotational_spring(L / 4, k_theta)
+    test_beam.add_transverse_spring(L / 2, k_v)
+    test_beam.add_rotational_spring(3 * L / 4, k_theta)
+    test_beam.add_transverse_spring(3 * L / 4, k_v)
     test_beam.solve()
+
 
 def baseline_output_springs_symbolic():
     """Generate baseline output for beam with springs symbolic example."""
@@ -54,6 +61,7 @@ def baseline_output_springs_symbolic():
     test_beam.add_distributed_load(0, L, sympy.sympify("q*x*(x-L)-q"))
     test_beam.solve()
 
+
 if __name__ == "__main__":
     func_list = [
         baseline_output_symbolic,
@@ -62,12 +70,12 @@ if __name__ == "__main__":
         baseline_output_springs_symbolic,
     ]
     file_names = [
-        'baseline_output_symbolic.txt',
-        'baseline_output_numeric.txt',
-        'baseline_output_springs_numeric.txt',
-        'baseline_output_springs_symbolic.txt',
+        "baseline_output_symbolic.txt",
+        "baseline_output_numeric.txt",
+        "baseline_output_springs_numeric.txt",
+        "baseline_output_springs_symbolic.txt",
     ]
     for i in range(len(func_list)):
-        with open(f'tests/output_baseline/{file_names[i]}', 'w') as f:
+        with open(f"tests/output_baseline/{file_names[i]}", "w") as f:
             with redirect_stdout(f):
                 func_list[i]()

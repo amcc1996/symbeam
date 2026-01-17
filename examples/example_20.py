@@ -5,12 +5,12 @@
 #           3. Symbolic calculation
 
 import matplotlib.pyplot as plt
+import sympy
+
+from sympy.abc import E, I, L, k
 
 from symbeam import beam
 
-import sympy
-
-from sympy.abc import L, E, I, q, k
 
 test_beam = beam(L, x0=0)
 test_beam.set_young(0, L, E)

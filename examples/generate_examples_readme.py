@@ -8,6 +8,7 @@ import os
 import re
 import shutil
 
+
 # Human sorting: from https://stackoverflow.com/questions/5967500/
 # how-to-correctly-sort-a-string-with-a-number-inside
 def atoi(text):
@@ -56,7 +57,7 @@ with open("README.md", "w") as file:
 
         # Run the script and capture the terminal output
         try:
-            os.environ['UV']
+            os.environ["UV"]
             os.system("uv run --script " + example + " >> " + tmp_file)
         except KeyError:
             os.system("python3 " + example + " >> " + tmp_file)

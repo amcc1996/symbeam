@@ -173,7 +173,7 @@ class rotational_spring:
 
         r = theta * spiral_parameter
         x_aux = r * np.sin(theta) * aspect_ratio
-        if x_start > xmax - xspan/2000:
+        if x_start > xmax - xspan / 2000:
             x_spiral = x_start - x_aux
         else:
             x_spiral = x_start + x_aux

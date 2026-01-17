@@ -5,13 +5,13 @@ from sympy.abc import x
 from symbeam import beam
 
 
-L = 1         # Length of the beam in m
-E = 210e3     # Young's modulus in Pa
-I = 1e-6      # Moment of inertia in m^4
-P = 1000      # Point load in N
-M = 200       # Point moment in Nm
-q = 2000      # Distributed load in N/m
-kv = 1e3      # Transverse spring stiffness in N/m
+L = 1  # Length of the beam in m
+E = 210e3  # Young's modulus in Pa
+I = 1e-6  # Moment of inertia in m^4
+P = 1000  # Point load in N
+M = 200  # Point moment in Nm
+q = 2000  # Distributed load in N/m
+kv = 1e3  # Transverse spring stiffness in N/m
 ktheta = 1e3  # Rotational spring stiffness in Nm/rad
 new_beam = beam(L)
 
