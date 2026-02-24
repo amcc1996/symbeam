@@ -87,7 +87,6 @@ force_grid_wrap=0
 use_parentheses="True"
 line_length=92
 indent=4
-lines_after_imports=2
 lines_between_types=1
 verbose="True"
 case_sensitive="True"
