@@ -12,7 +12,6 @@ from .utils import (
     hermite_polynomials,
 )
 
-
 __all__ = [
     "hermite_polynomials",
     "euler_bernoulli_stiff_matrix",

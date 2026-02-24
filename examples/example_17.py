@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 
 from symbeam import beam
 
-
 test_beam = beam("3*l", x0=0)
 test_beam.add_support("l", "roller")
 test_beam.add_support("2*l", "hinge")

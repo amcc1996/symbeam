@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 
 from symbeam import beam
 
-
 test_beam = beam("l", x0=0)
 test_beam.add_support(0, "pin")
 test_beam.add_support("l", "roller")

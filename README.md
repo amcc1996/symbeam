@@ -25,7 +25,7 @@ The following paragraphs provide a detailed description of how to use SymBeam fo
 ## Try it out
 You do not need to be a _Python Pro_ or even know Python at all to use SymBeam in your study. Explore this [interactive notebook](https://mybinder.org/v2/gh/amcc1996/bending-playground/master?filepath=bending-diagrams.ipynb) and enjoy from SymBeam features in your study!
 
-As of February 2021, SymBeam is now part of [Centric Engineers](https://www.centricengineers.com/) online platform. Here you can find a very friendly Graphical User Interface for multiple open-source projects on structural engineering. Check their [bending diagrams utility powered by SymBeam](https://www.centricengineers.com/free-software/ce-beam)!
+As of February 2021, SymBeam is now part of [Centric Engineers](https://www.centricengineers.com/) online platform. Here you can find a very friendly Graphical User Interface for multiple open-source projects on structural engineering. Check their [bending diagrams utility powered by SymBeam](https://www.centricengineers.com/app/ce-beam/)!
 
 ## Installation
 

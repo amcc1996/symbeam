@@ -15,7 +15,6 @@ import sympy as sym
 
 from symbeam import beam
 
-
 E = sym.symbols("E")
 I = sym.symbols("I")
 test_beam = beam(3, x0=0)

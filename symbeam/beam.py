@@ -24,7 +24,6 @@ from symbeam.load import distributed_load, point_load, point_moment
 from symbeam.point import continuity, fixed, hinge, pin, roller
 from symbeam.spring import rotational_spring, transverse_spring
 
-
 # Set numerical tolerance
 tol = 1e-6
 

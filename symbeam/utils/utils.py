@@ -11,7 +11,6 @@ from typing import List
 
 import sympy
 
-
 x = sympy.symbols("x")
 
 

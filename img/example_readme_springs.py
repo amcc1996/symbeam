@@ -4,7 +4,6 @@ from sympy.abc import x
 
 from symbeam import beam
 
-
 L = 1  # Length of the beam in m
 E = 210e3  # Young's modulus in Pa
 I = 1e-6  # Moment of inertia in m^4

@@ -1,6 +1,6 @@
 [project]
 name = "symbeam"
-version="2.1.1"
+version="2.1.2"
 authors = [{name = "António Manuel Couto Carneiro @FEUP", email = "amcc@fe.up.pt"}]
 description = "A pedagogical package for bending diagrams"
 keywords = [
@@ -26,15 +26,15 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Physics",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 dependencies = [
     "certifi>=2020.6.20",
     "cycler>=0.10.0",
     "kiwisolver>=1.2.0",
     "matplotlib>=3.3.1",
     "mpmath>=1.1.0",
-    "numpy>=1.19.1",
-    "Pillow>=7.2.0",
+    "numpy>=1.21.0",
+    "Pillow>=9.0.0",
     "pyparsing>=2.4.7",
     "python-dateutil>=2.8.1",
     "six>=1.15.0",
@@ -87,7 +87,6 @@ force_grid_wrap=0
 use_parentheses="True"
 line_length=92
 indent=4
-lines_after_imports=2
 lines_between_types=1
 verbose="True"
 case_sensitive="True"

@@ -11,7 +11,6 @@ from sympy.abc import E, I, L, k
 
 from symbeam import beam
 
-
 test_beam = beam(L, x0=0)
 test_beam.set_young(0, L, E)
 test_beam.set_inertia(0, L, I)

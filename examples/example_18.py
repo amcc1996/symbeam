@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 
 from symbeam import beam
 
-
 L = 1.0
 E = 1.0
 I = 1.0
