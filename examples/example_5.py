@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 
 from symbeam import beam
 
-
 test_beam = beam(6, x0=0)
 test_beam.add_support(0, "roller")
 test_beam.add_support(2, "roller")

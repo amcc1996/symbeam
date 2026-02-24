@@ -26,7 +26,6 @@ from sympy.abc import x
 
 from symbeam.spring import rotational_spring, transverse_spring
 
-
 # Set numerical tolerance
 tol = 1e-6
 

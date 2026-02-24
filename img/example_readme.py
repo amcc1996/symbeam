@@ -4,7 +4,6 @@ from sympy.abc import E, I, L, M, P, q, x
 
 from symbeam import beam
 
-
 new_beam = beam(L)
 
 # new_beam.set_young(x_start, x_end, value)

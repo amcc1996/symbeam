@@ -6,7 +6,6 @@ from sympy.abc import E, I, L, P, a, x
 
 from symbeam import beam
 
-
 # Solve with symbeam
 new_beam = beam(L)
 new_beam.set_young(0, L, E)
