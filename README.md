@@ -62,6 +62,8 @@ SymBeam is based on classical Solid Mechanics and Strength of Materials results 
   <a href="https://www.codecogs.com/eqnedit.php?latex=\frac{\text{d}V}{\text{d}x}&space;=&space;-q(x)&space;\qquad&space;\frac{\text{d}M}{\text{d}x}&space;=&space;-V(x)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{\text{d}V}{\text{d}x}&space;=&space;-q(x)&space;\qquad&space;\frac{\text{d}M}{\text{d}x}&space;=&space;-V(x)" title="\frac{\text{d}V}{\text{d}x} = -q(x) \qquad \frac{\text{d}M}{\text{d}x} = -V(x)" /></a>
 </p>
 
+> **Sign Convention:** SymBeam follows the standard sign convention. Positive shear force causes a clockwise rotation of the beam segment. Positive bending moment causes compression on the top fiber (sagging). Downward loads should be entered with a negative sign.
+
 * **Deflection** - the slope and deflection of the beam are obtained by integration the elastic curve equation in each segment one and two times, respectively. The geometrical boundary conditions are used to build a system of algebraic equations for the integration constants (twice the number of segments).
 
 <p align="center">
